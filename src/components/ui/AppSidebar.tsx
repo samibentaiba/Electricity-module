@@ -117,7 +117,7 @@ export function AppSidebar() {
                 </h3>
               )}
 
-              <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? "max-h-96 opacity-100 mt-1" : "max-h-0 opacity-0"}`}>
+              <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? "max-h-[800px] opacity-100 mt-1" : "max-h-0 opacity-0"}`}>
                 <nav className="flex flex-col space-y-0.5 ml-4 pl-3 border-l-2 border-slate-800/50">
                   {section.items.map((link) => {
                     const active = isActive(link.href);
