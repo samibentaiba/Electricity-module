@@ -4,6 +4,9 @@ import { useState } from "react";
 import Latex from "react-latex-next";
 import { Slider } from "@/components/ui/slider";
 import { calculateVoltageDivider } from "@/lib/circuit-utils";
+import { Mafs, Coordinates, Line, Polygon, Text, Point, Theme } from "mafs";
+import "mafs/core.css";
+import "mafs/font.css";
 
 export function VoltageDivider() {
   const [vin, setVin] = useState(12);
@@ -11,105 +14,92 @@ export function VoltageDivider() {
   const [r2, setR2] = useState(10);
 
   const vout = calculateVoltageDivider(vin, r1, r2);
-  
-  // Percentages for the visual voltage bar
-  const r1DropPct = ((vin - vout) / vin) * 100;
-  const r2DropPct = (vout / vin) * 100;
+
+  // Helper to draw a European-style resistor
+  const drawResistor = (x: number, y: number, isVertical: boolean, label: string, color: string, valueStr: string) => {
+    const w = isVertical ? 0.3 : 0.75;
+    const h = isVertical ? 0.75 : 0.3;
+    return (
+      <g>
+        <Polygon points={[[x - w, y + h], [x + w, y + h], [x + w, y - h], [x - w, y - h]]} color={color} fillOpacity={0.2} />
+        <Text x={isVertical ? x + 0.8 : x} y={isVertical ? y + 0.2 : y + 0.6} color={color} size={16}>{label}</Text>
+        <Text x={isVertical ? x + 0.8 : x} y={isVertical ? y - 0.2 : y + 0.9} color={color} size={14}>{valueStr}</Text>
+      </g>
+    );
+  };
+
+  const drawGround = (x: number, y: number) => (
+    <g>
+      <Line.Segment point1={[x, y]} point2={[x, y - 0.3]} color={Theme.foreground} weight={2} />
+      <Line.Segment point1={[x - 0.3, y - 0.3]} point2={[x + 0.3, y - 0.3]} color={Theme.foreground} weight={2} />
+      <Line.Segment point1={[x - 0.15, y - 0.4]} point2={[x + 0.15, y - 0.4]} color={Theme.foreground} weight={2} />
+    </g>
+  );
 
   return (
     <div className="flex flex-col gap-8 w-full max-w-4xl mx-auto">
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Visual Circuit */}
-        <div className="bg-slate-950 p-8 rounded-2xl flex justify-center items-center relative overflow-hidden border border-border/50 shadow-inner min-h-[450px]">
-           <h3 className="absolute top-4 left-4 font-bold text-slate-400 text-sm tracking-wider uppercase z-10">Voltage Divider Circuit</h3>
+        <div className="bg-slate-950 p-6 rounded-2xl flex flex-col relative overflow-hidden border border-slate-800 shadow-inner min-h-[450px]">
+           <h3 className="font-bold text-slate-500 text-xs tracking-widest uppercase mb-4">Live Schematic</h3>
            
-           <div className="relative w-48 h-72 mt-8">
-              {/* High Voltage Wire (Red) */}
-              <div className="absolute bottom-1/2 left-0 w-1 h-36 bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]" />
-              <div className="absolute top-0 left-0 w-[75%] h-1 bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]" />
-              
-              {/* Mid Voltage Wire (Rose) */}
-              <div className="absolute top-0 right-0 w-[25%] h-1 bg-rose-400 shadow-[0_0_8px_rgba(251,113,133,0.6)]" />
-              <div className="absolute top-0 right-0 w-1 h-36 bg-rose-400 shadow-[0_0_8px_rgba(251,113,133,0.6)]" />
+           <div className="flex-1 w-full h-full">
+             <Mafs zoom={false} pan={false} viewBox={{ x: [-3, 3], y: [-3, 3] }}>
+                
+                {/* V_in DC Source */}
+                <Line.Segment point1={[-2, -2]} point2={[-2, -0.2]} color={Theme.foreground} weight={2} />
+                <Line.Segment point1={[-2.3, -0.2]} point2={[-1.7, -0.2]} color={Theme.foreground} weight={3} /> {/* Negative Plate */}
+                <Line.Segment point1={[-2.5, 0.2]} point2={[-1.5, 0.2]} color={Theme.amber} weight={4} /> {/* Positive Plate */}
+                <Line.Segment point1={[-2, 0.2]} point2={[-2, 2]} color={Theme.foreground} weight={2} />
+                <Text x={-2.8} y={0.3} color={Theme.amber} size={16}>+</Text>
+                <Text x={-2.8} y={-0.3} color={Theme.foreground} size={16}>-</Text>
+                <Text x={-2.8} y={0.8} color={Theme.amber} size={16}>V_in</Text>
+                <Text x={-2.8} y={-0.8} color={Theme.amber} size={14}>{vin}V</Text>
 
-              {/* Ground Wire (Blue) */}
-              <div className="absolute bottom-0 right-0 w-1 h-36 bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.6)]" />
-              <div className="absolute bottom-0 left-0 w-full h-1 bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.6)]" />
-              <div className="absolute bottom-0 left-0 w-1 h-36 bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.6)]" />
+                {/* Top Wire */}
+                <Line.Segment point1={[-2, 2]} point2={[0, 2]} color={Theme.foreground} weight={2} />
 
-              {/* Vin Source */}
-              <div className="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-950 py-3 flex flex-col items-center justify-center gap-1 z-10">
-                 <div className="text-red-500 font-bold text-xl leading-none">+</div>
-                 <div className="w-10 h-1 bg-amber-500 rounded-full" />
-                 <div className="w-5 h-2 bg-amber-500 rounded-full" />
-                 <div className="text-blue-500 font-bold text-xl leading-none">-</div>
-                 <div className="absolute -left-16 top-1/2 -translate-y-1/2 text-amber-500 font-bold text-sm text-right leading-tight whitespace-nowrap">
-                   V_in<br/><span className="text-lg">{vin}V</span>
-                 </div>
-              </div>
+                {/* R1 */}
+                <Line.Segment point1={[0, 2]} point2={[0, 1.75]} color={Theme.foreground} weight={2} />
+                {drawResistor(0, 1, true, "R1", Theme.indigo, `${r1}Ω`)}
+                <Line.Segment point1={[0, 0.25]} point2={[0, 0]} color={Theme.foreground} weight={2} />
 
-              {/* R1 */}
-              <div className="absolute top-0 left-[75%] -translate-x-1/2 -translate-y-1/2 bg-slate-950 px-3 flex flex-col items-center justify-center z-10">
-                <div className="absolute -top-8 text-indigo-400 font-bold whitespace-nowrap bg-slate-900/80 px-2 py-0.5 rounded border border-slate-800">
-                  R1 = {r1}Ω
-                </div>
-                <div className="w-16 h-4 bg-indigo-500 rounded-sm border-2 border-indigo-400" />
-              </div>
+                {/* R2 */}
+                <Line.Segment point1={[0, 0]} point2={[0, -0.25]} color={Theme.foreground} weight={2} />
+                {drawResistor(0, -1, true, "R2", Theme.purple, `${r2}Ω`)}
+                <Line.Segment point1={[0, -1.75]} point2={[0, -2]} color={Theme.foreground} weight={2} />
 
-              {/* R2 */}
-              <div className="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2 bg-slate-950 py-3 flex flex-col items-center justify-center z-10">
-                <div className="absolute -right-24 text-purple-400 font-bold whitespace-nowrap bg-slate-900/80 px-2 py-0.5 rounded border border-slate-800">
-                  R2 = {r2}Ω
-                </div>
-                <div className="w-4 h-16 bg-purple-500 rounded-sm border-2 border-purple-400" />
-              </div>
+                {/* Ground connections */}
+                <Line.Segment point1={[-2, -2]} point2={[0, -2]} color={Theme.foreground} weight={2} />
+                {drawGround(-2, -2)}
+                {drawGround(0, -2)}
 
-              {/* Vout Node */}
-              <div className="absolute top-0 right-0 w-4 h-4 bg-rose-500 rounded-full translate-x-1/2 -translate-y-1/2 shadow-[0_0_15px_rgba(244,63,94,1)] z-20" />
-              <div className="absolute top-0 right-0 h-1 w-12 bg-rose-400 translate-x-full z-10" />
-              <div className="absolute -right-36 -top-4 text-rose-500 font-bold bg-slate-900 px-3 py-1.5 rounded-lg border border-rose-500/50 shadow-lg whitespace-nowrap z-20">
-                V_out: <span className="text-xl">{vout.toFixed(2)}V</span>
-              </div>
-              
-              {/* Ground reference */}
-              <div className="absolute bottom-0 right-0 w-4 h-4 bg-blue-500 rounded-full translate-x-1/2 translate-y-1/2 z-20" />
-              <div className="absolute bottom-0 right-0 h-1 w-12 bg-blue-500 translate-x-full z-10" />
-              <div className="absolute -right-32 bottom-0 translate-y-1/2 text-blue-400 font-bold whitespace-nowrap z-20 bg-slate-900/80 px-2 py-1 rounded border border-slate-800">
-                0V (GND)
-              </div>
+                {/* Middle Node (V_out) */}
+                <Point x={0} y={0} color={Theme.foreground} />
+                <Line.Segment point1={[0, 0]} point2={[2, 0]} color={Theme.foreground} weight={2} />
+                
+                {/* V_out Terminals */}
+                <circle cx={2} cy={0} r={0.1} stroke={Theme.foreground} fill="transparent" strokeWidth="2" />
+                <circle cx={2} cy={-2} r={0.1} stroke={Theme.foreground} fill="transparent" strokeWidth="2" />
+                <Line.Segment point1={[0, -2]} point2={[2, -2]} color={Theme.foreground} weight={2} />
 
-              {/* Voltage Drop Thermometer */}
-              <div className="absolute inset-0 m-auto w-12 rounded-xl overflow-hidden flex flex-col bg-slate-800 border-2 border-slate-700 shadow-xl">
-                 <div 
-                    className="w-full bg-red-500/80 transition-all duration-300 relative flex flex-col items-center justify-center border-b-2 border-slate-900" 
-                    style={{ height: `${r1DropPct}%` }}
-                 >
-                    {r1DropPct > 15 && (
-                      <span className="text-[10px] font-bold text-white text-center leading-tight drop-shadow-md">
-                        R1 DROP<br/>{(vin - vout).toFixed(1)}V
-                      </span>
-                    )}
-                 </div>
-                 <div 
-                    className="w-full bg-rose-500/80 transition-all duration-300 relative flex flex-col items-center justify-center" 
-                    style={{ height: `${r2DropPct}%` }}
-                 >
-                    {r2DropPct > 15 && (
-                      <span className="text-[10px] font-bold text-white text-center leading-tight drop-shadow-md">
-                        R2 DROP<br/>{vout.toFixed(1)}V
-                      </span>
-                    )}
-                 </div>
-              </div>
+                {/* V_out label and arrow */}
+                <Text x={2.5} y={-1} color={Theme.red} size={18}>V_out</Text>
+                <Text x={2.5} y={-1.5} color={Theme.red} size={16}>{vout.toFixed(2)}V</Text>
+                
+                {/* Voltage Drop labels */}
+                <Text x={-0.8} y={1} color={Theme.indigo} size={12}>-{(vin - vout).toFixed(1)}V</Text>
+                <Text x={-0.8} y={-1} color={Theme.purple} size={12}>-{vout.toFixed(1)}V</Text>
+             </Mafs>
            </div>
         </div>
 
         {/* Adjustments & Results */}
-        <div className="flex flex-col gap-6 bg-muted/30 p-6 rounded-xl border border-border/50 justify-center">
+        <div className="flex flex-col gap-6 bg-slate-900/50 p-6 rounded-xl border border-slate-800 justify-center">
            <div className="flex flex-col gap-2">
               <div className="flex justify-between items-center">
-                <label className="text-sm font-semibold text-amber-500">Input Voltage (Vin)</label>
+                <label className="text-sm font-semibold text-amber-500">Input Voltage (V_in)</label>
                 <span className="font-mono bg-amber-500/10 text-amber-500 px-2 py-1 rounded text-sm">{vin} V</span>
               </div>
               <Slider min={1} max={100} step={1} value={[vin]} onValueChange={(val) => setVin((Array.isArray(val) ? val[0] : val))} className="**:data-[slot=slider-range]:bg-amber-500 **:data-[slot=slider-thumb]:ring-amber-500" />
@@ -131,12 +121,12 @@ export function VoltageDivider() {
               <Slider min={1} max={100} step={1} value={[r2]} onValueChange={(val) => setR2((Array.isArray(val) ? val[0] : val))} className="**:data-[slot=slider-range]:bg-purple-400 **:data-[slot=slider-thumb]:ring-purple-400" />
            </div>
 
-           <div className="mt-4 pt-4 border-t border-border/50">
-              <p className="text-sm text-muted-foreground uppercase tracking-wider font-bold mb-4 text-center">Output Voltage (Vout)</p>
+           <div className="mt-4 pt-4 border-t border-slate-800">
+              <p className="text-sm text-slate-500 uppercase tracking-wider font-bold mb-4 text-center">Output Voltage (V_out)</p>
               <div className="text-center text-5xl font-black text-rose-500 mb-4 drop-shadow-[0_0_10px_rgba(244,63,94,0.4)]">
                  {vout.toFixed(2)} V
               </div>
-              <div className="text-center">
+              <div className="text-center text-slate-300">
                 <Latex>{`$$ V_{out} = V_{in} \\times \\frac{R_2}{R_1 + R_2} $$`}</Latex>
                 <div className="mt-2 text-sm text-slate-400">
                   <Latex>{`$$ V_{out} = ${vin} \\times \\frac{${r2}}{${r1} + ${r2}} = ${vout.toFixed(2)}\\text{ V} $$`}</Latex>

@@ -5,6 +5,61 @@ import { Mafs, Line, Text, Polygon } from "mafs";
 import "mafs/core.css";
 import "mafs/font.css";
 
+// Helper to draw a European-style resistor (rectangle)
+const drawResistor = (x: number, y: number) => {
+  const w = 0.75;
+  const h = 0.3;
+  return (
+    <Polygon 
+      points={[
+        [x - w, y + h],
+        [x + w, y + h],
+        [x + w, y - h],
+        [x - w, y - h]
+      ]}
+      color="#cbd5e1"
+      fillOpacity={0.1}
+    />
+  );
+};
+
+// Helper to draw an arrow indicating current flow
+const CurrentArrow = ({ x, y, direction, color, value }: { x: number, y: number, direction: number, color: string, value: number }) => {
+  if (Math.abs(value) < 0.001) return null; // No current
+  
+  // If current is negative, reverse direction
+  const actualDir = value < 0 ? direction + 180 : direction;
+  const absVal = Math.abs(value);
+  
+  // Fixed scale for a clean look
+  const scale = 0.25;
+  
+  const rad = (actualDir * Math.PI) / 180;
+  const p1 = [x + Math.cos(rad) * scale, y + Math.sin(rad) * scale];
+  const p2 = [x + Math.cos(rad + 2.5) * scale * 0.8, y + Math.sin(rad + 2.5) * scale * 0.8];
+  const p3 = [x + Math.cos(rad - 2.5) * scale * 0.8, y + Math.sin(rad - 2.5) * scale * 0.8];
+
+  return (
+    <>
+      <Line.Segment 
+         point1={[x - Math.cos(rad) * scale * 1.5, y - Math.sin(rad) * scale * 1.5]} 
+         point2={[x + Math.cos(rad) * scale * 0.5, y + Math.sin(rad) * scale * 0.5]} 
+         color={color} 
+         weight={3} 
+      />
+      <Polygon points={[p1 as [number, number], p2 as [number, number], p3 as [number, number]]} color={color} />
+      <Text 
+         x={x + Math.cos(rad - Math.PI/2) * 0.6} 
+         y={y + Math.sin(rad - Math.PI/2) * 0.6} 
+         color={color} 
+         size={14}
+      >
+        {absVal.toFixed(2)}A
+      </Text>
+    </>
+  );
+};
+
 export function SuperpositionVisualizer() {
   const [e1Active, setE1Active] = useState(true);
   const [e2Active, setE2Active] = useState(true);
@@ -27,61 +82,6 @@ export function SuperpositionVisualizer() {
   // Calculate current I (clockwise)
   const I_total = (E1 - E2) / (R1 + R2);
 
-  // Helper to draw a European-style resistor (rectangle)
-  const drawResistor = (x: number, y: number) => {
-    // A rectangle centered at (x,y) with width 1.5 and height 0.6
-    const w = 0.75;
-    const h = 0.3;
-    return (
-      <Polygon 
-        points={[
-          [x - w, y + h],
-          [x + w, y + h],
-          [x + w, y - h],
-          [x - w, y - h]
-        ]}
-        color="#cbd5e1"
-        fillOpacity={0.1}
-      />
-    );
-  };
-
-  // Helper to draw an arrow indicating current flow
-  const CurrentArrow = ({ x, y, direction, color, value }: { x: number, y: number, direction: number, color: string, value: number }) => {
-    if (Math.abs(value) < 0.001) return null; // No current
-    
-    // If current is negative, reverse direction
-    const actualDir = value < 0 ? direction + 180 : direction;
-    const absVal = Math.abs(value);
-    
-    // Fixed scale for a clean look
-    const scale = 0.25;
-    
-    const rad = (actualDir * Math.PI) / 180;
-    const p1 = [x + Math.cos(rad) * scale, y + Math.sin(rad) * scale];
-    const p2 = [x + Math.cos(rad + 2.5) * scale * 0.8, y + Math.sin(rad + 2.5) * scale * 0.8];
-    const p3 = [x + Math.cos(rad - 2.5) * scale * 0.8, y + Math.sin(rad - 2.5) * scale * 0.8];
-
-    return (
-      <>
-        <Line.Segment 
-           point1={[x - Math.cos(rad) * scale * 1.5, y - Math.sin(rad) * scale * 1.5]} 
-           point2={[x + Math.cos(rad) * scale * 0.5, y + Math.sin(rad) * scale * 0.5]} 
-           color={color} 
-           weight={3} 
-        />
-        <Polygon points={[p1 as [number, number], p2 as [number, number], p3 as [number, number]]} color={color} />
-        <Text 
-           x={x + Math.cos(rad - Math.PI/2) * 0.6} 
-           y={y + Math.sin(rad - Math.PI/2) * 0.6} 
-           color={color} 
-           size={14}
-        >
-          {absVal.toFixed(2)}A
-        </Text>
-      </>
-    );
-  };
 
   return (
     <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row">
@@ -204,7 +204,7 @@ export function SuperpositionVisualizer() {
              color="#f43f5e" 
           />
           <Line.Segment point1={[0, -1.8]} point2={[0, 1.8]} color="#f43f5e" weight={2} />
-          <Text x={0.3} y={0} color="#f43f5e" size={24} weight="bold">U</Text>
+          <Text x={0.3} y={0} color="#f43f5e" size={24}>U</Text>
 
           {/* Current Flow Arrow */}
           <CurrentArrow x={-3} y={1.25} direction={I_total >= 0 ? 90 : 270} color="#818cf8" value={Math.abs(I_total)} />

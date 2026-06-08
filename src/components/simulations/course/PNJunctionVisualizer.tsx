@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react";
 
-export function PNJunctionVisualizer() {
-  const [biasVoltage, setBiasVoltage] = useState(0); // -5V to +1V
+export function PNJunctionVisualizer({ initialBias = 0 }: { initialBias?: number }) {
+  const [biasVoltage, setBiasVoltage] = useState(initialBias); // -5V to +1V
 
   // Calculate depletion region width (0 to 100 percentage of the center)
   // At 0V, width is 20%. 
@@ -87,12 +87,41 @@ export function PNJunctionVisualizer() {
       <div className="p-8 md:w-2/3 flex flex-col items-center justify-center min-h-[300px] relative overflow-hidden bg-slate-950">
         
         {/* Battery / Wire path */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
-          <div className="w-full h-[200px] border-4 border-slate-500 rounded-lg absolute"></div>
+        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-0">
+          {/* Main wire loop extending downwards from the PN block */}
+          <div className="w-[400px] h-32 border-x-4 border-b-4 border-slate-600 rounded-b-xl translate-y-[64px] flex justify-center items-end pb-[-20px] relative">
+            
+            {/* Battery inserted in the bottom wire */}
+            {biasVoltage !== 0 && (
+              <div className="absolute -bottom-4 bg-slate-950 px-4 flex items-center">
+                {biasVoltage > 0 ? (
+                  // Forward Bias: Positive (long) on Left (P-Type)
+                  <div className="flex items-center gap-1">
+                    <span className="text-emerald-400 font-bold mr-3">{biasVoltage.toFixed(1)}V</span>
+                    <div className="flex items-center gap-1">
+                      <div className="w-1.5 h-8 bg-emerald-400"></div> {/* + */}
+                      <div className="w-1.5 h-4 bg-slate-500"></div> {/* - */}
+                    </div>
+                    <span className="text-emerald-400 ml-2 font-bold">+</span>
+                  </div>
+                ) : (
+                  // Reverse Bias: Positive (long) on Right (N-Type)
+                  <div className="flex items-center gap-1">
+                    <span className="text-red-400 mr-2 font-bold">+</span>
+                    <div className="flex items-center gap-1">
+                      <div className="w-1.5 h-4 bg-slate-500"></div> {/* - */}
+                      <div className="w-1.5 h-8 bg-red-400"></div> {/* + */}
+                    </div>
+                    <span className="text-red-400 font-bold ml-3">{Math.abs(biasVoltage).toFixed(1)}V</span>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* The Semiconductor Block */}
-        <div className="relative w-full max-w-[400px] h-32 flex rounded-lg overflow-hidden border-2 border-slate-600 shadow-[0_0_30px_rgba(0,0,0,0.5)] bg-slate-800">
+        <div className="relative w-full max-w-[400px] h-32 flex rounded-lg overflow-hidden border-4 border-slate-600 shadow-[0_0_30px_rgba(0,0,0,0.5)] bg-slate-800 z-10">
           
           {/* P-Type (Left) */}
           <div className="flex-1 bg-blue-900/50 relative overflow-hidden flex items-center justify-center border-r border-blue-800/30">

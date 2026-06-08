@@ -88,7 +88,7 @@ export function Section2_1() {
                   <h3>Extrinsic Semiconductors (Doping)</h3>
                   <p>In <strong>Diagram Mode</strong>, you see the atomic structure of an N-Type semiconductor.</p>
                   <p>An intrinsic (pure) silicon crystal is made entirely of Silicon atoms, each sharing 4 electrons. When doped with a Group V element (like Phosphorus or Antimony), the impurity atom bonds with the 4 surrounding Silicon atoms, leaving its 5th electron loosely bound and free to conduct electricity.</p>
-                  <p>Conversely, doping with a Group III element (like Boron or Gallium) leaves a missing bond, creating a "hole" (P-Type semiconductor).</p>
+                  <p>Conversely, doping with a Group III element (like Boron or Gallium) leaves a missing bond, creating a &quot;hole&quot; (P-Type semiconductor).</p>
                 </>
               }
             />

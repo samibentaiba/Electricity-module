@@ -9,6 +9,10 @@ const DiodeCurveVisualizer = dynamic(() => import("@/components/simulations/cour
   ssr: false, loading: () => <Skeleton className="h-[400px] w-full rounded-2xl" /> 
 });
 
+const PNJunctionVisualizer = dynamic(() => import("@/components/simulations/course/PNJunctionVisualizer").then(m => m.PNJunctionVisualizer), { 
+  ssr: false, loading: () => <Skeleton className="h-[400px] w-full rounded-2xl" /> 
+});
+
 export function Section2_2() {
   return (
     <div className="space-y-12 mt-12">
@@ -47,8 +51,18 @@ export function Section2_2() {
                 <li><strong>The Result:</strong> The barrier becomes too large for the majority carriers to cross.</li>
                 <li><strong>Current:</strong> The main current is zero. Only a tiny &quot;leakage&quot; current exists, called the reverse saturation current (Is).</li>
               </ul>
-              <div className="mt-4 flex justify-center bg-slate-900 rounded-lg p-4 border border-slate-800">
-                <img src="/images/course/chapter-2/reverse-bias.jpg" alt="Reverse Bias Circuit" className="max-w-full h-auto rounded" />
+              <div className="mt-4">
+                <LearningChunk
+                  simulation={<PNJunctionVisualizer initialBias={-5} />}
+                  imageSrc="/images/course/chapter-2/reverse-bias.jpg"
+                  explanation={
+                    <>
+                      <h3>Reverse Bias</h3>
+                      <p>Notice how the positive terminal of the battery is connected to the N-Type side, and the negative terminal to the P-Type side.</p>
+                      <p>This pulls the charge carriers <em>away</em> from the junction, expanding the depletion region and blocking current flow.</p>
+                    </>
+                  }
+                />
               </div>
             </div>
 
@@ -60,8 +74,18 @@ export function Section2_2() {
                 <li><strong>The Result:</strong> The barrier disappears, allowing electrons to flood across the junction.</li>
                 <li><strong>Current:</strong> There is a very high current flow that rises exponentially as voltage increases.</li>
               </ul>
-              <div className="mt-4 flex justify-center bg-slate-900 rounded-lg p-4 border border-slate-800">
-                <img src="/images/course/chapter-2/forward-bias.jpg" alt="Forward Bias Circuit" className="max-w-full h-auto rounded" />
+              <div className="mt-4">
+                <LearningChunk
+                  simulation={<PNJunctionVisualizer initialBias={1} />}
+                  imageSrc="/images/course/chapter-2/forward-bias.jpg"
+                  explanation={
+                    <>
+                      <h3>Forward Bias</h3>
+                      <p>Notice how the positive terminal of the battery is connected to the P-Type side, and the negative terminal to the N-Type side.</p>
+                      <p>This pushes the charge carriers <em>towards</em> the junction, crushing the depletion region and allowing a massive flood of current to flow.</p>
+                    </>
+                  }
+                />
               </div>
             </div>
           </div>
