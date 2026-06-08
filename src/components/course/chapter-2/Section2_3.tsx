@@ -3,6 +3,7 @@
 import Latex from "react-latex-next";
 import dynamic from "next/dynamic";
 import { Skeleton } from "@/components/ui/skeleton";
+import { LearningChunk } from "@/components/ui/LearningChunk";
 
 const RectifierVisualizer = dynamic(() => import("@/components/simulations/course/RectifierVisualizer").then(m => m.RectifierVisualizer), { 
   ssr: false, loading: () => <Skeleton className="h-[400px] w-full rounded-2xl" /> 
@@ -59,7 +60,18 @@ export function Section2_3() {
           </div>
 
           <div className="mt-8">
-            <RectifierVisualizer />
+            <LearningChunk
+              simulation={<RectifierVisualizer />}
+              imageSrc="/images/course/chapter-2/half-wave.jpg"
+              explanation={
+                <>
+                  <h3>Rectifier Circuits</h3>
+                  <p>In <strong>Diagram Mode</strong>, you see the classic half-wave rectifier schematic.</p>
+                  <p>The AC input source is connected in series with a diode and a load resistor. Because the diode only allows current to flow in one direction (during the positive half-cycle), the negative half-cycles are completely blocked.</p>
+                  <p>In a Full-Wave rectifier (not pictured here, but available in the simulation), a center-tapped transformer and two diodes (or a bridge of four diodes) are used to flip the negative half-cycles up, creating a more continuous DC output.</p>
+                </>
+              }
+            />
           </div>
 
           {/* 2. Filtering */}
@@ -91,7 +103,18 @@ export function Section2_3() {
             </ul>
             <p>Therefore, <Latex>{`$u$`}</Latex> must be greater than <Latex>{`$U_Z$`}</Latex> so that the output voltage remains constant (regulated).</p>
             <div className="mt-6">
-              <ZenerRegulatorVisualizer />
+              <LearningChunk
+                simulation={<ZenerRegulatorVisualizer />}
+                imageSrc="/images/course/chapter-2/zener-regulator.jpg"
+                explanation={
+                  <>
+                    <h3>Zener Voltage Regulator</h3>
+                    <p>This schematic shows a classic Zener diode voltage regulator circuit.</p>
+                    <p>The Zener diode is connected in <strong>reverse bias</strong> parallel to the load. A series resistor (<Latex>{"$R_p$"}</Latex>) is used to limit the current.</p>
+                    <p>As long as the input voltage <Latex>{"$u$"}</Latex> is greater than the Zener breakdown voltage (<Latex>{"$U_Z$"}</Latex>), the diode operates in its breakdown region, maintaining a constant voltage <Latex>{"$U_Z$"}</Latex> across the load, regardless of fluctuations in the input voltage.</p>
+                  </>
+                }
+              />
             </div>
           </div>
 

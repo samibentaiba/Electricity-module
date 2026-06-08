@@ -47,7 +47,7 @@ export function Section1_3() {
                   <>
                     <h3>Voltage Divider Circuit</h3>
                     <p>This diagram represents the classic Voltage Divider circuit. Resistors are connected in series across a voltage source.</p>
-                    <p>The voltage drops progressively across each resistor in proportion to its resistance. The voltage measured across the second resistor ($R_2$) is the output voltage ($V_{out}$).</p>
+                    <p>The voltage drops progressively across each resistor in proportion to its resistance. The voltage measured across the second resistor (<Latex>{"$R_2$"}</Latex>) is the output voltage (<Latex>{"$V_{out}$"}</Latex>).</p>
                     <p>The fundamental formula is:</p>
                     <Latex>{`$$ V_{out} = V_{in} \\times \\frac{R_2}{R_1 + R_2} $$`}</Latex>
                     <p>This circuit is commonly used to step down voltages to a specific reference level.</p>
@@ -88,7 +88,7 @@ export function Section1_3() {
                 explanation={
                   <>
                     <h3>The Superposition Principle</h3>
-                    <p>When analyzing a linear circuit with multiple independent sources (like $V_1$ and $V_2$), the superposition theorem allows you to calculate the response (voltage or current) in any branch by considering each source independently.</p>
+                    <p>When analyzing a linear circuit with multiple independent sources (like <Latex>{"$V_1$"}</Latex> and <Latex>{"$V_2$"}</Latex>), the superposition theorem allows you to calculate the response (voltage or current) in any branch by considering each source independently.</p>
                     <ol>
                       <li><strong>Step 1:</strong> Turn off all independent sources except one. (Voltage sources become short circuits, current sources become open circuits).</li>
                       <li><strong>Step 2:</strong> Calculate the currents and voltages for this simplified circuit.</li>

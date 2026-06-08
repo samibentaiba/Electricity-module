@@ -3,6 +3,7 @@
 import Latex from "react-latex-next";
 import dynamic from "next/dynamic";
 import { Skeleton } from "@/components/ui/skeleton";
+import { LearningChunk } from "@/components/ui/LearningChunk";
 
 const PNJunctionVisualizer = dynamic(() => import("@/components/simulations/course/PNJunctionVisualizer").then(m => m.PNJunctionVisualizer), { 
   ssr: false, loading: () => <Skeleton className="h-[400px] w-full rounded-2xl" /> 
@@ -79,7 +80,18 @@ export function Section2_1() {
           </p>
 
           <div className="mt-8">
-            <DopingVisualizer />
+            <LearningChunk
+              simulation={<DopingVisualizer />}
+              imageSrc="/images/course/chapter-2/n-type.jpg"
+              explanation={
+                <>
+                  <h3>Extrinsic Semiconductors (Doping)</h3>
+                  <p>In <strong>Diagram Mode</strong>, you see the atomic structure of an N-Type semiconductor.</p>
+                  <p>An intrinsic (pure) silicon crystal is made entirely of Silicon atoms, each sharing 4 electrons. When doped with a Group V element (like Phosphorus or Antimony), the impurity atom bonds with the 4 surrounding Silicon atoms, leaving its 5th electron loosely bound and free to conduct electricity.</p>
+                  <p>Conversely, doping with a Group III element (like Boron or Gallium) leaves a missing bond, creating a "hole" (P-Type semiconductor).</p>
+                </>
+              }
+            />
           </div>
           
           <h3 className="text-2xl font-bold text-primary mt-8">III. PN Junction</h3>
@@ -94,7 +106,18 @@ export function Section2_1() {
           </div>
 
           <div className="mt-8">
-            <PNJunctionVisualizer />
+            <LearningChunk
+              simulation={<PNJunctionVisualizer />}
+              imageSrc="/images/course/chapter-2/pn-junction.jpg"
+              explanation={
+                <>
+                  <h3>The PN Junction</h3>
+                  <p>This diagram represents a PN junction at equilibrium (Zero Bias).</p>
+                  <p>When P-type and N-type materials are joined, the free electrons from the N-side diffuse across the junction to fill the holes on the P-side. This leaves behind positively charged donor ions on the N-side, and negatively charged acceptor ions on the P-side.</p>
+                  <p>This region, stripped of free charge carriers, is called the <strong>Depletion Region</strong>. The exposed ions create a built-in potential barrier (usually ~0.7V for Silicon) that prevents further electrons from crossing.</p>
+                </>
+              }
+            />
           </div>
         </div>
       </section>

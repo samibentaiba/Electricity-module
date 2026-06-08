@@ -3,6 +3,7 @@
 import Latex from "react-latex-next";
 import dynamic from "next/dynamic";
 import { Skeleton } from "@/components/ui/skeleton";
+import { LearningChunk } from "@/components/ui/LearningChunk";
 
 const DiodeCurveVisualizer = dynamic(() => import("@/components/simulations/course/DiodeCurveVisualizer").then(m => m.DiodeCurveVisualizer), { 
   ssr: false, loading: () => <Skeleton className="h-[400px] w-full rounded-2xl" /> 
@@ -46,6 +47,9 @@ export function Section2_2() {
                 <li><strong>The Result:</strong> The barrier becomes too large for the majority carriers to cross.</li>
                 <li><strong>Current:</strong> The main current is zero. Only a tiny &quot;leakage&quot; current exists, called the reverse saturation current (Is).</li>
               </ul>
+              <div className="mt-4 flex justify-center bg-slate-900 rounded-lg p-4 border border-slate-800">
+                <img src="/images/course/chapter-2/reverse-bias.jpg" alt="Reverse Bias Circuit" className="max-w-full h-auto rounded" />
+              </div>
             </div>
 
             <div className="bg-muted/30 p-6 rounded-xl border border-border/50">
@@ -56,6 +60,9 @@ export function Section2_2() {
                 <li><strong>The Result:</strong> The barrier disappears, allowing electrons to flood across the junction.</li>
                 <li><strong>Current:</strong> There is a very high current flow that rises exponentially as voltage increases.</li>
               </ul>
+              <div className="mt-4 flex justify-center bg-slate-900 rounded-lg p-4 border border-slate-800">
+                <img src="/images/course/chapter-2/forward-bias.jpg" alt="Forward Bias Circuit" className="max-w-full h-auto rounded" />
+              </div>
             </div>
           </div>
 
@@ -87,7 +94,18 @@ export function Section2_2() {
           </p>
 
           <div className="mt-8">
-            <DiodeCurveVisualizer />
+            <LearningChunk
+              simulation={<DiodeCurveVisualizer />}
+              imageSrc="/images/course/chapter-2/zener-curve.jpg"
+              explanation={
+                <>
+                  <h3>Zener Diode I-V Curve</h3>
+                  <p>In standard forward bias (right side of the graph), a Zener diode acts exactly like a normal diode, conducting when the voltage exceeds ~0.7V.</p>
+                  <p>However, when reverse-biased (left side of the graph), a normal diode would eventually break and be destroyed. A Zener diode is designed to safely <strong>break down</strong> at a specific Zener voltage (<Latex>{"$V_Z$"}</Latex>).</p>
+                  <p>Once in the breakdown region, it can pass a wide range of currents while keeping the voltage across it practically constant at <Latex>{"$V_Z$"}</Latex>, making it perfect for voltage regulation!</p>
+                </>
+              }
+            />
           </div>
 
           <h3 className="text-xl font-bold text-primary mt-6">Zener Diode Modeling</h3>
