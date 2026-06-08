@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { MousePointer2, Circle, Minus, Activity, Zap, Trash2, Play, AlertCircle, Lightbulb, Gauge, Type, MoveRight, Layers, Navigation, Waves } from "lucide-react";
+import { MousePointer2, Circle, Minus, Activity, Zap, Trash2, Play, AlertCircle, Lightbulb, Gauge, Type, MoveRight, Layers, Navigation, Waves, ChevronDown } from "lucide-react";
 
 type Mode = 'select' | 'add_node' | 'add_wire' | 'add_resistor' | 'add_vdc' | 'add_vac' | 'delete' | 'add_lightbulb' | 'add_ammeter' | 'add_voltmeter' | 'add_diode' | 'add_capacitor' | 'add_inductor';
 type ElementType = 'Wire' | 'Resistor' | 'V_DC' | 'V_AC' | 'Lightbulb' | 'Ammeter' | 'Voltmeter' | 'Diode' | 'Capacitor' | 'Inductor';
@@ -41,15 +41,228 @@ const cPhase = (a: Complex): number => Math.atan2(a.i, a.r) * 180 / Math.PI;
 const cInv = (a: Complex): Complex => cDiv({ r: 1, i: 0 }, a);
 // ---------------------------
 
+const getElementDesignator = (el: CircuitElement, allElements: CircuitElement[]) => {
+  const sameType = allElements.filter(e => e.type === el.type);
+  sameType.sort((a, b) => a.id.localeCompare(b.id));
+  const index = sameType.findIndex(e => e.id === el.id) + 1;
+  
+  let prefix = 'E';
+  if (el.type === 'Resistor') prefix = 'R';
+  else if (el.type === 'V_DC' || el.type === 'V_AC') prefix = 'V';
+  else if (el.type === 'Capacitor') prefix = 'C';
+  else if (el.type === 'Inductor') prefix = 'L';
+  else if (el.type === 'Diode') prefix = 'D';
+  else if (el.type === 'Ammeter') prefix = 'A';
+  else if (el.type === 'Voltmeter') prefix = 'Vm';
+  else if (el.type === 'Lightbulb') prefix = 'B';
+  else if (el.type === 'Wire') prefix = 'W';
 
-export function FreeformCircuitStudio() {
-  const [nodes, setNodes] = useState<Node[]>([
+  return `${prefix}${index}`;
+};
+
+
+const CIRCUIT_PRESETS: { name: string; nodes: Node[]; elements: CircuitElement[] }[] = [
+  {
+    name: "Basic Series Loop",
+    nodes: [
+      { id: "n0", x: 300, y: 400 },
+      { id: "n1", x: 300, y: 200 },
+      { id: "n2", x: 500, y: 200 },
+      { id: "n3", x: 500, y: 400 }
+    ],
+    elements: [
+      { id: "e1", type: "V_DC", value: 12, n1: "n1", n2: "n0" },
+      { id: "e2", type: "Wire", value: 0, n1: "n1", n2: "n2" },
+      { id: "e3", type: "Resistor", value: 10, n1: "n2", n2: "n3" },
+      { id: "e4", type: "Wire", value: 0, n1: "n3", n2: "n0" }
+    ]
+  },
+  {
+    name: "Parallel Circuit",
+    nodes: [
+      { id: "n0", x: 300, y: 400 },
+      { id: "n1", x: 300, y: 200 },
+      { id: "n2", x: 450, y: 200 },
+      { id: "n3", x: 450, y: 400 },
+      { id: "n4", x: 600, y: 200 },
+      { id: "n5", x: 600, y: 400 }
+    ],
+    elements: [
+      { id: "e1", type: "V_DC", value: 12, n1: "n1", n2: "n0" },
+      { id: "e2", type: "Wire", value: 0, n1: "n1", n2: "n2" },
+      { id: "e3", type: "Resistor", value: 10, n1: "n2", n2: "n3" },
+      { id: "e4", type: "Wire", value: 0, n1: "n3", n2: "n0" },
+      { id: "e5", type: "Wire", value: 0, n1: "n2", n2: "n4" },
+      { id: "e6", type: "Resistor", value: 20, n1: "n4", n2: "n5" },
+      { id: "e7", type: "Wire", value: 0, n1: "n5", n2: "n3" }
+    ]
+  },
+  {
+    name: "Superposition Exam",
+    nodes: [
+      { id: "n0", x: 300, y: 400 },
+      { id: "n1", x: 300, y: 200 },
+      { id: "n2", x: 450, y: 200 },
+      { id: "n3", x: 450, y: 400 },
+      { id: "n4", x: 600, y: 200 },
+      { id: "n5", x: 600, y: 400 }
+    ],
+    elements: [
+      { id: "e1", type: "V_DC", value: 12, n1: "n1", n2: "n0" },
+      { id: "e2", type: "Resistor", value: 5, n1: "n1", n2: "n2" },
+      { id: "e3", type: "Resistor", value: 10, n1: "n2", n2: "n3" },
+      { id: "e4", type: "Wire", value: 0, n1: "n3", n2: "n0" },
+      { id: "e5", type: "Resistor", value: 5, n1: "n4", n2: "n2" },
+      { id: "e6", type: "V_DC", value: 8, n1: "n4", n2: "n5" },
+      { id: "e7", type: "Wire", value: 0, n1: "n5", n2: "n3" }
+    ]
+  },
+  {
+    name: "AC Phase Shift (RC)",
+    nodes: [
+      { id: "n0", x: 300, y: 400 },
+      { id: "n1", x: 300, y: 200 },
+      { id: "n2", x: 500, y: 200 },
+      { id: "n3", x: 500, y: 400 }
+    ],
+    elements: [
+      { id: "e1", type: "V_AC", value: 10, frequency: 60, phase: 0, n1: "n1", n2: "n0" },
+      { id: "e2", type: "Resistor", value: 100, n1: "n1", n2: "n2" },
+      { id: "e3", type: "Capacitor", value: 10, n1: "n2", n2: "n3" },
+      { id: "e4", type: "Wire", value: 0, n1: "n3", n2: "n0" }
+    ]
+  },
+  {
+    name: "Half-Wave Rectifier",
+    nodes: [
+      { id: "n0", x: 300, y: 400 },
+      { id: "n1", x: 300, y: 200 },
+      { id: "n2", x: 500, y: 200 },
+      { id: "n3", x: 500, y: 400 }
+    ],
+    elements: [
+      { id: "e1", type: "V_AC", value: 10, frequency: 60, phase: 0, n1: "n1", n2: "n0" },
+      { id: "e2", type: "Diode", value: 0, n1: "n1", n2: "n2" },
+      { id: "e3", type: "Resistor", value: 10, n1: "n2", n2: "n3" },
+      { id: "e4", type: "Wire", value: 0, n1: "n3", n2: "n0" }
+    ]
+  },
+  {
+    name: "Exam 2025: Q1",
+    nodes: [
+      { id: "n0", x: 400, y: 400 },
+      { id: "n1", x: 200, y: 400 },
+      { id: "n2", x: 200, y: 200 },
+      { id: "n3", x: 400, y: 200 },
+      { id: "n4", x: 600, y: 200 },
+      { id: "n5", x: 600, y: 400 }
+    ],
+    elements: [
+      { id: "e1", type: "V_DC", value: 4, n1: "n2", n2: "n1" },
+      { id: "e2", type: "Wire", value: 0, n1: "n1", n2: "n0" },
+      { id: "e3", type: "Resistor", value: 16, n1: "n2", n2: "n3" },
+      { id: "e4", type: "Resistor", value: 6, n1: "n3", n2: "n0" },
+      { id: "e5", type: "Resistor", value: 4, n1: "n3", n2: "n4" },
+      { id: "e6", type: "Resistor", value: 24, n1: "n4", n2: "n5" },
+      { id: "e7", type: "Wire", value: 0, n1: "n5", n2: "n0" }
+    ]
+  },
+  {
+    name: "Serie 1: Exercise 1",
+    nodes: [
+      { id: "n0", x: 400, y: 400 },
+      { id: "n1", x: 200, y: 400 },
+      { id: "n2", x: 600, y: 400 },
+      { id: "n3", x: 400, y: 200 },
+      { id: "n4", x: 200, y: 200 },
+      { id: "n5", x: 600, y: 200 }
+    ],
+    elements: [
+      { id: "e1", type: "V_DC", value: 20, n1: "n1", n2: "n4" },
+      { id: "e2", type: "Resistor", value: 2, n1: "n4", n2: "n3" },
+      { id: "e3", type: "Resistor", value: 10, n1: "n3", n2: "n0" },
+      { id: "e4", type: "V_DC", value: 70, n1: "n2", n2: "n5" },
+      { id: "e5", type: "Resistor", value: 5, n1: "n5", n2: "n3" },
+      { id: "e6", type: "Wire", value: 0, n1: "n1", n2: "n0" },
+      { id: "e7", type: "Wire", value: 0, n1: "n2", n2: "n0" }
+    ]
+  },
+  {
+    name: "Serie 1: Exercise 2",
+    nodes: [
+      { id: "n0", x: 400, y: 400 },
+      { id: "n1", x: 200, y: 300 },
+      { id: "n2", x: 400, y: 200 },
+      { id: "n3", x: 600, y: 300 },
+      { id: "n4", x: 400, y: 500 },
+      { id: "n5", x: 200, y: 500 }
+    ],
+    elements: [
+      { id: "e1", type: "V_DC", value: 10, n1: "n5", n2: "n1" },
+      { id: "e2", type: "Wire", value: 0, n1: "n5", n2: "n4" },
+      { id: "e3", type: "Wire", value: 0, n1: "n3", n2: "n4" },
+      { id: "e4", type: "Resistor", value: 1, n1: "n1", n2: "n2" },
+      { id: "e5", type: "Resistor", value: 1, n1: "n2", n2: "n3" },
+      { id: "e6", type: "Resistor", value: 1, n1: "n1", n2: "n0" },
+      { id: "e7", type: "Resistor", value: 1, n1: "n0", n2: "n3" },
+      { id: "e8", type: "Resistor", value: 4, n1: "n2", n2: "n0" },
+      { id: "e9", type: "Wire", value: 0, n1: "n0", n2: "n4" }
+    ]
+  },
+  {
+    name: "Serie 1: Exercise 6",
+    nodes: [
+      { id: "n0", x: 400, y: 400 },
+      { id: "n1", x: 200, y: 400 },
+      { id: "n2", x: 600, y: 400 },
+      { id: "n3", x: 400, y: 200 },
+      { id: "n4", x: 200, y: 200 },
+      { id: "n5", x: 600, y: 200 }
+    ],
+    elements: [
+      { id: "e1", type: "V_DC", value: 10, n1: "n1", n2: "n4" },
+      { id: "e2", type: "Resistor", value: 100, n1: "n4", n2: "n3" },
+      { id: "e3", type: "Resistor", value: 50, n1: "n3", n2: "n0" },
+      { id: "e4", type: "V_DC", value: 5, n1: "n2", n2: "n5" },
+      { id: "e5", type: "Resistor", value: 100, n1: "n5", n2: "n3" },
+      { id: "e6", type: "Resistor", value: 100, n1: "n1", n2: "n0" },
+      { id: "e7", type: "Wire", value: 0, n1: "n2", n2: "n0" }
+    ]
+  },
+  {
+    name: "Serie 1: Exercise 7",
+    nodes: [
+      { id: "n0", x: 400, y: 400 },
+      { id: "n1", x: 200, y: 400 },
+      { id: "n2", x: 600, y: 400 },
+      { id: "n3", x: 400, y: 200 },
+      { id: "n4", x: 200, y: 200 },
+      { id: "n5", x: 600, y: 200 }
+    ],
+    elements: [
+      { id: "e1", type: "V_DC", value: 10, n1: "n1", n2: "n4" },
+      { id: "e2", type: "Resistor", value: 200, n1: "n4", n2: "n3" },
+      { id: "e3", type: "Resistor", value: 100, n1: "n3", n2: "n0" },
+      { id: "e4", type: "V_DC", value: 8, n1: "n2", n2: "n5" },
+      { id: "e5", type: "Resistor", value: 200, n1: "n5", n2: "n3" },
+      { id: "e6", type: "Wire", value: 0, n1: "n1", n2: "n0" },
+      { id: "e7", type: "Wire", value: 0, n1: "n2", n2: "n0" }
+    ]
+  }
+];
+
+export function FreeformCircuitStudio({ initialPreset }: { initialPreset?: string }) {
+  const initialData = initialPreset 
+    ? CIRCUIT_PRESETS.find(p => p.name === initialPreset) 
+    : null;
+
+  const [nodes, setNodes] = useState<Node[]>(initialData?.nodes || [
     { id: 'n0', x: 200, y: 400 },
     { id: 'n1', x: 200, y: 200 },
     { id: 'n2', x: 400, y: 200 },
     { id: 'n3', x: 400, y: 400 }
   ]);
-  const [elements, setElements] = useState<CircuitElement[]>([
+  const [elements, setElements] = useState<CircuitElement[]>(initialData?.elements || [
     { id: 'e1', type: 'V_DC', value: 12, n1: 'n1', n2: 'n0' },
     { id: 'e2', type: 'Wire', value: 0, n1: 'n1', n2: 'n2' },
     { id: 'e3', type: 'Resistor', value: 10, n1: 'n2', n2: 'n3' },
@@ -58,6 +271,9 @@ export function FreeformCircuitStudio() {
 
   const [mode, setMode] = useState<Mode>('select');
   const [selectedElementId, setSelectedElementId] = useState<string | null>(null);
+  const [isPresetOpen, setIsPresetOpen] = useState(false);
+  const [activePreset, setActivePreset] = useState<string | null>(initialPreset || null);
+  const [activeSuperpositionStep, setActiveSuperpositionStep] = useState<string | null>(null);
   
   // Interaction state
   const [draggingNode, setDraggingNode] = useState<string | null>(null);
@@ -177,6 +393,7 @@ export function FreeformCircuitStudio() {
   const [superpositionResults, setSuperpositionResults] = useState<{
     vSources: CircuitElement[];
     partials: Record<string, Record<string, Complex>>; // ComponentID -> SourceID -> Current
+    steps: Record<string, { res: any; modifiedElements: CircuitElement[] }>;
   } | null>(null);
 
   // Abstract MNA Solver
@@ -337,7 +554,7 @@ export function FreeformCircuitStudio() {
       // Check if any diode has negative current
       let changed = false;
       elements.filter(e => e.type === 'Diode').forEach(d => {
-        if (results.elementCurrents[d.id] < -1e-6) {
+        if (results.elementCurrents[d.id].r < -1e-6) {
           currentDiodeStates[d.id] = false; // Reverse bias
           changed = true;
         }
@@ -364,6 +581,7 @@ export function FreeformCircuitStudio() {
       if (vSources.length < 2) return;
 
       const partials: Record<string, Record<string, Complex>> = {};
+      const steps: Record<string, { res: any; modifiedElements: CircuitElement[] }> = {};
       elements.forEach(el => partials[el.id] = {});
 
       // For each voltage source, keep it active and zero out the others
@@ -371,12 +589,12 @@ export function FreeformCircuitStudio() {
         const modifiedElements = elements.map(el => {
           if ((el.type === 'V_DC' || el.type === 'V_AC') && el.id !== activeSrc.id) {
             return { ...el, value: 0 }; // Short circuit other batteries
-
           }
           return el;
         });
 
         const res = solveMNA(nodes, modifiedElements);
+        steps[activeSrc.id] = { res, modifiedElements };
         
         elements.forEach(el => {
           partials[el.id][activeSrc.id] = res.elementCurrents[el.id];
@@ -386,7 +604,8 @@ export function FreeformCircuitStudio() {
       // Also set normal sim results
       const totalRes = solveMNA(nodes, elements);
       setSimResults(totalRes);
-      setSuperpositionResults({ vSources, partials });
+      setSuperpositionResults({ vSources, partials, steps });
+      setActiveSuperpositionStep(null);
       setSimError(null);
       
     } catch (e: any) {
@@ -400,8 +619,53 @@ export function FreeformCircuitStudio() {
     <div className="flex h-[800px] w-full max-w-7xl mx-auto rounded-2xl overflow-hidden border border-slate-800 shadow-2xl bg-slate-950 relative">
       
       {/* Vertical Palette Sidebar */}
-      <div className="w-64 bg-slate-900 border-r border-slate-800 p-4 flex flex-col gap-4 z-10 shrink-0 overflow-y-auto custom-scrollbar">
-        <h2 className="text-slate-400 font-bold text-xs uppercase tracking-widest mb-2 shrink-0">Tools & Elements</h2>
+      <div className="w-64 bg-slate-900 border-r border-slate-800 p-4 flex flex-col gap-4 z-10 shrink-0 overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-slate-900/50 [&::-webkit-scrollbar-thumb]:bg-slate-700 [&::-webkit-scrollbar-thumb]:rounded-full">
+        
+        <div className="flex flex-col gap-2 relative">
+          <h2 className="text-slate-400 font-bold text-xs uppercase tracking-widest mb-1 shrink-0">Presets</h2>
+          <div className="relative">
+            <button 
+              className="w-full flex items-center justify-between bg-slate-950 border border-slate-700 hover:border-indigo-500 text-sm text-slate-300 rounded-lg p-2.5 transition-colors"
+              onClick={() => setIsPresetOpen(!isPresetOpen)}
+            >
+              <span className="truncate">{activePreset || "-- Load Preset --"}</span>
+              <ChevronDown size={14} className={`text-slate-400 transition-transform duration-200 shrink-0 ${isPresetOpen ? "rotate-180" : ""}`} />
+            </button>
+            
+            {isPresetOpen && (
+              <>
+                <div className="fixed inset-0 z-40" onClick={() => setIsPresetOpen(false)} />
+                <div className="absolute top-full left-0 right-0 mt-2 bg-slate-900 border border-slate-700 rounded-lg shadow-2xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-2">
+                  <div className="max-h-64 overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-slate-900/50 [&::-webkit-scrollbar-thumb]:bg-slate-700 [&::-webkit-scrollbar-thumb]:rounded-full">
+                    {CIRCUIT_PRESETS.map(p => (
+                      <button
+                        key={p.name}
+                        className={`w-full text-left px-3 py-2.5 text-sm transition-colors border-b border-slate-800/50 last:border-0 ${
+                          activePreset === p.name ? "bg-indigo-500/20 text-indigo-400 font-bold" : "text-slate-300 hover:bg-indigo-500/20 hover:text-indigo-400"
+                        }`}
+                        onClick={() => {
+                          setNodes([...p.nodes]);
+                          setElements(p.elements.map(el => ({...el})));
+                          setSimResults(null);
+                          setSuperpositionResults(null);
+                          setSelectedElementId(null);
+                          setActivePreset(p.name);
+                          setIsPresetOpen(false);
+                        }}
+                      >
+                        {p.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+
+        <div className="h-px w-full bg-slate-800" />
+
+        <h2 className="text-slate-400 font-bold text-xs uppercase tracking-widest shrink-0">Tools & Elements</h2>
         
         <div className="flex flex-col gap-2">
           <ToolbarButton icon={<MousePointer2 size={16}/>} label="Select & Move" active={mode==='select'} onClick={()=>setMode('select')} color="text-slate-300" />
@@ -453,7 +717,7 @@ export function FreeformCircuitStudio() {
           onPointerLeave={handlePointerUp}
         >
           {/* Edges */}
-          {elements.map(el => {
+          {(activeSuperpositionStep && superpositionResults ? superpositionResults.steps[activeSuperpositionStep].modifiedElements : elements).map(el => {
             const n1 = nodes.find(n => n.id === el.n1);
             const n2 = nodes.find(n => n.id === el.n2);
             if (!n1 || !n2) return null;
@@ -466,8 +730,10 @@ export function FreeformCircuitStudio() {
             const cy = (n1.y + n2.y) / 2;
 
             const isSelected = selectedElementId === el.id;
-            const current = simResults ? simResults.elementCurrents[el.id] : null;
-            const showArrow = simResults && current && cAbs(current) > 1e-4;
+            
+            const activeSimResults = activeSuperpositionStep && superpositionResults ? superpositionResults.steps[activeSuperpositionStep].res : simResults;
+            const current = activeSimResults ? activeSimResults.elementCurrents[el.id] : null;
+            const showArrow = activeSimResults && current && cAbs(current) > 1e-4;
 
             return (
               <g 
@@ -493,7 +759,7 @@ export function FreeformCircuitStudio() {
                       <line x1={-len/2} y1={0} x2={-20} y2={0} stroke={isSelected ? "#818cf8" : "#94a3b8"} strokeWidth={4} />
                       <path d="M-20,0 L-15,-10 L-5,10 L5,-10 L15,10 L20,0" fill="none" stroke={isSelected ? "#818cf8" : "#818cf8"} strokeWidth={4} strokeLinejoin="round" />
                       <line x1={20} y1={0} x2={len/2} y2={0} stroke={isSelected ? "#818cf8" : "#94a3b8"} strokeWidth={4} />
-                      <text transform={`translate(0, -15) rotate(${-angle})`} textAnchor="middle" fill="#818cf8" fontSize={14} fontWeight="bold">{el.value}Ω</text>
+                      <text transform={`translate(0, -15) rotate(${-angle})`} textAnchor="middle" fill="#818cf8" fontSize={14} fontWeight="bold">{getElementDesignator(el, elements)} = {el.value}Ω</text>
                     </>
                   )}
 
@@ -504,7 +770,7 @@ export function FreeformCircuitStudio() {
                       <line x1={10} y1={-10} x2={10} y2={10} stroke="#f59e0b" strokeWidth={6} />
                       <line x1={10} y1={0} x2={len/2} y2={0} stroke={isSelected ? "#818cf8" : "#94a3b8"} strokeWidth={4} />
                       <text transform={`translate(-20, -25) rotate(${-angle})`} textAnchor="middle" fill="#fbbf24" fontSize={16} fontWeight="bold">+</text>
-                      <text transform={`translate(0, 30) rotate(${-angle})`} textAnchor="middle" fill="#fbbf24" fontSize={14} fontWeight="bold">{el.value}V</text>
+                      <text transform={`translate(0, 30) rotate(${-angle})`} textAnchor="middle" fill="#fbbf24" fontSize={14} fontWeight="bold">{getElementDesignator(el, elements)} = {el.value}V</text>
                     </>
                   )}
 
@@ -515,7 +781,7 @@ export function FreeformCircuitStudio() {
                       <circle cx={0} cy={0} r={15} fill="#0f172a" stroke="#f59e0b" strokeWidth={4} />
                       <path d="M-10,0 Q-5,-10 0,0 Q5,10 10,0" fill="none" stroke="#f59e0b" strokeWidth={2} />
                       <line x1={15} y1={0} x2={len/2} y2={0} stroke={isSelected ? "#818cf8" : "#94a3b8"} strokeWidth={4} />
-                      <text transform={`translate(0, -25) rotate(${-angle})`} textAnchor="middle" fill="#fbbf24" fontSize={14} fontWeight="bold">{el.value}V</text>
+                      <text transform={`translate(0, -25) rotate(${-angle})`} textAnchor="middle" fill="#fbbf24" fontSize={14} fontWeight="bold">{getElementDesignator(el, elements)} = {el.value}V</text>
                       <text transform={`translate(0, 30) rotate(${-angle})`} textAnchor="middle" fill="#fbbf24" fontSize={10}>{el.frequency || 60}Hz {el.phase || 0}°</text>
                     </>
                   )}
@@ -529,7 +795,7 @@ export function FreeformCircuitStudio() {
                       <circle cx={0} cy={0} r={15} fill="rgba(255,255,255,0.1)" stroke={isSelected ? "#818cf8" : "#facc15"} strokeWidth={4} />
                       <path d="M-15,0 L-5,-5 L0,5 L5,-5 L15,0" fill="none" stroke={isSelected ? "#818cf8" : "#facc15"} strokeWidth={2} />
                       <line x1={15} y1={0} x2={len/2} y2={0} stroke={isSelected ? "#818cf8" : "#94a3b8"} strokeWidth={4} />
-                      <text transform={`translate(0, -25) rotate(${-angle})`} textAnchor="middle" fill="#facc15" fontSize={14} fontWeight="bold">{el.value}Ω</text>
+                      <text transform={`translate(0, -25) rotate(${-angle})`} textAnchor="middle" fill="#facc15" fontSize={14} fontWeight="bold">{getElementDesignator(el, elements)}</text>
                     </>
                   )}
 
@@ -538,6 +804,7 @@ export function FreeformCircuitStudio() {
                       <line x1={-len/2} y1={0} x2={-20} y2={0} stroke={isSelected ? "#818cf8" : "#94a3b8"} strokeWidth={4} />
                       <circle cx={0} cy={0} r={20} fill="#0f172a" stroke={isSelected ? "#818cf8" : "#10b981"} strokeWidth={4} />
                       <text transform={`translate(0, 5) rotate(${-angle})`} textAnchor="middle" fill="#10b981" fontSize={16} fontWeight="bold">A</text>
+                      <text transform={`translate(0, -25) rotate(${-angle})`} textAnchor="middle" fill="#10b981" fontSize={14} fontWeight="bold">{getElementDesignator(el, elements)}</text>
                       <line x1={20} y1={0} x2={len/2} y2={0} stroke={isSelected ? "#818cf8" : "#94a3b8"} strokeWidth={4} />
                       
                       {simResults && (
@@ -554,6 +821,7 @@ export function FreeformCircuitStudio() {
                       <line x1={-len/2} y1={0} x2={-20} y2={0} stroke={isSelected ? "#818cf8" : "#94a3b8"} strokeWidth={4} />
                       <circle cx={0} cy={0} r={20} fill="#0f172a" stroke={isSelected ? "#818cf8" : "#3b82f6"} strokeWidth={4} />
                       <text transform={`translate(0, 5) rotate(${-angle})`} textAnchor="middle" fill="#3b82f6" fontSize={16} fontWeight="bold">V</text>
+                      <text transform={`translate(0, -25) rotate(${-angle})`} textAnchor="middle" fill="#3b82f6" fontSize={14} fontWeight="bold">{getElementDesignator(el, elements)}</text>
                       <line x1={20} y1={0} x2={len/2} y2={0} stroke={isSelected ? "#818cf8" : "#94a3b8"} strokeWidth={4} />
                       
                       {simResults && (() => {
@@ -576,6 +844,7 @@ export function FreeformCircuitStudio() {
                       <path d="M-15,-15 L10,0 L-15,15 Z" fill={isSelected ? "rgba(99, 102, 241, 0.2)" : "rgba(244, 63, 94, 0.2)"} stroke={isSelected ? "#818cf8" : "#f43f5e"} strokeWidth={4} strokeLinejoin="round" />
                       <line x1={10} y1={-15} x2={10} y2={15} stroke={isSelected ? "#818cf8" : "#f43f5e"} strokeWidth={4} />
                       <line x1={10} y1={0} x2={len/2} y2={0} stroke={isSelected ? "#818cf8" : "#94a3b8"} strokeWidth={4} />
+                      <text transform={`translate(0, -25) rotate(${-angle})`} textAnchor="middle" fill="#f43f5e" fontSize={14} fontWeight="bold">{getElementDesignator(el, elements)}</text>
                     </>
                   )}
 
@@ -585,7 +854,7 @@ export function FreeformCircuitStudio() {
                       <line x1={-5} y1={-20} x2={-5} y2={20} stroke={isSelected ? "#818cf8" : "#22d3ee"} strokeWidth={4} />
                       <line x1={5} y1={-20} x2={5} y2={20} stroke={isSelected ? "#818cf8" : "#22d3ee"} strokeWidth={4} />
                       <line x1={5} y1={0} x2={len/2} y2={0} stroke={isSelected ? "#818cf8" : "#94a3b8"} strokeWidth={4} />
-                      <text transform={`translate(0, 35) rotate(${-angle})`} textAnchor="middle" fill="#22d3ee" fontSize={14} fontWeight="bold">{el.value}µF</text>
+                      <text transform={`translate(0, 35) rotate(${-angle})`} textAnchor="middle" fill="#22d3ee" fontSize={14} fontWeight="bold">{getElementDesignator(el, elements)} = {el.value}µF</text>
                     </>
                   )}
 
@@ -594,7 +863,7 @@ export function FreeformCircuitStudio() {
                       <line x1={-len/2} y1={0} x2={-20} y2={0} stroke={isSelected ? "#818cf8" : "#94a3b8"} strokeWidth={4} />
                       <path d="M-20,0 Q-15,-15 -10,0 Q-5,-15 0,0 Q5,-15 10,0 Q15,-15 20,0" fill="none" stroke={isSelected ? "#818cf8" : "#d946ef"} strokeWidth={4} strokeLinecap="round" />
                       <line x1={20} y1={0} x2={len/2} y2={0} stroke={isSelected ? "#818cf8" : "#94a3b8"} strokeWidth={4} />
-                      <text transform={`translate(0, 25) rotate(${-angle})`} textAnchor="middle" fill="#d946ef" fontSize={14} fontWeight="bold">{el.value}mH</text>
+                      <text transform={`translate(0, 25) rotate(${-angle})`} textAnchor="middle" fill="#d946ef" fontSize={14} fontWeight="bold">{getElementDesignator(el, elements)} = {el.value}mH</text>
                     </>
                   )}
 
@@ -676,7 +945,7 @@ export function FreeformCircuitStudio() {
               }}
             >
               <div className="text-xs text-slate-400 font-bold uppercase tracking-wider mb-1 flex justify-between items-center">
-                <span>Configure {selectedEl.type}</span>
+                <span>Configure {getElementDesignator(selectedEl, elements)}</span>
                 <button onClick={() => setSelectedElementId(null)} className="text-slate-500 hover:text-slate-300 text-lg leading-none ml-4">&times;</button>
               </div>
               
@@ -761,53 +1030,74 @@ export function FreeformCircuitStudio() {
 
         {/* Superposition Overlay */}
         {superpositionResults && (
-          <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-sm z-40 flex items-center justify-center p-8">
-             <div className="bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl w-full max-w-4xl max-h-full overflow-y-auto p-6">
-                <div className="flex justify-between items-center mb-6">
-                   <h2 className="text-xl font-bold text-white flex items-center gap-2"><Activity className="text-indigo-400" /> Superposition Analysis Breakdown</h2>
-                   <button onClick={() => setSuperpositionResults(null)} className="p-2 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition-colors text-xl leading-none">&times;</button>
-                </div>
-                
-                <p className="text-slate-400 text-sm mb-6">
-                  According to the Superposition Theorem, the current flowing through any component in a linear circuit with multiple sources is the algebraic sum of the currents produced by each source acting alone, with all other independent sources turned off (short-circuited for voltage sources).
-                </p>
+          <div className="absolute bottom-6 right-6 bg-slate-900/95 backdrop-blur-xl border border-slate-700 rounded-2xl shadow-2xl w-[800px] z-50 p-6 pointer-events-auto">
+             <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-bold text-white flex items-center gap-2"><Activity className="text-indigo-400" /> Superposition Breakdown</h2>
+                <button 
+                  onClick={() => {
+                    setSuperpositionResults(null);
+                    setActiveSuperpositionStep(null);
+                  }} 
+                  className="p-2 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition-colors text-xl leading-none"
+                >
+                  &times;
+                </button>
+             </div>
+             
+             <p className="text-slate-400 text-xs mb-4">
+               Click any column header to instantly view the circuit mathematically simulating that specific source while shorting all others.
+             </p>
 
-                <div className="overflow-x-auto rounded-xl border border-slate-800">
-                  <table className="w-full text-left text-sm text-slate-300">
-                    <thead className="bg-slate-950 text-slate-400 font-bold">
-                      <tr>
-                        <th className="p-4 border-b border-slate-800">Component</th>
-                        {superpositionResults.vSources.map((src, i) => (
-                          <th key={src.id} className="p-4 border-b border-slate-800 text-amber-400 whitespace-nowrap">
-                            Current from {src.value}V Battery ({i+1})
-                          </th>
-                        ))}
-                        <th className="p-4 border-b border-slate-800 text-emerald-400 whitespace-nowrap">Total Current Sum</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-800/50 bg-slate-900/50">
-                      {elements.filter(el => el.type !== 'Wire' && el.type !== 'V_DC').map(el => {
-                        const total = simResults?.elementCurrents[el.id] || cSet(0);
-                        return (
-                          <tr key={el.id} className="hover:bg-slate-800/30 transition-colors">
-                            <td className="p-4 font-mono text-indigo-300 whitespace-nowrap">{el.type} ({el.value})</td>
-                            {superpositionResults.vSources.map(src => {
-                              const pCur = superpositionResults.partials[el.id][src.id] || cSet(0);
-                              return (
-                                <td key={src.id} className="p-4 font-mono whitespace-nowrap">
-                                  {cAbs(pCur).toFixed(3)}A &ang; {cPhase(pCur).toFixed(1)}&deg;
-                                </td>
-                              );
-                            })}
-                            <td className="p-4 font-mono font-bold text-emerald-400 whitespace-nowrap">
-                              = {cAbs(total).toFixed(3)}A &ang; {cPhase(total).toFixed(1)}&deg;
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
+             <div className="overflow-x-auto rounded-xl border border-slate-800">
+               <table className="w-full text-left text-sm text-slate-300">
+                 <thead className="bg-slate-950 text-slate-400 font-bold">
+                   <tr>
+                     <th className="p-3 border-b border-slate-800">Component</th>
+                     {superpositionResults.vSources.map((src, i) => (
+                       <th 
+                         key={src.id} 
+                         onClick={() => setActiveSuperpositionStep(src.id)}
+                         className={`p-3 border-b border-slate-800 whitespace-nowrap cursor-pointer transition-colors ${activeSuperpositionStep === src.id ? 'bg-amber-500/20 text-amber-400' : 'hover:bg-slate-800 text-amber-500/70'}`}
+                       >
+                         <div className="flex flex-col">
+                           <span>{getElementDesignator(src, elements)} ({src.value}V)</span>
+                           <span className="text-[10px] uppercase tracking-wider font-normal">Click to View Step</span>
+                         </div>
+                       </th>
+                     ))}
+                     <th 
+                       onClick={() => setActiveSuperpositionStep(null)}
+                       className={`p-3 border-b border-slate-800 whitespace-nowrap cursor-pointer transition-colors ${activeSuperpositionStep === null ? 'bg-emerald-500/20 text-emerald-400' : 'hover:bg-slate-800 text-emerald-500/70'}`}
+                     >
+                       <div className="flex flex-col">
+                         <span>Total Current Sum</span>
+                         <span className="text-[10px] uppercase tracking-wider font-normal">Click to View All</span>
+                       </div>
+                     </th>
+                   </tr>
+                 </thead>
+                 <tbody className="divide-y divide-slate-800/50 bg-slate-900/50">
+                   {elements.filter(el => el.type !== 'Wire' && el.type !== 'V_DC' && el.type !== 'V_AC').map(el => {
+                     const total = simResults?.elementCurrents[el.id] || cSet(0);
+                     return (
+                       <tr key={el.id} className="hover:bg-slate-800/30 transition-colors">
+                         <td className="p-3 font-mono text-indigo-300 whitespace-nowrap">{getElementDesignator(el, elements)} ({el.value})</td>
+                         {superpositionResults.vSources.map(src => {
+                           const pCur = superpositionResults.partials[el.id][src.id] || cSet(0);
+                           return (
+                             <td key={src.id} className={`p-3 font-mono whitespace-nowrap ${activeSuperpositionStep === src.id ? 'text-amber-300' : ''}`}>
+                               {cAbs(pCur).toFixed(3)}A &ang; {cPhase(pCur).toFixed(1)}&deg;
+                             </td>
+                           );
+                         })}
+                         <td className={`p-3 font-mono font-bold whitespace-nowrap ${activeSuperpositionStep === null ? 'text-emerald-400' : 'text-emerald-500/50'}`}>
+                           = {cAbs(total).toFixed(3)}A &ang; {cPhase(total).toFixed(1)}&deg;
+                         </td>
+                       </tr>
+                     );
+                   })}
+                 </tbody>
+               </table>
              </div>
           </div>
         )}

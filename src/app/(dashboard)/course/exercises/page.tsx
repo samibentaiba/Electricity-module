@@ -27,7 +27,9 @@ export default function ExercisesPage() {
                 key={exercise.id}
                 title={exercise.title}
                 problem={exercise.problem}
-                solution={exercise.solution}
+                formalSolution={exercise.formalSolution}
+                aiExplanation={exercise.aiExplanation}
+                solution={exercise.solution} // legacy fallback
               />
             ))}
           </section>

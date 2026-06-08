@@ -4,6 +4,8 @@ import React from "react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { ExerciseCard } from "@/components/ui/ExerciseCard";
 import Latex from "react-latex-next";
+import { FreeformCircuitStudio } from "@/components/simulations/sandbox/FreeformCircuitStudio";
+import { RectifierVisualizer } from "@/components/simulations/course/RectifierVisualizer";
 
 
 export default function Exam2025Page() {
@@ -32,7 +34,22 @@ export default function Exam2025Page() {
                 <p><strong>2.</strong> Calculate the current <Latex>{`$I_1$`}</Latex> using Kirchhoff&apos;s Voltage Law.</p>
               </div>
             }
-            solution={
+            aiExplanation={
+              <div className="space-y-6">
+                <div className="mb-4">
+                  <h4 className="font-bold text-indigo-400 mb-2">Interactive Simulation: Build it yourself!</h4>
+                  <p className="text-slate-300">
+                    Before doing any math, let&apos;s build the circuit and see how current actually flows. 
+                    Notice how the current splits at node <b>n3</b> into two branches.
+                    You can hover over <b>R1</b> to see the total current <Latex>{`$I_1$`}</Latex> flowing out of the battery!
+                  </p>
+                </div>
+                <div className="h-[600px] w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0">
+                   <FreeformCircuitStudio initialPreset="Exam 2025: Q1" />
+                </div>
+              </div>
+            }
+            formalSolution={
               <div className="space-y-6">
                 <div>
                   <p className="font-bold text-lg mb-2">Step 1: Simplify the Resistors</p>
@@ -75,7 +92,21 @@ export default function Exam2025Page() {
                 <li><strong>3.</strong> What is the output voltage <Latex>{`$s(t)$`}</Latex> equal to?</li>
               </ul>
             }
-            solution={
+            aiExplanation={
+              <div className="space-y-6">
+                <div className="mb-4">
+                  <h4 className="font-bold text-indigo-400 mb-2">Interactive Visualization: Half-Wave Rectification</h4>
+                  <p className="text-slate-300">
+                    When <Latex>{`$e(t) > 0$`}</Latex>, the diode conducts and acts like a closed switch. 
+                    When <Latex>{`$e(t) < 0$`}</Latex>, it blocks the current and acts like an open switch, chopping off the negative half of the sine wave!
+                  </p>
+                </div>
+                <div className="w-full">
+                  <RectifierVisualizer />
+                </div>
+              </div>
+            }
+            formalSolution={
               <div className="space-y-6">
                 <div className="space-y-4">
                   <p><strong>1. Positive Half-Cycle (<Latex>{`$e(t) > 0$`}</Latex>):</strong></p>

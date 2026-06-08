@@ -12,6 +12,17 @@ export interface CircuitElement {
   reversed: boolean; 
 }
 
+const getElementDesignator = (el: CircuitElement, allElements: CircuitElement[]) => {
+  const sameType = allElements.filter(e => e.type === el.type);
+  const index = sameType.findIndex(e => e.id === el.id) + 1;
+  let prefix = 'E';
+  if (el.type === 'Resistor') prefix = 'R';
+  else if (el.type === 'V_DC') prefix = 'V';
+  else if (el.type === 'Diode') prefix = 'D';
+  else if (el.type === 'Zener') prefix = 'Z';
+  return `${prefix}${index}`;
+};
+
 export function CircuitStudio() {
   const [elements, setElements] = useState<CircuitElement[]>([
     { id: '1', type: 'V_DC', value: 12, reversed: false },
@@ -144,14 +155,14 @@ export function CircuitStudio() {
 
                   {el.type === 'Diode' && (
                     <div className={`flex flex-col items-center ${el.reversed ? 'rotate-180' : ''}`}>
-                      <div className="w-0 h-0 border-l-[12px] border-l-transparent border-t-[20px] border-t-rose-500 border-r-[12px] border-r-transparent" />
+                      <div className="w-0 h-0 border-l-12 border-l-transparent border-t-20 border-t-rose-500 border-r-12 border-r-transparent" />
                       <div className="w-8 h-1.5 bg-rose-500" />
                     </div>
                   )}
 
                   {el.type === 'Zener' && (
                     <div className={`flex flex-col items-center ${el.reversed ? 'rotate-180' : ''}`}>
-                      <div className="w-0 h-0 border-l-[12px] border-l-transparent border-t-[20px] border-t-emerald-500 border-r-[12px] border-r-transparent" />
+                      <div className="w-0 h-0 border-l-12 border-l-transparent border-t-20 border-t-emerald-500 border-r-12 border-r-transparent" />
                       <div className="relative">
                         <div className="w-8 h-1.5 bg-emerald-500" />
                         <div className="absolute -left-1 -top-2 w-1.5 h-3.5 bg-emerald-500 -rotate-45" />
@@ -163,10 +174,11 @@ export function CircuitStudio() {
                   {/* Labels pointing to the component */}
                   <div className="absolute left-16 top-1/2 -translate-y-1/2 whitespace-nowrap bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-800 shadow-xl pointer-events-none">
                     <div className="text-sm font-bold text-slate-200">
-                      {el.type === 'V_DC' && `${el.value}V Source`}
-                      {el.type === 'Resistor' && `${el.value}Ω Resistor`}
-                      {el.type === 'Diode' && `Si Diode (0.7V)`}
-                      {el.type === 'Zener' && `Zener (${el.value}V)`}
+                      <span className="text-indigo-400 mr-2">{getElementDesignator(el, elements)}</span>
+                      {el.type === 'V_DC' && `(${el.value}V Source)`}
+                      {el.type === 'Resistor' && `(${el.value}Ω Resistor)`}
+                      {el.type === 'Diode' && `(Si Diode 0.7V)`}
+                      {el.type === 'Zener' && `(Zener ${el.value}V)`}
                     </div>
                     <div className="text-xs text-slate-400">
                       V_drop: <span className="text-rose-400 font-mono">{drops[el.id]}</span>
@@ -180,7 +192,7 @@ export function CircuitStudio() {
            {/* Current direction indicator */}
            {Math.abs(I) > 0 && I !== Infinity && (
              <div className={`absolute top-12 left-1/2 -translate-x-1/2 bg-slate-950 p-2 text-amber-400 ${I < 0 ? 'rotate-180 bottom-12 top-auto' : ''}`}>
-               <div className="w-0 h-0 border-l-[10px] border-l-transparent border-t-[16px] border-t-amber-400 border-r-[10px] border-r-transparent" />
+               <div className="w-0 h-0 border-l-10 border-l-transparent border-t-16 border-t-amber-400 border-r-10 border-r-transparent" />
              </div>
            )}
         </div>
@@ -225,6 +237,7 @@ export function CircuitStudio() {
                 <div className="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-800 text-slate-400 font-mono text-xs">{i + 1}</div>
                 
                 <div className="flex-1 font-bold text-slate-300">
+                  <span className="text-indigo-400 mr-2">{getElementDesignator(el, elements)}</span>
                   {el.type === 'V_DC' && 'DC Source'}
                   {el.type === 'Resistor' && 'Resistor'}
                   {el.type === 'Diode' && 'Silicon Diode'}
