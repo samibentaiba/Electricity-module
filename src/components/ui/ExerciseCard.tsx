@@ -14,9 +14,10 @@ interface ExerciseCardProps {
   solution?: ReactNode;
   // Source of this exercise (e.g., external resource, internal)
   source?: string;
+  
 }
 
-export function ExerciseCard({ title = "Exercise", problem, formalSolution, aiExplanation, diagramImageSrc, solution }: ExerciseCardProps) {
+export function ExerciseCard({ title = "Exercise", problem, formalSolution, aiExplanation, diagramImageSrc, solution, source }: ExerciseCardProps) {
   // Determine available modes
   const hasAI = !!aiExplanation;
   const hasFormal = !!formalSolution || !!solution;
