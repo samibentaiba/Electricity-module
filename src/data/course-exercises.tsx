@@ -9,7 +9,11 @@ export interface Exercise {
   problem: React.ReactNode;
   formalSolution?: React.ReactNode;
   aiExplanation?: React.ReactNode;
+  // NEW: For diagram/reference image support
+  diagramImageSrc?: string;
   solution?: React.ReactNode;
+  // Source of this exercise (e.g., external resource, internal)
+  source?: string;
 }
 
 export interface ExerciseSection {
@@ -18,6 +22,10 @@ export interface ExerciseSection {
   description?: string;
   color: "purple" | "amber" | "indigo" | "emerald" | "default";
   exercises: Exercise[];
+  // Source of this section (e.g., external resource, internal)
+  source?: string;
+  // Optional type to differentiate worksheets vs practice
+  type?: "worksheet" | "practice";
 }
 
 export const physicsExercises: ExerciseSection[] = [
@@ -26,6 +34,8 @@ export const physicsExercises: ExerciseSection[] = [
     title: "Extra Practice: Fundamentals (Ouargla Univ.)",
     description: "The following fundamental questions were extracted from the external resource library (Serie 01).",
     color: "purple",
+    type: "worksheet",
+    source: "External resource library (Serie 01)",
     exercises: [
       {
         id: "mcq-fundamentals",
@@ -65,7 +75,9 @@ export const physicsExercises: ExerciseSection[] = [
             <p><strong>2. Answer: C</strong>. When current passes through a resistor, electrical energy is converted into thermal energy, causing the heating of the resistance. This is known as the <em>Joule Effect</em>.</p>
             <p><strong>3. Answer: A</strong>. By definition, components connected in parallel are connected across the exact same two nodes, meaning they must be subjected to the same tension (voltage drop).</p>
           </div>
-        )
+        ),
+        // NEW: Reference diagram for electronic fundamentals
+        diagramImageSrc: "/images/course/chapter-1/sources.jpg"
       }
     ]
   },
@@ -73,6 +85,8 @@ export const physicsExercises: ExerciseSection[] = [
     id: "dc-circuits",
     title: "DC Circuits (Ohm&apos;s Law & Power)",
     color: "amber",
+    type: "practice",
+    source: "Internal",
     exercises: [
       {
         id: "basic-series",
@@ -93,10 +107,11 @@ export const physicsExercises: ExerciseSection[] = [
             <p><Latex>{`$$ R_{eq} = 4\\Omega + 8\\Omega = 12\\Omega $$`}</Latex></p>
             <p><strong>2. Total Current:</strong> Using Ohm&apos;s Law, <Latex>{`$I = \\frac{V}{R_{eq}}$`}</Latex>.</p>
             <p><Latex>{`$$ I = \\frac{12\\text{V}}{12\\Omega} = 1\\text{A} $$`}</Latex></p>
-            <p><strong>3. Voltage Drop across <Latex>{`$R_1$`}</Latex>:</strong> <Latex>{`$V_1 = I \\times R_1$`}</Latex>.</p>
-            <p><Latex>{`$$ V_1 = 1\\text{A} \\times 4\\Omega = 4\\text{V} $$`}</Latex></p>
+            <p><strong>3. Voltage Drop across <Latex>{`$R_1$`}</Latex>:</strong> <Latex>{`$V_1 = 1\\text{A} \\times 4\\Omega = 4\\text{V} $$`}</Latex></p>
           </div>
-        )
+        ),
+        // NEW: Reference diagram for basic series circuit
+        diagramImageSrc: "/images/course/chapter-1/sources.jpg"
       }
     ]
   },
@@ -104,6 +119,8 @@ export const physicsExercises: ExerciseSection[] = [
     id: "ac-circuits",
     title: "AC Circuits",
     color: "purple",
+    type: "practice",
+    source: "Internal",
     exercises: [
       {
         id: "rms-voltage",
@@ -119,7 +136,9 @@ export const physicsExercises: ExerciseSection[] = [
             <p><Latex>{`$$ V_{rms} = \\frac{170}{1.414} \\approx 120.2\\text{V} $$`}</Latex></p>
             <p>This is the standard voltage of a wall outlet in North America!</p>
           </div>
-        )
+        ),
+        // NEW: Reference diagram for AC voltage waveform
+        diagramImageSrc: "/images/course/chapter-2/half-wave.jpg"
       }
     ]
   },
@@ -128,6 +147,8 @@ export const physicsExercises: ExerciseSection[] = [
     title: "Serie 1: Fundamental Electronic",
     description: "Saad Dahlab University of Blida - Exercise Series 1",
     color: "amber",
+    type: "practice",
+    source: "Saad Dahlab University of Blida - Exercise Series 1",
     exercises: [
       {
         id: "serie1-ex1",
@@ -165,7 +186,9 @@ export const physicsExercises: ExerciseSection[] = [
              <p><Latex>{`$I_2 = 8\text{A}$`}</Latex></p>
              <p><Latex>{`$I_3 = 3\text{A}$`}</Latex></p>
           </div>
-        )
+        ),
+        // NEW: Reference diagram for branch currents circuit
+        diagramImageSrc: "/images/course/chapter-1/sources.jpg"
       },
       {
         id: "serie1-ex2",
@@ -198,7 +221,9 @@ export const physicsExercises: ExerciseSection[] = [
             <p>Total current from source: <Latex>{`$I = \frac{E}{R_{eq}} = \frac{10}{1} = 10\text{A}$`}</Latex>.</p>
             <p>Current splits equally: <Latex>{`$I_{top} = 5\text{A}, I_{bot} = 5\text{A}$`}</Latex>.</p>
           </div>
-        )
+        ),
+        // NEW: Reference diagram for bridge circuit
+        diagramImageSrc: "/images/course/chapter-1/sources.jpg"
       },
       {
         id: "serie1-ex3",
@@ -220,7 +245,9 @@ export const physicsExercises: ExerciseSection[] = [
             <p>Therefore, the relationship between them is:</p>
             <p><Latex>{`$$ \frac{U_{BM}}{U_{AM}} = \frac{R_2}{R_1} \implies U_{BM} = U_{AM} \frac{R_2}{R_1} $$`}</Latex></p>
           </div>
-        )
+        ),
+        // NEW: Reference diagram for voltage divider circuit
+        diagramImageSrc: "/images/course/chapter-1/voltage-divider.jpg"
       },
       {
         id: "serie1-ex4",
@@ -239,7 +266,9 @@ export const physicsExercises: ExerciseSection[] = [
              <p>Using Kirchhoff's Laws, you establish the Node and Mesh equations to solve the system matrix.</p>
              <p>Using Superposition, you turn off all independent sources except one, compute the partial current in AB, and sum the partial currents.</p>
           </div>
-        )
+        ),
+        // NEW: Reference diagram for Kirchhoff's laws circuit
+        diagramImageSrc: "/images/course/chapter-1/sources.jpg"
       },
       {
         id: "serie1-ex5",
@@ -258,7 +287,9 @@ export const physicsExercises: ExerciseSection[] = [
              <p><strong>Step 2: Potentials</strong></p>
              <p>Set <Latex>{`$V_D = 0V$`}</Latex>. Use the computed branch currents to calculate the voltage drops across each resistor: <Latex>{`$V_X - V_Y = R I$`}</Latex>.</p>
           </div>
-        )
+        ),
+        // NEW: Reference diagram for superposition circuit
+        diagramImageSrc: "/images/course/chapter-1/superposition.jpg"
       },
       {
         id: "serie1-ex6",
@@ -283,7 +314,9 @@ export const physicsExercises: ExerciseSection[] = [
              <p><Latex>{`$E_{th}$`}</Latex> is the open-circuit voltage across the terminals, typically found using Millman's theorem or Superposition on the remaining circuit.</p>
              <p>Finally, reconnect the load to calculate <Latex>{`$I = \frac{E_{th}}{R_{th} + R_{load}}$`}</Latex>.</p>
           </div>
-        )
+        ),
+        // NEW: Reference diagram for Thévenin's theorem circuit
+        diagramImageSrc: "/images/course/chapter-1/thevenin-step1.jpg"
       },
       {
         id: "serie1-ex7",
@@ -308,7 +341,9 @@ export const physicsExercises: ExerciseSection[] = [
              <p><strong>2. Thévenin:</strong> Open-circuit the load to find <Latex>{`$E_{th}$`}</Latex>. <Latex>{`$R_{th} = R_N$`}</Latex>. Then <Latex>{`$U_{AB} = E_{th} \frac{R}{R_{th} + R}$`}</Latex> and <Latex>{`$I = \frac{U_{AB}}{R}$`}</Latex>.</p>
              <p>Both methods will mathematically yield the exact same voltage and current for the load!</p>
           </div>
-        )
+        ),
+        // NEW: Reference diagram for Norton/Thevenin theorem circuit
+        diagramImageSrc: "/images/course/chapter-1/norton-step1.jpg"
       }
     ]
   }

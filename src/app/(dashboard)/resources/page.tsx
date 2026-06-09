@@ -59,11 +59,11 @@ export default async function ResourcesPage() {
                     <p className="text-sm text-slate-400 mt-2">Practice problems covering electronic fundamentals.</p>
                   </div>
                   <div className="mt-6 flex gap-3">
-                    <a href={`/random-resources/pdfs/\${serie}`} target="_blank" rel="noopener noreferrer" className="flex-1 bg-purple-600 hover:bg-purple-500 text-white text-sm font-bold py-2 px-4 rounded text-center transition-colors">
+                    <a href={`/random-resources/pdfs/${serie}`} target="_blank" rel="noopener noreferrer" className="flex-1 bg-purple-600 hover:bg-purple-500 text-white text-sm font-bold py-2 px-4 rounded text-center transition-colors">
                       View Assignment
                     </a>
                     {correction && (
-                      <a href={`/random-resources/pdfs/\${correction}`} target="_blank" rel="noopener noreferrer" className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold py-2 px-4 rounded text-center transition-colors">
+                      <a href={`/random-resources/pdfs/${correction}`} target="_blank" rel="noopener noreferrer" className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold py-2 px-4 rounded text-center transition-colors">
                         Correction
                       </a>
                     )}
@@ -78,7 +78,7 @@ export default async function ResourcesPage() {
              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {pdfs.filter(f => !f.toLowerCase().includes("serie0")).map(doc => (
                   <li key={doc}>
-                    <a href={`/random-resources/pdfs/\${doc}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-slate-400 hover:text-purple-400 transition-colors">
+                    <a href={`/random-resources/pdfs/${doc}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-slate-400 hover:text-purple-400 transition-colors">
                       <span className="text-xl">📄</span> {doc}
                     </a>
                   </li>
@@ -99,11 +99,11 @@ export default async function ResourcesPage() {
           
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
             {images.map(img => (
-              <a key={img} href={`/random-resources/images/\${img}`} target="_blank" rel="noopener noreferrer" className="block relative aspect-square rounded-xl overflow-hidden border border-slate-800 hover:border-amber-500 transition-colors group">
-                <Image 
-                  src={`/random-resources/images/\${img}`} 
-                  alt={img} 
-                  fill 
+              <a key={img} href={`/random-resources/images/${img}`} target="_blank" rel="noopener noreferrer" className="block relative aspect-square rounded-xl overflow-hidden border border-slate-800 hover:border-amber-500 transition-colors group">
+                <Image
+                  src={`/random-resources/images/${img}`}
+                  alt={img}
+                  fill
                   className="object-cover group-hover:scale-110 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
