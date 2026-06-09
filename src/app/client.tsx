@@ -8,33 +8,33 @@ export function ClientHome() {
   // Using the hook to adhere to the FSD architecture
   useHome();
 
-  const topics = [
+    const topics = [
     {
       href: "/course/chapter-1",
-      title: "Course: Chapter 1",
+      title: "Chapter 1: DC Circuits",
       description:
-        "Master Matrices through a structured, fully interactive digital course module.",
+        "Master direct current fundamentals, Ohm's law, and Kirchhoff's laws through interactive lessons.",
       color: "from-blue-500 to-cyan-400",
     },
     {
-      href: "/linear-equations",
-      title: "Linear Systems",
+      href: "/course/chapter-2",
+      title: "Chapter 2: AC Circuits",
       description:
-        "Understand lines, slopes, and visually plot systems of equations using interactive 2D graphs.",
+        "Understand alternating current, waveforms, and complex impedances dynamically.",
       color: "from-green-500 to-emerald-400",
     },
     {
-      href: "/vector-spaces",
-      title: "Vector Spaces & Subspaces",
+      href: "/simulations/freeform-studio",
+      title: "Interactive Sandbox",
       description:
-        "Visualize linear independence, bases, and the span of vectors in 3D.",
+        "Build, visualize, and simulate electronic circuits in a freeform 2D environment.",
       color: "from-purple-500 to-fuchsia-400",
     },
     {
-      href: "/tools/matrix-calculator",
-      title: "Advanced Calculators",
+      href: "/calculators/equivalent-resistance",
+      title: "Smart Calculators",
       description:
-        "Symbolic and numeric matrix operations, RREF, determinants, and vector tools.",
+        "Easily compute equivalent resistance, voltage dividers, and color codes for resistors.",
       color: "from-amber-500 to-orange-400",
     },
   ];
@@ -58,8 +58,7 @@ export function ClientHome() {
         </h1>
 
         <p className="text-xl md:text-2xl text-muted-foreground max-w-[700px] mx-auto font-light leading-relaxed">
-          Your personal interactive space to master vector spaces, matrices, and
-          equations through real-time, dynamic visualizations.
+          Your personal interactive space to master fundamental electricity, circuit analysis, and electronic components through real-time, dynamic visualizations.
         </p>
       </div>
 

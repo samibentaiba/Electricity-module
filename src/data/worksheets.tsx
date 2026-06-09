@@ -9,7 +9,7 @@ export const worksheets = [
     id: "td1",
     title: "Série de TD N°1: Lois Fondamentales",
     description: "Loi d'Ohm, Kirchhoff, diviseur de tension et de courant.",
-    originalPdf: "/random-resources/pdfs/Série de TD N 1 Electronique Fondamentale L1.pdf",
+    originalPdf: "/serie 1 electronic.docx",
     exercises: [
       {
         id: "td1-ex1",
@@ -37,7 +37,7 @@ export const worksheets = [
     id: "td2",
     title: "Série de TD N°2: Théorèmes de Thévenin et Norton",
     description: "Simplification de circuits complexes.",
-    originalPdf: "/random-resources/pdfs/Série de TD N°2.pdf",
+    originalPdf: "/final serie 2 electronic.pdf",
     exercises: [
       {
         id: "td2-ex1",
@@ -54,21 +54,21 @@ export const worksheets = [
     id: "td3",
     title: "Série de TD N°3: Transistors",
     description: "Polarisation et droites de charge.",
-    originalPdf: "/official-resources/td/serie 3 electronic final version.pdf",
+    originalPdf: "/serie 3 electronic final version.pdf",
     exercises: [] // Add your exercises here as you process them
   },
   {
     id: "serie1",
     title: "Série 1 Electronique",
     description: "Exercices fondamentaux.",
-    originalPdf: "/official-resources/td/serie 1 electronic.docx",
+    originalPdf: "/serie 1 electronic.docx",
     exercises: [] // Add your exercises here
   },
   {
     id: "serie2",
     title: "Série 2 Electronique",
     description: "Exercices avancés.",
-    originalPdf: "/official-resources/td/final serie 2 electronic.pdf",
+    originalPdf: "/final serie 2 electronic.pdf",
     exercises: [] // Add your exercises here
   }
 ];

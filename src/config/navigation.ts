@@ -1,4 +1,4 @@
-import { BookOpen, Calculator, Shapes, Library, Cpu } from "lucide-react";
+import { BookOpen, Calculator, Shapes, Library } from "lucide-react";
 
 export const navigationConfig = [
   {
@@ -37,13 +37,7 @@ export const navigationConfig = [
       { href: "/resources", label: "Extra Practice Library" },
     ]
   },
-  {
-    title: "Computer Science",
-    icon: Cpu,
-    items: [
-      { href: "/architecture", label: "Computer Architecture" },
-    ]
-  },
+  
   {
     title: "Smart Calculators",
     icon: Calculator,

@@ -8,7 +8,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 
 export default async function ResourcesPage() {
-  const imagesDir = path.join(process.cwd(), "public/random-resources/images");
+  const imagesDir = path.join(process.cwd(), "public");
   
   let images: string[] = [];
   try {
@@ -27,8 +27,8 @@ export default async function ResourcesPage() {
   return (
     <div className="animate-in fade-in duration-700 pb-20">
       <PageHeader 
-        title="Extra Practice Library" 
-        description="Browse an external collection of assignments, corrections, and handwritten notes from Kasdi Merbah Ouargla University."
+        title="Official University Resources" 
+        description="Browse official assignments, corrections, and handwritten notes from our university (Saad Dahlab University of Blida)."
         color="purple"
       />
       
@@ -64,9 +64,9 @@ export default async function ResourcesPage() {
           
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
             {images.map(img => (
-              <a key={img} href={`/random-resources/images/${img}`} target="_blank" rel="noopener noreferrer" className="block relative aspect-square rounded-xl overflow-hidden border border-slate-800 hover:border-amber-500 transition-colors group">
+              <a key={img} href={`/${img}`} target="_blank" rel="noopener noreferrer" className="block relative aspect-square rounded-xl overflow-hidden border border-slate-800 hover:border-amber-500 transition-colors group">
                 <Image
-                  src={`/random-resources/images/${img}`}
+                  src={`/${img}`}
                   alt={img}
                   fill
                   className="object-cover group-hover:scale-110 transition-transform duration-500"
