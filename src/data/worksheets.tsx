@@ -4,7 +4,25 @@ import { KirchhoffVisualizer } from '@/components/simulations/course/KirchhoffVi
 import { SuperpositionVisualizer } from '@/components/simulations/course/SuperpositionVisualizer';
 import { TheveninStepVisualizer } from '@/components/simulations/course/TheveninStepVisualizer';
 
-export const worksheets = [
+export interface Exercise {
+  id: string;
+  number: number;
+  title: string;
+  originalDiagramUrl: string;
+  simulationComponent?: React.ReactNode;
+  solutionFormula: string;
+  aiExplanation: string;
+}
+
+export interface Worksheet {
+  id: string;
+  title: string;
+  description: string;
+  originalPdf: string;
+  exercises: Exercise[];
+}
+
+export const worksheets: Worksheet[] = [
   {
     id: "td3",
     title: "Série de TD N°3: Transistors",
