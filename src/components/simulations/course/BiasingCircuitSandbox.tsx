@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Mafs, Coordinates, Plot, Line, Text, Point, Polygon } from "mafs";
+import { Mafs, Line, Text, Polygon } from "mafs";
 import "mafs/core.css";
 import "mafs/font.css";
 
@@ -12,7 +12,7 @@ export function BiasingCircuitSandbox() {
 
   // Global variables
   const [vcc, setVcc] = useState(12);
-  const [beta, setBeta] = useState(100);
+  const [beta] = useState(100);
   const vbe = 0.7;
 
   // Type specific variables

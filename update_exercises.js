@@ -1,4 +1,4 @@
-const fs = require('fs');
+import fs from 'fs';
 const content = fs.readFileSync('src/data/course-exercises.tsx', 'utf8');
 
 const newContent = content.replace(

@@ -22,6 +22,11 @@ interface CircuitElement {
   n2: string;
 }
 
+interface SimulationResult {
+  nodeVoltages: Record<string, Complex>;
+  elementCurrents: Record<string, Complex>;
+}
+
 // --- COMPLEX MATH ENGINE ---
 interface Complex {
   r: number;
@@ -393,7 +398,7 @@ export function FreeformCircuitStudio({ initialPreset }: { initialPreset?: strin
   const [superpositionResults, setSuperpositionResults] = useState<{
     vSources: CircuitElement[];
     partials: Record<string, Record<string, Complex>>; // ComponentID -> SourceID -> Current
-    steps: Record<string, { res: any; modifiedElements: CircuitElement[] }>;
+    steps: Record<string, { res: SimulationResult; modifiedElements: CircuitElement[] }>;
   } | null>(null);
 
   // Abstract MNA Solver
@@ -546,7 +551,7 @@ export function FreeformCircuitStudio({ initialPreset }: { initialPreset?: strin
   const simulateCircuit = () => {
     try {
       // Pass 1: Assume all diodes are forward biased (wires)
-      let currentDiodeStates: Record<string, boolean> = {};
+      const currentDiodeStates: Record<string, boolean> = {};
       elements.filter(e => e.type === 'Diode').forEach(d => currentDiodeStates[d.id] = true);
       
       let results = solveMNA(nodes, elements, currentDiodeStates);
@@ -568,8 +573,9 @@ export function FreeformCircuitStudio({ initialPreset }: { initialPreset?: strin
       setSimResults(results);
       setSimError(null);
       setSuperpositionResults(null);
-    } catch (e: any) {
-      setSimError(e.message);
+    } catch (e) {
+      const message = e instanceof Error ? e.message : String(e);
+      setSimError(message);
       setSimResults(null);
       setSuperpositionResults(null);
     }
@@ -581,7 +587,7 @@ export function FreeformCircuitStudio({ initialPreset }: { initialPreset?: strin
       if (vSources.length < 2) return;
 
       const partials: Record<string, Record<string, Complex>> = {};
-      const steps: Record<string, { res: any; modifiedElements: CircuitElement[] }> = {};
+      const steps: Record<string, { res: SimulationResult; modifiedElements: CircuitElement[] }> = {};
       elements.forEach(el => partials[el.id] = {});
 
       // For each voltage source, keep it active and zero out the others
@@ -607,9 +613,10 @@ export function FreeformCircuitStudio({ initialPreset }: { initialPreset?: strin
       setSuperpositionResults({ vSources, partials, steps });
       setActiveSuperpositionStep(null);
       setSimError(null);
-      
-    } catch (e: any) {
-      setSimError("Superposition failed: " + e.message);
+
+    } catch (e) {
+      const message = e instanceof Error ? e.message : String(e);
+      setSimError("Superposition failed: " + message);
     }
   };
 

@@ -9,8 +9,7 @@ import { Button } from "@/components/ui/button";
 
 export default async function ResourcesPage() {
   const imagesDir = path.join(process.cwd(), "public/random-resources/images");
-  const pdfsDir = path.join(process.cwd(), "public/random-resources/pdfs");
-
+  
   let images: string[] = [];
   try {
     images = fs.readdirSync(imagesDir).filter(f => f.endsWith('.jpg') || f.endsWith('.png'));
@@ -24,16 +23,7 @@ export default async function ResourcesPage() {
     console.error("Images not found", e);
   }
 
-  let pdfs: string[] = [];
-  try {
-    pdfs = fs.readdirSync(pdfsDir).filter(f => f.endsWith('.pdf') || f.endsWith('.docx'));
-  } catch (e) {
-    console.error("PDFs not found", e);
-  }
-
-  // Pair up series and corrected series
-  const seriesFiles = pdfs.filter(f => f.toLowerCase().includes("serie0") && !f.toLowerCase().includes("correct"));
-  
+    
   return (
     <div className="animate-in fade-in duration-700 pb-20">
       <PageHeader 

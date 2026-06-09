@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export function PNJunctionVisualizer({ initialBias = 0 }: { initialBias?: number }) {
   const [biasVoltage, setBiasVoltage] = useState(initialBias); // -5V to +1V

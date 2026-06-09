@@ -1,7 +1,8 @@
+"use client";
+
 import React, { useState } from 'react';
 import Image from 'next/image';
-import MathBlock from './MathBlock';
-import { Button } from '@/components/ui/button';
+import { MathBlock } from './MathBlock';
 import { BrainCircuit, Calculator, FileImage, Play } from 'lucide-react';
 
 interface WorksheetExerciseProps {
@@ -21,8 +22,6 @@ export default function WorksheetExerciseNode({
   solutionFormula,
   aiExplanation
 }: WorksheetExerciseProps) {
-  // Mobile responsive tabs
-  const [activeTab, setActiveTab] = useState<'diagram' | 'simulation'>('diagram');
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden mb-8">
@@ -41,11 +40,11 @@ export default function WorksheetExerciseNode({
             <h4>Original Diagram (From Source)</h4>
           </div>
           <div className="relative w-full aspect-video bg-slate-50 rounded-lg overflow-hidden border border-slate-100 flex items-center justify-center">
-            {/* Replace with actual next/image when you have the URLs */}
-            <img
+            <Image
               src={originalDiagramUrl}
               alt={`Exercise ${number} original`}
-              className="object-contain w-full h-full p-2"
+              fill
+              className="object-contain"
             />
           </div>
         </div>

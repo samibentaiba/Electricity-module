@@ -2,7 +2,7 @@ import React from 'react';
 import { notFound } from 'next/navigation';
 import { getWorksheetById } from '@/data/worksheets';
 import WorksheetExerciseNode from '@/components/ui/WorksheetExerciseNode';
-import PageHeader from '@/components/ui/PageHeader';
+import { PageHeader } from '@/components/ui/PageHeader';
 import { Button } from '@/components/ui/button';
 import { Download, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';

@@ -1,4 +1,4 @@
-const fs = require('fs');
+import fs from 'fs';
 let content = fs.readFileSync('src/components/simulations/sandbox/FreeformCircuitStudio.tsx', 'utf8');
 
 // Find the start of the broken Exam 2025: Q1

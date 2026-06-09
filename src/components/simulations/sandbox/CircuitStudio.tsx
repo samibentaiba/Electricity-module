@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Trash2, ArrowUpDown, Zap, AlertTriangle } from "lucide-react";
+import { Plus, Trash2, ArrowUpDown, AlertTriangle } from "lucide-react";
 
 export type ComponentType = 'V_DC' | 'Resistor' | 'Diode' | 'Zener';
 

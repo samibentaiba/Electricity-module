@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { testRegistry, TestMetadata } from '@/lib/testRegistry';
+import { testRegistry } from '@/lib/testRegistry';
 
 describe('testRegistry', () => {
   it('is a non-empty array', () => {

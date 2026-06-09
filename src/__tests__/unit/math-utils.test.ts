@@ -11,7 +11,7 @@ import {
 describe('calculateLineEquation', () => {
   it('returns correct slope and intercept for a standard line', () => {
     // line through (0,0) and (2,4) → y = 2x, so m=2, b=0
-    const _result = calculateLineEquation(0, 0, 2, 4);
+    const result = calculateLineEquation(0, 0, 2, 4);
     expect(result.m).toBe(2);
     expect(result.b).toBe(0);
     expect(result.isVertical).toBe(false);
@@ -19,7 +19,7 @@ describe('calculateLineEquation', () => {
 
   it('returns correct values for a horizontal line', () => {
     // line through (1,3) and (5,3) → y = 3, so m=0, b=3
-    const _result = calculateLineEquation(1, 3, 5, 3);
+    const result = calculateLineEquation(1, 3, 5, 3);
     expect(result.m).toBe(0);
     expect(result.b).toBe(3);
     expect(result.isVertical).toBe(false);
@@ -27,7 +27,7 @@ describe('calculateLineEquation', () => {
 
   it('detects a vertical line', () => {
     // line through (2,0) and (2,5) → vertical
-    const _result = calculateLineEquation(2, 0, 2, 5);
+    const result = calculateLineEquation(2, 0, 2, 5);
     expect(result.isVertical).toBe(true);
     expect(result.m).toBe(Infinity);
     expect(result.b).toBeUndefined();
@@ -35,26 +35,26 @@ describe('calculateLineEquation', () => {
 
   it('handles negative slopes', () => {
     // line through (0,4) and (4,0) → y = -x + 4, m=-1, b=4
-    const _result = calculateLineEquation(0, 4, 4, 0);
+    const result = calculateLineEquation(0, 4, 4, 0);
     expect(result.m).toBe(-1);
     expect(result.b).toBe(4);
   });
 
   it('handles same point (degenerate case)', () => {
     // Both points are the same → dx=0, dy=0 → vertical
-    const _result = calculateLineEquation(3, 3, 3, 3);
+    const result = calculateLineEquation(3, 3, 3, 3);
     expect(result.isVertical).toBe(true);
   });
 
   it('returns correct dx and dy', () => {
-    const _result = calculateLineEquation(1, 2, 4, 6);
+    const result = calculateLineEquation(1, 2, 4, 6);
     expect(result.dx).toBe(3);
     expect(result.dy).toBe(4);
   });
 
   it('handles fractional slopes correctly', () => {
     // line through (0,0) and (3,1) → m = 1/3
-    const _result = calculateLineEquation(0, 0, 3, 1);
+    const result = calculateLineEquation(0, 0, 3, 1);
     expect(result.m).toBeCloseTo(1 / 3);
     expect(result.b).toBeCloseTo(0);
   });
@@ -66,41 +66,41 @@ describe('calculateLineEquation', () => {
 describe('calculateVectorIndependence', () => {
   it('detects independent vectors (standard basis)', () => {
     // e1 = (1,0) and e2 = (0,1) → det = 1 → independent
-    const _result = calculateVectorIndependence(1, 0, 0, 1);
+    const result = calculateVectorIndependence(1, 0, 0, 1);
     expect(result.det).toBe(1);
     expect(result.isDependent).toBe(false);
   });
 
   it('detects dependent vectors (collinear)', () => {
     // v1 = (2,4) and v2 = (1,2) → det = 2*2 - 4*1 = 0 → dependent
-    const _result = calculateVectorIndependence(2, 4, 1, 2);
+    const result = calculateVectorIndependence(2, 4, 1, 2);
     expect(result.det).toBe(0);
     expect(result.isDependent).toBe(true);
   });
 
   it('detects dependent vectors (opposite direction)', () => {
     // v1 = (3,6) and v2 = (-3,-6) → det = 3*(-6) - 6*(-3) = 0
-    const _result = calculateVectorIndependence(3, 6, -3, -6);
+    const result = calculateVectorIndependence(3, 6, -3, -6);
     expect(result.det).toBe(0);
     expect(result.isDependent).toBe(true);
   });
 
   it('detects independent vectors (generic)', () => {
     // v1 = (1,2) and v2 = (3,1) → det = 1*1 - 2*3 = -5 → independent
-    const _result = calculateVectorIndependence(1, 2, 3, 1);
+    const result = calculateVectorIndependence(1, 2, 3, 1);
     expect(result.det).toBe(-5);
     expect(result.isDependent).toBe(false);
   });
 
   it('handles zero vector correctly (always dependent)', () => {
     // v1 = (0,0) and v2 = (1,2) → det = 0 → dependent
-    const _result = calculateVectorIndependence(0, 0, 1, 2);
+    const result = calculateVectorIndependence(0, 0, 1, 2);
     expect(result.det).toBe(0);
     expect(result.isDependent).toBe(true);
   });
 
   it('handles both zero vectors', () => {
-    const _result = calculateVectorIndependence(0, 0, 0, 0);
+    const result = calculateVectorIndependence(0, 0, 0, 0);
     expect(result.det).toBe(0);
     expect(result.isDependent).toBe(true);
   });
@@ -109,13 +109,13 @@ describe('calculateVectorIndependence', () => {
     // det = 0.05 which is < 0.1 → should be dependent
     // v1=(1,0), v2=(100,5) → det = 1*5 - 0*100 = 5 → independent
     // v1=(10, 1), v2=(100, 10) → det = 10*10 - 1*100 = 0 → dependent
-    const _result = calculateVectorIndependence(10, 1, 100, 10);
+    const result = calculateVectorIndependence(10, 1, 100, 10);
     expect(result.isDependent).toBe(true);
   });
 
   it('correctly evaluates negative determinants', () => {
     // v1 = (0,1) and v2 = (1,0) → det = 0*0 - 1*1 = -1 → independent
-    const _result = calculateVectorIndependence(0, 1, 1, 0);
+    const result = calculateVectorIndependence(0, 1, 1, 0);
     expect(result.det).toBe(-1);
     expect(result.isDependent).toBe(false);
   });
@@ -128,19 +128,19 @@ describe('calculateMatrixProperties', () => {
   describe('determinant calculations', () => {
     it('computes determinant of the identity matrix (should be 1)', () => {
       const identity = [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
-      const _result = calculateMatrixProperties(identity);
+      const result = calculateMatrixProperties(identity);
       expect(result.det).toBeCloseTo(1);
     });
 
     it('computes determinant of a 2x2 matrix', () => {
       // det([[1,2],[3,4]]) = 1*4 - 2*3 = -2
-      const _result = calculateMatrixProperties([[1, 2], [3, 4]]);
+      const result = calculateMatrixProperties([[1, 2], [3, 4]]);
       expect(result.det).toBeCloseTo(-2);
     });
 
     it('computes determinant of a singular matrix (should be 0)', () => {
       // Rows are linearly dependent
-      const _result = calculateMatrixProperties([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
+      const result = calculateMatrixProperties([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
       expect(result.det).toBeCloseTo(0);
     });
 
@@ -148,7 +148,7 @@ describe('calculateMatrixProperties', () => {
       // A = [[1,2,0],[2,1,0],[0,0,3]]
       // det = 3*(1*1 - 2*2) = 3*(1-4) = 3*(-3) = -9
       const A = [[1, 2, 0], [2, 1, 0], [0, 0, 3]];
-      const _result = calculateMatrixProperties(A);
+      const result = calculateMatrixProperties(A);
       expect(result.det).toBeCloseTo(-9);
     });
 
@@ -156,21 +156,21 @@ describe('calculateMatrixProperties', () => {
       // A_2 = [[2,1,1],[1,2,1],[1,1,2]]
       // det = (a-1)^2*(a+2) at a=2 → 1^2 * 4 = 4
       const A2 = [[2, 1, 1], [1, 2, 1], [1, 1, 2]];
-      const _result = calculateMatrixProperties(A2);
+      const result = calculateMatrixProperties(A2);
       expect(result.det).toBeCloseTo(4);
     });
 
     it('computes determinant of the Test1_V3_Ex2 matrix A_1 correctly (should be 0)', () => {
       // A_1 = [[1,1,1],[1,1,1],[1,1,1]] → all rows identical → det = 0
       const A1 = [[1, 1, 1], [1, 1, 1], [1, 1, 1]];
-      const _result = calculateMatrixProperties(A1);
+      const result = calculateMatrixProperties(A1);
       expect(result.det).toBeCloseTo(0);
     });
 
     it('computes determinant with negative values', () => {
       // det([[-1,1,-1],[-1,0,2],[1,-2,0]]) = -4
       const A = [[-1, 1, -1], [-1, 0, 2], [1, -2, 0]];
-      const _result = calculateMatrixProperties(A);
+      const result = calculateMatrixProperties(A);
       expect(result.det).toBeCloseTo(-4);
     });
   });
@@ -178,7 +178,7 @@ describe('calculateMatrixProperties', () => {
   describe('inverse matrix calculations', () => {
     it('computes inverse of the identity matrix (should be itself)', () => {
       const identity = [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
-      const _result = calculateMatrixProperties(identity);
+      const result = calculateMatrixProperties(identity);
       expect(result.inv).not.toBeNull();
       expect(result.inv![0][0]).toBeCloseTo(1);
       expect(result.inv![0][1]).toBeCloseTo(0);
@@ -187,13 +187,13 @@ describe('calculateMatrixProperties', () => {
 
     it('returns null inverse for singular matrix', () => {
       const singular = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
-      const _result = calculateMatrixProperties(singular);
+      const result = calculateMatrixProperties(singular);
       expect(result.inv).toBeNull();
     });
 
     it('computes inverse of a 2x2 matrix', () => {
       // inv([[1,2],[3,4]]) = 1/(-2) * [[4,-2],[-3,1]] = [[-2,1],[1.5,-0.5]]
-      const _result = calculateMatrixProperties([[1, 2], [3, 4]]);
+      const result = calculateMatrixProperties([[1, 2], [3, 4]]);
       expect(result.inv).not.toBeNull();
       expect(result.inv![0][0]).toBeCloseTo(-2);
       expect(result.inv![0][1]).toBeCloseTo(1);
@@ -203,7 +203,7 @@ describe('calculateMatrixProperties', () => {
 
     it('verifies A * A^{-1} = I for Test1_V1_Ex2 matrix', () => {
       const A = [[1, 2, 0], [2, 1, 0], [0, 0, 3]];
-      const _result = calculateMatrixProperties(A);
+      const result = calculateMatrixProperties(A);
       expect(result.inv).not.toBeNull();
       // Multiply A * inv(A)
       const n = A.length;
@@ -224,7 +224,7 @@ describe('calculateMatrixProperties', () => {
 
     it('verifies A * A^{-1} = I for Test1_V3_Ex2 matrix A_2', () => {
       const A2 = [[2, 1, 1], [1, 2, 1], [1, 1, 2]];
-      const _result = calculateMatrixProperties(A2);
+      const result = calculateMatrixProperties(A2);
       expect(result.inv).not.toBeNull();
       const n = A2.length;
       for (let i = 0; i < n; i++) {
@@ -245,22 +245,22 @@ describe('calculateMatrixProperties', () => {
 
   describe('string and edge case handling', () => {
     it('handles string number inputs correctly', () => {
-      const _result = calculateMatrixProperties([['1', '0'], ['0', '1']] as unknown as number[][]);
+      const result = calculateMatrixProperties([['1', '0'], ['0', '1']] as unknown as number[][]);
       expect(result.det).toBeCloseTo(1);
     });
 
     it('treats empty strings as 0', () => {
-      const _result = calculateMatrixProperties([['', '0'], ['0', '1']] as unknown as number[][]);
+      const result = calculateMatrixProperties([['', '0'], ['0', '1']] as unknown as number[][]);
       expect(result.det).toBeCloseTo(0);
     });
 
     it('treats dash "-" as 0', () => {
-      const _result = calculateMatrixProperties([['-', '0'], ['0', '1']] as unknown as number[][]);
+      const result = calculateMatrixProperties([['-', '0'], ['0', '1']] as unknown as number[][]);
       expect(result.det).toBeCloseTo(0);
     });
 
     it('handles a 1x1 matrix', () => {
-      const _result = calculateMatrixProperties([[5]]);
+      const result = calculateMatrixProperties([[5]]);
       expect(result.det).toBeCloseTo(5);
     });
 
@@ -272,7 +272,7 @@ describe('calculateMatrixProperties', () => {
         [0, 0, 3, 0],
         [0, 0, 0, 4],
       ];
-      const _result = calculateMatrixProperties(m);
+      const result = calculateMatrixProperties(m);
       expect(result.det).toBeCloseTo(24);
     });
   });
@@ -440,14 +440,14 @@ describe('Exam-specific mathematical verifications', () => {
       // When λ = √2: det = 2 - 2 = 0
       const lambda = Math.sqrt(2);
       const A = [[lambda, 1], [2, lambda]];
-      const _result = calculateMatrixProperties(A);
+      const result = calculateMatrixProperties(A);
       expect(result.det).toBeCloseTo(0, 5);
       expect(result.inv).toBeNull();
     });
 
     it('verifies det(A) ≠ 0 when λ = 2', () => {
       const A = [[2, 1], [2, 2]];
-      const _result = calculateMatrixProperties(A);
+      const result = calculateMatrixProperties(A);
       expect(result.det).toBeCloseTo(2);
       expect(result.inv).not.toBeNull();
     });
@@ -455,7 +455,7 @@ describe('Exam-specific mathematical verifications', () => {
     it('verifies det(A) ≠ 0 when λ = -√2', () => {
       const lambda = -Math.sqrt(2);
       const A = [[lambda, 1], [2, lambda]];
-      const _result = calculateMatrixProperties(A);
+      const result = calculateMatrixProperties(A);
       expect(result.det).toBeCloseTo(0, 5);
     });
   });
@@ -465,37 +465,37 @@ describe('Exam-specific mathematical verifications', () => {
 
     it('verifies formula at a = 0', () => {
       const A = [[0, 1, 1], [1, 0, 1], [1, 1, 0]];
-      const _result = calculateMatrixProperties(A);
+      const result = calculateMatrixProperties(A);
       expect(result.det).toBeCloseTo(detFormula(0)); // (-1)²*(2) = 2
     });
 
     it('verifies formula at a = 1 (singular)', () => {
       const A = [[1, 1, 1], [1, 1, 1], [1, 1, 1]];
-      const _result = calculateMatrixProperties(A);
+      const result = calculateMatrixProperties(A);
       expect(result.det).toBeCloseTo(detFormula(1)); // 0
     });
 
     it('verifies formula at a = -2 (singular)', () => {
       const A = [[-2, 1, 1], [1, -2, 1], [1, 1, -2]];
-      const _result = calculateMatrixProperties(A);
+      const result = calculateMatrixProperties(A);
       expect(result.det).toBeCloseTo(detFormula(-2)); // 9*0 = 0
     });
 
     it('verifies formula at a = 2', () => {
       const A = [[2, 1, 1], [1, 2, 1], [1, 1, 2]];
-      const _result = calculateMatrixProperties(A);
+      const result = calculateMatrixProperties(A);
       expect(result.det).toBeCloseTo(detFormula(2)); // 1*4 = 4
     });
 
     it('verifies formula at a = 3', () => {
       const A = [[3, 1, 1], [1, 3, 1], [1, 1, 3]];
-      const _result = calculateMatrixProperties(A);
+      const result = calculateMatrixProperties(A);
       expect(result.det).toBeCloseTo(detFormula(3)); // 4*5 = 20
     });
 
     it('verifies formula at a = -1', () => {
       const A = [[-1, 1, 1], [1, -1, 1], [1, 1, -1]];
-      const _result = calculateMatrixProperties(A);
+      const result = calculateMatrixProperties(A);
       expect(result.det).toBeCloseTo(detFormula(-1)); // 4*1 = 4
     });
   });
@@ -506,7 +506,7 @@ describe('Exam-specific mathematical verifications', () => {
       // rank should be 2 (both rows are independent)
       // dim(E) = 4 - rank = 4 - 2 = 2
       const A = [[1, 1, -1, 1], [1, -1, 1, -1]];
-      const _result = calculateMatrixProperties(A);
+      const result = calculateMatrixProperties(A);
       // For non-square matrix, det is not meaningful. But we can check rank by
       // verifying that the submatrix formed by first 2 columns has non-zero det.
       const subA = [[1, 1], [1, -1]];
@@ -519,7 +519,7 @@ describe('Exam-specific mathematical verifications', () => {
     it('verifies that the spanning vectors of F are independent (rank 3)', () => {
       // Vectors: (1,0,1), (0,1,1), (1,1,0) as rows
       const M = [[1, 0, 1], [0, 1, 1], [1, 1, 0]];
-      const _result = calculateMatrixProperties(M);
+      const result = calculateMatrixProperties(M);
       // det should be non-zero → rank 3 → F = R³
       expect(Math.abs(result.det)).toBeGreaterThan(0.001);
     });

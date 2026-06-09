@@ -49,7 +49,7 @@ export const physicsExercises: ExerciseSection[] = [
           <div className="space-y-4">
             <p><strong>1. Equivalent Resistance:</strong> For series resistors, <Latex>{`$R_{eq} = R_1 + R_2$`}</Latex>.</p>
             <p><Latex>{`$$R_{eq} = 4\\Omega + 8\\Omega = 12\\Omega$$`}</Latex></p>
-            <p><strong>2. Total Current:</strong> Using Ohm's Law, <Latex>{`$I = \\frac{V}{R_{eq}}$`}</Latex>.</p>
+            <p><strong>2. Total Current:</strong> Using Ohm&apos;s Law, <Latex>{`$I = \\frac{V}{R_{eq}}$`}</Latex>.</p>
             <p><Latex>{`$$I = \\frac{12\\text{V}}{12\\Omega} = 1\\text{A}$$`}</Latex></p>
             <p><strong>3. Voltage Drop across <Latex>{`$R_1$`}</Latex>:</strong> <Latex>{`$V_1 = 1\\text{A} \\times 4\\Omega = 4\\text{V} $$`}</Latex></p>
           </div>
@@ -115,7 +115,7 @@ export const physicsExercises: ExerciseSection[] = [
         ),
         formalSolution: (
           <div className="space-y-4">
-             <p>Using Kirchhoff's Laws:</p>
+             <p>Using Kirchhoff&apos;s Laws:</p>
              <p><strong>Node Law:</strong> <Latex>{`$I_1 + I_2 = I_3$`}</Latex> (assuming <Latex>{`$I_1$`}</Latex> and <Latex>{`$I_2$`}</Latex> enter the top node, and <Latex>{`$I_3$`}</Latex> goes down through <Latex>{`$R_3$`}</Latex>).</p>
              <p><strong>Mesh 1 (Left):</strong> <Latex>{`$E_1 - R_1 I_1 - R_3 I_3 = 0 \\implies 20 - 2I_1 - 10I_3 = 0$`}</Latex></p>
              <p><strong>Mesh 2 (Right):</strong> <Latex>{`$E_2 - R_2 I_2 - R_3 I_3 = 0 \\implies 70 - 5I_2 - 10I_3 = 0$`}</Latex></p>

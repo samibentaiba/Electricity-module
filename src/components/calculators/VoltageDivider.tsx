@@ -4,7 +4,7 @@ import { useState } from "react";
 import Latex from "react-latex-next";
 import { Slider } from "@/components/ui/slider";
 import { calculateVoltageDivider } from "@/lib/circuit-utils";
-import { Mafs, Coordinates, Line, Polygon, Text, Point, Theme } from "mafs";
+import { Mafs, Line, Polygon, Text, Point, Theme } from "mafs";
 import "mafs/core.css";
 import "mafs/font.css";
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Mafs, Coordinates, Line, Text, Point, Plot } from "mafs";
+import { Mafs, Coordinates, Line, Point, Text, Plot } from "mafs";
 import "mafs/core.css";
 import "mafs/font.css";
 
@@ -16,7 +16,6 @@ export function IdealSourcesVisualizer() {
   // Calculations
   const current = sourceType === "voltage" ? V_source / loadResistance : I_source;
   const voltage = sourceType === "voltage" ? V_source : I_source * loadResistance;
-  const power = voltage * current;
 
   return (
     <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row">
@@ -96,7 +95,7 @@ export function IdealSourcesVisualizer() {
             {sourceType === "voltage" ? (
               <>
                 {/* V is constant */}
-                <Plot.OfX y={(x) => V_source * 4} color="#f59e0b" weight={3} />
+                <Plot.OfX y={() => V_source * 4} color="#f59e0b" weight={3} />
                 <Text x={10} y={V_source * 4 + 8} color="#f59e0b" size={16}>V = 12V</Text>
                 
                 {/* I = V/R */}
@@ -110,7 +109,7 @@ export function IdealSourcesVisualizer() {
             ) : (
               <>
                 {/* I is constant */}
-                <Plot.OfX y={(x) => I_source * 20} color="#10b981" weight={3} />
+                <Plot.OfX y={() => I_source * 20} color="#10b981" weight={3} />
                 <Text x={10} y={I_source * 20 + 8} color="#10b981" size={16}>I = 2A</Text>
                 
                 {/* V = I*R */}
