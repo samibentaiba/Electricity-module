@@ -2,8 +2,10 @@ import React from "react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import fs from "fs";
 import path from "path";
-
+import { worksheets } from "@/data/worksheets";
+import Link from "next/link";
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
 
 export default async function ResourcesPage() {
   const imagesDir = path.join(process.cwd(), "public/random-resources/images");
@@ -42,53 +44,26 @@ export default async function ResourcesPage() {
       
       <div className="space-y-16 mt-8">
         
-        {/* PDFs Section */}
+        {/* Worksheets Section */}
         <section className="space-y-6">
-          <h2 className="text-2xl font-bold border-l-4 border-purple-500 pl-4">Assignment Series & Corrections (PDFs)</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {seriesFiles.map(serie => {
-              // Try to find the matching correction file
-              const serieNum = serie.match(/serie0[0-9]/i)?.[0];
-              const correction = pdfs.find(f => f.toLowerCase().includes("correct") && f.toLowerCase().includes(serieNum?.toLowerCase() || "none"));
-              
-              return (
-                <div key={serie} className="bg-slate-900 border border-slate-800 rounded-xl p-6 flex flex-col justify-between hover:border-purple-500/50 transition-colors">
-                  <div>
-                    <h3 className="font-bold text-lg text-slate-200 capitalize">{serie.replace(".pdf", "")}</h3>
-                    <p className="text-sm text-slate-400 mt-2">Practice problems covering electronic fundamentals.</p>
-                  </div>
-                  <div className="mt-6 flex gap-3">
-                    <a href={`/random-resources/pdfs/${serie}`} target="_blank" rel="noopener noreferrer" className="flex-1 bg-purple-600 hover:bg-purple-500 text-white text-sm font-bold py-2 px-4 rounded text-center transition-colors">
-                      View Assignment
-                    </a>
-                    {correction && (
-                      <a href={`/random-resources/pdfs/${correction}`} target="_blank" rel="noopener noreferrer" className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold py-2 px-4 rounded text-center transition-colors">
-                        Correction
-                      </a>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+          <h2 className="text-2xl font-bold border-l-4 border-purple-500 pl-4">Worksheets & Exercises</h2>
 
-          <div className="mt-8">
-             <h3 className="font-bold text-lg text-slate-300 mb-4">Other Documents</h3>
-             <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {pdfs.filter(f => !f.toLowerCase().includes("serie0")).map(doc => (
-                  <li key={doc}>
-                    <a href={`/random-resources/pdfs/${doc}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-slate-400 hover:text-purple-400 transition-colors">
-                      <span className="text-xl">📄</span> {doc}
-                    </a>
-                  </li>
-                ))}
-                <li>
-                  <a href={`/random-resources/tp/TP1_initiation_proteus.pdf`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-slate-400 hover:text-purple-400 transition-colors">
-                    <span className="text-xl">🛠️</span> TP1_initiation_proteus.pdf
-                  </a>
-                </li>
-             </ul>
+          <div className="grid gap-6">
+            {worksheets.map((worksheet) => (
+              <div key={worksheet.id} className="bg-slate-900 border border-slate-800 rounded-xl p-6 flex flex-col justify-between hover:border-purple-500/50 transition-colors">
+                <div>
+                  <h3 className="font-bold text-lg text-slate-200">{worksheet.title}</h3>
+                  <p className="text-sm text-slate-400 mt-2">{worksheet.description}</p>
+                </div>
+                <div className="mt-4">
+                  <Link href={`/worksheets/${worksheet.id}`}>
+                    <Button className="w-full bg-purple-600 hover:bg-purple-500 text-white text-sm font-bold py-2 px-4 rounded text-center transition-colors">
+                      Open Worksheet
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            ))}
           </div>
         </section>
 
