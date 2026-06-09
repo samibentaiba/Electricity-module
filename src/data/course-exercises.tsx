@@ -1,6 +1,8 @@
 import React from "react";
 import Latex from "react-latex-next";
 import { FreeformCircuitStudio } from "@/components/simulations/sandbox/FreeformCircuitStudio";
+import { DiodeCurveVisualizer } from "@/components/simulations/course/DiodeCurveVisualizer";
+import { RectifierVisualizer } from "@/components/simulations/course/RectifierVisualizer";
 
 export interface Exercise {
   id: string;
@@ -21,6 +23,7 @@ export interface ExerciseSection {
   exercises: Exercise[];
   source?: string;
   type?: "worksheet" | "practice";
+  originalPdf?: string;
 }
 
 export const physicsExercises: ExerciseSection[] = [
@@ -120,6 +123,7 @@ export const physicsExercises: ExerciseSection[] = [
   {
     id: "serie1",
     title: "Serie 1: Fundamental Electronic",
+    originalPdf: "/serie 1 electronic.docx",
     description: "Saad Dahlab University of Blida - Exercise Series 1",
     color: "amber",
     type: "worksheet", // This forces it to appear in the Worksheets layout
@@ -458,6 +462,81 @@ export const physicsExercises: ExerciseSection[] = [
       },
     ],
   },
+  {
+    id: "serie2",
+    title: "Serie 2: Semi-conductor Diodes",
+    originalPdf: "/final serie 2 electronic.pdf",
+    description: "Saad Dahlab University of Blida - Exercise Series 2",
+    color: "emerald",
+    type: "worksheet",
+    source: "Saad Dahlab University of Blida - Exercise Series 2",
+    exercises: [
+      {
+        id: "serie2-ex1",
+        title: "Exercise 1: Diode Polarization & State Analysis",
+        problem: (
+          <div className="space-y-4">
+            <p>For the given circuit, determine the state of the diode (conducting or blocked), the current <Latex>{`$I$`}</Latex>, and the voltage <Latex>{`$V_D$`}</Latex> across the diode.</p>
+            <p>Given: <Latex>{`$E = 12\\text{V}$`}</Latex>, <Latex>{`$R = 1\\text{k}\\Omega$`}</Latex>. Assume a Silicon diode with a threshold voltage <Latex>{`$V_0 = 0.7\\text{V}$`}</Latex>.</p>
+          </div>
+        ),
+        aiExplanation: (
+          <div className="space-y-6">
+            <div className="mb-4">
+              <h4 className="font-bold text-emerald-400 mb-2">Interactive Diode Curve</h4>
+              <p className="text-slate-300">Observe how the diode only conducts when the forward voltage exceeds the 0.7V threshold characteristic of Silicon. Below this threshold, it acts as an open circuit.</p>
+            </div>
+            <div className="h-[500px] w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0 bg-slate-950 p-4">
+              {/* Utilizes your existing Diode visualizer */}
+              <DiodeCurveVisualizer />
+            </div>
+          </div>
+        ),
+        formalSolution: (
+          <div className="space-y-4">
+            <p><strong>1. Diode State:</strong> The anode is connected to the positive terminal of the voltage source. Since <Latex>{`$E = 12\\text{V} > 0.7\\text{V}$`}</Latex>, the diode is forward-biased and conducting.</p>
+            <p><strong>2. Voltage <Latex>{`$V_D$`}</Latex>:</strong> Because it is conducting, the voltage across it is locked to its threshold: <Latex>{`$V_D = V_0 = 0.7\\text{V}$`}</Latex>.</p>
+            <p><strong>3. Current <Latex>{`$I$`}</Latex>:</strong> Applying Kirchhoffs Voltage Law to the mesh: <Latex>{`$E - V_D - R \\cdot I = 0$`}</Latex>.</p>
+            <p><Latex>{`$$I = \\frac{E - V_D}{R} = \\frac{12 - 0.7}{1000} = 11.3\\text{mA}$$`}</Latex></p>
+          </div>
+        )
+      },
+      {
+        id: "serie2-ex2",
+        title: "Exercise 2: Half-Wave Rectification",
+        problem: (
+          <div className="space-y-4">
+            <p>A sinusoidal voltage <Latex>{`$v_e(t) = 15 \\sin(\\omega t)$`}</Latex> is applied to a half-wave rectifier circuit comprising an ideal diode and a load resistance <Latex>{`$R_L = 100\\Omega$`}</Latex>.</p>
+            <ol className="list-decimal list-inside space-y-2">
+              <li>Plot the output voltage <Latex>{`$v_s(t)$`}</Latex>.</li>
+              <li>Calculate the average output voltage <Latex>{`$V_{moy}$`}</Latex>.</li>
+              <li>Calculate the maximum current <Latex>{`$I_{max}$`}</Latex> flowing through the load.</li>
+            </ol>
+          </div>
+        ),
+        aiExplanation: (
+          <div className="space-y-6">
+            <div className="mb-4">
+              <h4 className="font-bold text-emerald-400 mb-2">Rectifier Simulation</h4>
+              <p className="text-slate-300">Interact with the simulation to see how the diode clips the negative half-cycle of the AC waveform, converting alternating current into pulsating direct current.</p>
+            </div>
+            <div className="h-[600px] w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0">
+              {/* Utilizes your existing Rectifier visualizer */}
+              <RectifierVisualizer />
+            </div>
+          </div>
+        ),
+        formalSolution: (
+          <div className="space-y-4">
+            <p><strong>1. Average Voltage:</strong> For a half-wave rectifier, the average (DC) voltage is given by the formula <Latex>{`$V_{moy} = \\frac{V_{max}}{\\pi}$`}</Latex>.</p>
+            <p><Latex>{`$$V_{moy} = \\frac{15}{\\pi} \\approx 4.77\\text{V}$$`}</Latex></p>
+            <p><strong>2. Maximum Current:</strong> Apply Ohms law using the peak voltage and load resistance: <Latex>{`$I_{max} = \\frac{V_{max}}{R_L}$`}</Latex>.</p>
+            <p><Latex>{`$$I_{max} = \\frac{15}{100} = 0.15\\text{A} = 150\\text{mA}$$`}</Latex></p>
+          </div>
+        )
+      }
+    ]
+  }
 ];
 
 
