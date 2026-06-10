@@ -3,8 +3,13 @@ import Latex from "react-latex-next";
 import { FreeformCircuitStudio } from "@/components/simulations/sandbox/FreeformCircuitStudio";
 import { DiodeCurveVisualizer } from "@/components/simulations/course/DiodeCurveVisualizer";
 import { RectifierVisualizer } from "@/components/simulations/course/RectifierVisualizer";
+import { TheveninStepVisualizer } from "@/components/simulations/course/TheveninStepVisualizer";
+import { NortonStepVisualizer } from "@/components/simulations/course/NortonStepVisualizer";
 
 export interface Exercise {
+  chapter?: string;
+  topic?: string;
+  difficulty?: string;
   id: string;
   title: string;
   problem: React.ReactNode;
@@ -29,7 +34,7 @@ export interface ExerciseSection {
 export const physicsExercises: ExerciseSection[] = [
   {
     id: "dc-circuits",
-    title: "DC Circuits (Ohm's Law & Power)",
+    title: "DC Circuits (Ohm&apos;s Law & Power)",
     color: "amber",
     type: "practice",
     source: "Internal",
@@ -132,6 +137,9 @@ export const physicsExercises: ExerciseSection[] = [
       {
         id: "serie1-ex1",
         title: "Exercise 1: Branch Currents",
+        chapter: "chapter-1",
+        topic: "Kirchhoff",
+        difficulty: "Medium",
         problem: (
           <div className="space-y-4">
             <p>Determine the current intensities in the three branches.</p>
@@ -200,6 +208,9 @@ export const physicsExercises: ExerciseSection[] = [
       {
         id: "serie1-ex2",
         title: "Exercise 2: Network Analysis & Bridge",
+        chapter: "chapter-1",
+        topic: "Kirchhoff",
+        difficulty: "Hard",
         problem: (
           <div className="space-y-4">
             <p>1. Indicate the number of nodes, branches, and loops.</p>
@@ -260,6 +271,9 @@ export const physicsExercises: ExerciseSection[] = [
       {
         id: "serie1-ex3",
         title: "Exercise 3: Voltage Divider Theorem",
+        chapter: "chapter-1",
+        topic: "Voltage Divider",
+        difficulty: "Easy",
         problem: (
           <div className="space-y-4">
             <p>Using the Voltage Divider Theorem:</p>
@@ -300,11 +314,14 @@ export const physicsExercises: ExerciseSection[] = [
       {
         id: "serie1-ex4",
         title: "Exercise 4: Kirchhoff & Superposition",
+        chapter: "chapter-1",
+        topic: "Superposition",
+        difficulty: "Medium",
         problem: (
           <div className="space-y-4">
             <p>Calculate the current intensity in the AB branch by applying:</p>
             <ul className="list-disc list-inside">
-              <li>Kirchhoff's Laws</li>
+              <li>Kirchhoff&apos;s Laws</li>
               <li>The Superposition Theorem</li>
             </ul>
           </div>
@@ -312,7 +329,7 @@ export const physicsExercises: ExerciseSection[] = [
         formalSolution: (
           <div className="space-y-4">
             <p>
-              Using Kirchhoff's Laws, you establish the Node and Mesh equations
+              Using Kirchhoff&apos;s Laws, you establish the Node and Mesh equations
               to solve the system matrix.
             </p>
             <p>
@@ -326,6 +343,9 @@ export const physicsExercises: ExerciseSection[] = [
       {
         id: "serie1-ex5",
         title: "Exercise 5: Superposition & Potentials",
+        chapter: "chapter-1",
+        topic: "Superposition",
+        difficulty: "Hard",
         problem: (
           <div className="space-y-4">
             <p>
@@ -363,12 +383,15 @@ export const physicsExercises: ExerciseSection[] = [
       },
       {
         id: "serie1-ex6",
-        title: "Exercise 6: Thévenin's Theorem",
+        title: "Exercise 6: Thévenin&apos;s Theorem",
+        chapter: "chapter-1",
+        topic: "Thevenin",
+        difficulty: "Medium",
         problem: (
           <div className="space-y-4">
             <p>
               Calculate the current <Latex>{`$I$`}</Latex> by applying
-              Thévenin's theorem.
+              Thévenin&apos;s theorem.
             </p>
             <p>
               Given:{" "}
@@ -380,7 +403,7 @@ export const physicsExercises: ExerciseSection[] = [
         aiExplanation: (
           <div className="space-y-6">
             <div className="h-[600px] w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0">
-              <FreeformCircuitStudio initialPreset="Serie 1: Exercise 6" />
+              <TheveninStepVisualizer />
             </div>
           </div>
         ),
@@ -397,7 +420,7 @@ export const physicsExercises: ExerciseSection[] = [
             </p>
             <p>
               <Latex>{`$E_{th}$`}</Latex> is the open-circuit voltage across the
-              terminals, typically found using Millman's theorem or
+              terminals, typically found using Millman&apos;s theorem or
               Superposition on the remaining circuit.
             </p>
             <p>
@@ -410,16 +433,19 @@ export const physicsExercises: ExerciseSection[] = [
       },
       {
         id: "serie1-ex7",
-        title: "Exercise 7: Norton's and Thévenin's Theorems",
+        title: "Exercise 7: Norton&apos;s and Thévenin&apos;s Theorems",
+        chapter: "chapter-1",
+        topic: "Norton",
+        difficulty: "Medium",
         problem: (
           <div className="space-y-4">
             <p>
-              1. Using Norton's theorem, calculate the current that passes
+              1. Using Norton&apos;s theorem, calculate the current that passes
               through the load <Latex>{`$R$`}</Latex> and deduce the voltage{" "}
               <Latex>{`$U_{AB}$`}</Latex>.
             </p>
             <p>
-              2. Using Thévenin's theorem, calculate the voltage{" "}
+              2. Using Thévenin&apos;s theorem, calculate the voltage{" "}
               <Latex>{`$U_{AB}$`}</Latex> and deduce the current{" "}
               <Latex>{`$I$`}</Latex>.
             </p>
@@ -433,7 +459,7 @@ export const physicsExercises: ExerciseSection[] = [
         aiExplanation: (
           <div className="space-y-6">
             <div className="h-[600px] w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0">
-              <FreeformCircuitStudio initialPreset="Serie 1: Exercise 7" />
+              <NortonStepVisualizer />
             </div>
           </div>
         ),

@@ -23,7 +23,7 @@ log*
 
 # testing
 /coverage
-
+/.venv/
 # next.js
 /.next/
 /out/
@@ -34,7 +34,7 @@ log*
 # misc
 .DS_Store
 *.pem
-
+*.py
 # debug
 npm-debug.log*
 yarn-debug.log*
