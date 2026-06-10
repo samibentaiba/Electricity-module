@@ -2,6 +2,7 @@ import React from "react";
 import Latex from "react-latex-next";
 import { FreeformCircuitStudio } from "@/components/simulations/sandbox/FreeformCircuitStudio";
 import { BiasingCircuitSandbox } from "@/components/simulations/course/BiasingCircuitSandbox";
+import { cropImages } from "@/lib/images";
 
 export interface Exercise {
   chapter?: string;
@@ -45,8 +46,8 @@ export const exam2025Exercises: ExerciseSection[] = [
         chapter: "chapter-1",
         topic: "Norton's Theorem",
         difficulty: "Medium",
-        diagramImageSrc: "/images/crops/exam/page-1_crop_1.png",
-        solutionImageSrc: "/images/crops/examsol/page-1_crop_1.png",
+        diagramImageSrc: cropImages.exam.page1_crop1,
+        solutionImageSrc: cropImages.examsol.page1_crop1,
         problem: (
           <div className="space-y-4">
             <p>
@@ -120,7 +121,7 @@ export const exam2025Exercises: ExerciseSection[] = [
         chapter: "chapter-2",
         topic: "Diodes",
         difficulty: "Easy",
-        diagramImageSrc: "/images/crops/exam/page-3_crop_1.png",
+        diagramImageSrc: cropImages.exam.page3_crop1,
         problem: (
           <div className="space-y-4">
             <p>
@@ -191,7 +192,7 @@ export const exam2025Exercises: ExerciseSection[] = [
         chapter: "chapter-3",
         topic: "BJT Transistors",
         difficulty: "Hard",
-        diagramImageSrc: "/images/crops/exam/page-5_crop_1.png",
+        diagramImageSrc: cropImages.exam.page5_crop1,
         problem: (
           <div className="space-y-4">
             <p>

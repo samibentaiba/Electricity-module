@@ -5,6 +5,7 @@ import { VoltageDivider } from "@/components/calculators/VoltageDivider";
 import dynamic from "next/dynamic";
 import { Skeleton } from "@/components/ui/skeleton";
 import { LearningChunk } from "@/components/ui/LearningChunk";
+import { courseImages } from "@/lib/images";
 
 const SuperpositionVisualizer = dynamic(
   () =>
@@ -68,7 +69,7 @@ export function Section1_3() {
             <div className="mt-8">
               <LearningChunk
                 simulation={<VoltageDivider />}
-                imageSrc="/images/course/chapter-1/voltage-divider.jpg"
+                imageSrc={courseImages.chapter1.voltageDivider}
                 explanation={
                   <>
                     <h3>Voltage Divider Circuit</h3>
@@ -146,7 +147,7 @@ export function Section1_3() {
             <div className="mt-8">
               <LearningChunk
                 simulation={<SuperpositionVisualizer />}
-                imageSrc="/images/course/chapter-1/superposition.jpg"
+                imageSrc={courseImages.chapter1.superposition}
                 explanation={
                   <>
                     <h3>The Superposition Principle</h3>

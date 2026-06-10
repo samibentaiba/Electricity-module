@@ -8,6 +8,7 @@ import { NortonStepVisualizer } from "@/components/simulations/course/NortonStep
 import { BiasingCircuitSandbox } from "@/components/simulations/course/BiasingCircuitSandbox";
 import { TransistorLoadLineVisualizer } from "@/components/simulations/course/TransistorLoadLineVisualizer";
 import { TransistorExplorer } from "@/components/simulations/course/TransistorExplorer";
+import { cropImages, courseImages } from "@/lib/images";
 
 export interface Exercise {
   chapter?: string;
@@ -143,8 +144,8 @@ export const physicsExercises: ExerciseSection[] = [
         chapter: "chapter-1",
         topic: "Kirchhoff",
         difficulty: "Medium",
-        diagramImageSrc: "/images/crops/ws1/page-1_crop_1.png",
-        solutionImageSrc: "/images/crops/ws1sol/page-1_crop_1.png",
+        diagramImageSrc: cropImages.ws1.page1_crop1,
+        solutionImageSrc: cropImages.ws1sol.page1_crop1,
         problem: (
           <div className="space-y-4">
             <p>Determine the current intensities in the three branches.</p>
@@ -216,8 +217,8 @@ export const physicsExercises: ExerciseSection[] = [
         chapter: "chapter-1",
         topic: "Kirchhoff",
         difficulty: "Hard",
-        diagramImageSrc: "/images/crops/ws1/page-1_crop_2.png",
-        solutionImageSrc: "/images/crops/ws1sol/page-2_crop_1.png",
+        diagramImageSrc: cropImages.ws1.page1_crop2,
+        solutionImageSrc: cropImages.ws1sol.page2_crop1,
         problem: (
           <div className="space-y-4">
             <p>1. Indicate the number of nodes, branches, and loops.</p>
@@ -285,8 +286,8 @@ export const physicsExercises: ExerciseSection[] = [
         chapter: "chapter-1",
         topic: "Voltage Divider",
         difficulty: "Easy",
-        diagramImageSrc: "/images/crops/ws1/page-2_crop_1.png",
-        solutionImageSrc: "/images/crops/ws1sol/page-2_crop_1.png",
+        diagramImageSrc: cropImages.ws1.page2_crop1,
+        solutionImageSrc: cropImages.ws1sol.page2_crop1,
         problem: (
           <div className="space-y-4">
             <p>Using the Voltage Divider Theorem:</p>
@@ -329,7 +330,7 @@ export const physicsExercises: ExerciseSection[] = [
         chapter: "chapter-1",
         topic: "Superposition",
         difficulty: "Medium",
-        diagramImageSrc: "/images/crops/ws1/page-2_crop_2.png",
+        diagramImageSrc: cropImages.ws1.page2_crop2,
         problem: (
           <div className="space-y-4">
             <p>Calculate the current intensity in the AB branch by applying:</p>
@@ -392,8 +393,8 @@ export const physicsExercises: ExerciseSection[] = [
         chapter: "chapter-1",
         topic: "Superposition",
         difficulty: "Hard",
-        diagramImageSrc: "/images/crops/ws1/page-3_crop_1.png",
-        solutionImageSrc: "/images/crops/ws1sol/page-3_crop_1.png",
+        diagramImageSrc: cropImages.ws1.page3_crop1,
+        solutionImageSrc: cropImages.ws1sol.page3_crop1,
         problem: (
           <div className="space-y-4">
             <p>
@@ -434,8 +435,8 @@ export const physicsExercises: ExerciseSection[] = [
         chapter: "chapter-1",
         topic: "Thevenin",
         difficulty: "Medium",
-        diagramImageSrc: "/images/course/chapter-1/thevenin-step1.jpg",
-        solutionImageSrc: "/images/crops/ws1sol/page-6_crop_1.png",
+        diagramImageSrc: courseImages.chapter1.theveninStep1,
+        solutionImageSrc: cropImages.ws1sol.page6_crop1,
         problem: (
           <div className="space-y-4">
             <p>
@@ -499,7 +500,8 @@ export const physicsExercises: ExerciseSection[] = [
         chapter: "chapter-1",
         topic: "Norton",
         difficulty: "Medium",
-        diagramImageSrc: "/images/course/chapter-1/norton-step1.jpg",
+        diagramImageSrc: courseImages.chapter1.nortonStep1,
+        solutionImageSrc: cropImages.ws1sol.page6_crop2,
         problem: (
           <div className="space-y-4">
             <p>
@@ -572,7 +574,8 @@ export const physicsExercises: ExerciseSection[] = [
       {
         id: "serie2-ex1a",
         title: "Exercise 1(a): Diode State Analysis",
-        diagramImageSrc: "/images/crops/ws2/page-1_crop_1.png",
+        diagramImageSrc: cropImages.ws2.page1_crop1,
+        solutionImageSrc: cropImages.ws2sol.page1_crop1,
         problem: (
           <div className="space-y-4">
             <p>Determine the conducting or cutoff state (ON or OFF) of the diode for Circuit 1(a).</p>
@@ -611,7 +614,8 @@ export const physicsExercises: ExerciseSection[] = [
       {
         id: "serie2-ex1b",
         title: "Exercise 1(b): Opposing Sources",
-        diagramImageSrc: "/images/crops/ws2/page-1_crop_2.png",
+        diagramImageSrc: cropImages.ws2.page1_crop2,
+        solutionImageSrc: cropImages.ws2sol.page2_crop1,
         problem: (
           <div className="space-y-4">
             <p>Determine the conducting or cutoff state (ON or OFF) of the diode for Circuit 1(b).</p>
@@ -644,8 +648,8 @@ export const physicsExercises: ExerciseSection[] = [
       {
         id: "serie2-ex2",
         title: "Exercise 2: Parallel Diode Clamping",
-        diagramImageSrc: "/images/crops/ws2/page-1_crop_3.png",
-        solutionImageSrc: "/images/crops/ws2sol/page-2_crop_1.png",
+        diagramImageSrc: cropImages.ws2.page1_crop3,
+        solutionImageSrc: cropImages.ws2sol.page2_crop1,
         problem: (
           <div className="space-y-4">
             <p>1. Determine whether the diode is in the conducting (ON) or cutoff (OFF) state.</p>
@@ -679,8 +683,8 @@ export const physicsExercises: ExerciseSection[] = [
       {
         id: "serie2-ex6",
         title: "Exercise 6: AC Source with Diode",
-        diagramImageSrc: "/images/crops/ws2/page-2_crop_1.png",
-        solutionImageSrc: "/images/crops/ws2sol/page-4_crop_1.png",
+        diagramImageSrc: cropImages.ws2.page2_crop1,
+        solutionImageSrc: cropImages.ws2sol.page4_crop1,
         problem: (
           <div className="space-y-4">
             <p>Consider an AC source <Latex>{`$e(t) = 5 \\sin(\\frac{2\\pi}{T} t)$`}</Latex> with <Latex>{`$T=20\\text{ms}$`}</Latex>. A diode is placed in parallel with <Latex>{`$R_2$`}</Latex>, pointing upwards (anode to ground).</p>
@@ -785,7 +789,7 @@ export const physicsExercises: ExerciseSection[] = [
       {
         id: "serie3-ex1",
         title: "Exercise 1: Biasing Configurations Comparison",
-        diagramImageSrc: "/images/crops/ws3/page-1_crop_1.png",
+        diagramImageSrc: cropImages.ws3.page1_crop1,
         problem: (
           <div className="space-y-4">
             <p>Consider three transistor biasing circuits: (a) Fixed Bias, (b) Collector Feedback, and (c) Emitter-Stabilized Bias.</p>
@@ -825,7 +829,7 @@ export const physicsExercises: ExerciseSection[] = [
       {
         id: "serie3-ex2",
         title: "Exercise 2: Voltage-Divider Bias",
-        diagramImageSrc: "/images/crops/ws3/page-2_crop_1.png",
+        diagramImageSrc: cropImages.ws3.page2_crop1,
         problem: (
           <div className="space-y-4">
             <p>A biasing circuit of an NPN transistor uses two base resistors.</p>
@@ -850,7 +854,7 @@ export const physicsExercises: ExerciseSection[] = [
       {
         id: "serie3-ex3",
         title: "Exercise 3: KCL and Thevenin on Base",
-        diagramImageSrc: "/images/crops/ws3/page-2_crop_2.png",
+        diagramImageSrc: cropImages.ws3.page2_crop2,
         problem: (
           <div className="space-y-4">
             <p>1. Using Kirchhoff&apos;s node law, find the expression relating: <Latex>{`$V_{BE}, I_B, U_0, R_a$`}</Latex>, and <Latex>{`$R_b$`}</Latex>.</p>
@@ -888,7 +892,7 @@ export const physicsExercises: ExerciseSection[] = [
       {
         id: "serie3-ex4",
         title: "Exercise 4: Bias Circuit Design",
-        diagramImageSrc: "/images/crops/ws3/page-3_crop_1.png",
+        diagramImageSrc: cropImages.ws3.page3_crop1,
         problem: (
           <div className="space-y-4">
             <p>A silicon NPN transistor is biased using a voltage-divider circuit. The desired Q point is: <Latex>{`$V_{CE0} = 5\\text{V}, I_{C0} = 1\\text{mA}, V_{BE0} = 0.7\\text{V}$`}</Latex>.</p>

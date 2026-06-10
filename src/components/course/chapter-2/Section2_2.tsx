@@ -4,6 +4,7 @@ import Latex from "react-latex-next";
 import dynamic from "next/dynamic";
 import { Skeleton } from "@/components/ui/skeleton";
 import { LearningChunk } from "@/components/ui/LearningChunk";
+import { courseImages } from "@/lib/images";
 
 const DiodeCurveVisualizer = dynamic(() => import("@/components/simulations/course/DiodeCurveVisualizer").then(m => m.DiodeCurveVisualizer), { 
   ssr: false, loading: () => <Skeleton className="h-[400px] w-full rounded-2xl" /> 
@@ -54,7 +55,7 @@ export function Section2_2() {
               <div className="mt-4">
                 <LearningChunk
                   simulation={<PNJunctionVisualizer initialBias={-5} />}
-                  imageSrc="/images/course/chapter-2/reverse-bias.jpg"
+                  imageSrc={courseImages.chapter2.reverseBias}
                   explanation={
                     <>
                       <h3>Reverse Bias</h3>
@@ -77,7 +78,7 @@ export function Section2_2() {
               <div className="mt-4">
                 <LearningChunk
                   simulation={<PNJunctionVisualizer initialBias={1} />}
-                  imageSrc="/images/course/chapter-2/forward-bias.jpg"
+                  imageSrc={courseImages.chapter2.forwardBias}
                   explanation={
                     <>
                       <h3>Forward Bias</h3>
@@ -120,7 +121,7 @@ export function Section2_2() {
           <div className="mt-8">
             <LearningChunk
               simulation={<DiodeCurveVisualizer />}
-              imageSrc="/images/course/chapter-2/zener-curve.jpg"
+              imageSrc={courseImages.chapter2.zenerCurve}
               explanation={
                 <>
                   <h3>Zener Diode I-V Curve</h3>

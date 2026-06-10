@@ -4,6 +4,7 @@ import Latex from "react-latex-next";
 import dynamic from "next/dynamic";
 import { Skeleton } from "@/components/ui/skeleton";
 import { LearningChunk } from "@/components/ui/LearningChunk";
+import { courseImages } from "@/lib/images";
 
 const PNJunctionVisualizer = dynamic(() => import("@/components/simulations/course/PNJunctionVisualizer").then(m => m.PNJunctionVisualizer), { 
   ssr: false, loading: () => <Skeleton className="h-[400px] w-full rounded-2xl" /> 
@@ -82,7 +83,7 @@ export function Section2_1() {
           <div className="mt-8">
             <LearningChunk
               simulation={<DopingVisualizer />}
-              imageSrc="/images/course/chapter-2/n-type.jpg"
+              imageSrc={courseImages.chapter2.nType}
               explanation={
                 <>
                   <h3>Extrinsic Semiconductors (Doping)</h3>
@@ -108,7 +109,7 @@ export function Section2_1() {
           <div className="mt-8">
             <LearningChunk
               simulation={<PNJunctionVisualizer />}
-              imageSrc="/images/course/chapter-2/pn-junction.jpg"
+              imageSrc={courseImages.chapter2.pnJunction}
               explanation={
                 <>
                   <h3>The PN Junction</h3>

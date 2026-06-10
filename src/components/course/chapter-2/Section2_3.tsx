@@ -4,6 +4,7 @@ import Latex from "react-latex-next";
 import dynamic from "next/dynamic";
 import { Skeleton } from "@/components/ui/skeleton";
 import { LearningChunk } from "@/components/ui/LearningChunk";
+import { courseImages } from "@/lib/images";
 
 const RectifierVisualizer = dynamic(() => import("@/components/simulations/course/RectifierVisualizer").then(m => m.RectifierVisualizer), { 
   ssr: false, loading: () => <Skeleton className="h-[400px] w-full rounded-2xl" /> 
@@ -62,7 +63,7 @@ export function Section2_3() {
           <div className="mt-8">
             <LearningChunk
               simulation={<RectifierVisualizer />}
-              imageSrc="/images/course/chapter-2/half-wave.jpg"
+              imageSrc={courseImages.chapter2.halfWave}
               explanation={
                 <>
                   <h3>Rectifier Circuits</h3>
@@ -105,7 +106,7 @@ export function Section2_3() {
             <div className="mt-6">
               <LearningChunk
                 simulation={<ZenerRegulatorVisualizer />}
-                imageSrc="/images/course/chapter-2/zener-regulator.jpg"
+                imageSrc={courseImages.chapter2.zenerRegulator}
                 explanation={
                   <>
                     <h3>Zener Voltage Regulator</h3>
