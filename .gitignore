@@ -24,6 +24,8 @@ log*
 # testing
 /coverage
 /.venv/
+/venv/
+*.js
 # next.js
 /.next/
 /out/

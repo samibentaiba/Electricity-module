@@ -13,6 +13,7 @@ export interface Exercise {
   formalSolution?: React.ReactNode;
   aiExplanation?: React.ReactNode;
   diagramImageSrc?: string;
+  solutionImageSrc?: string;
   solution?: React.ReactNode;
   source?: string;
 }
@@ -44,6 +45,8 @@ export const exam2025Exercises: ExerciseSection[] = [
         chapter: "chapter-1",
         topic: "Norton's Theorem",
         difficulty: "Medium",
+        diagramImageSrc: "/images/crops/exam/page-1_crop_1.png",
+        solutionImageSrc: "/images/crops/examsol/page-1_crop_1.png",
         problem: (
           <div className="space-y-4">
             <p>
@@ -117,6 +120,7 @@ export const exam2025Exercises: ExerciseSection[] = [
         chapter: "chapter-2",
         topic: "Diodes",
         difficulty: "Easy",
+        diagramImageSrc: "/images/crops/exam/page-3_crop_1.png",
         problem: (
           <div className="space-y-4">
             <p>
@@ -187,6 +191,7 @@ export const exam2025Exercises: ExerciseSection[] = [
         chapter: "chapter-3",
         topic: "BJT Transistors",
         difficulty: "Hard",
+        diagramImageSrc: "/images/crops/exam/page-5_crop_1.png",
         problem: (
           <div className="space-y-4">
             <p>
@@ -262,3 +267,4 @@ export const exam2025Exercises: ExerciseSection[] = [
     ]
   }
 ];
+

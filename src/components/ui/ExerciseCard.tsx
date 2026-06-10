@@ -1,31 +1,31 @@
 "use client";
 
 import { useState, ReactNode } from "react";
-import { Brain, GraduationCap, ImageIcon, MonitorPlay } from "lucide-react";
+import { Brain, GraduationCap, ImageIcon, MonitorPlay, FileCheck2 } from "lucide-react";
 
 interface ExerciseCardProps {
   title?: string;
   problem: ReactNode;
   formalSolution?: ReactNode;
   aiExplanation?: ReactNode;
-  // NEW: For diagram/reference image support
   diagramImageSrc?: string;
+  solutionImageSrc?: string;
   // Fallback for backwards compatibility
   solution?: ReactNode;
   // Source of this exercise (e.g., external resource, internal)
   source?: string;
-  
 }
 
-export function ExerciseCard({ title = "Exercise", problem, formalSolution, aiExplanation, diagramImageSrc, solution, source }: ExerciseCardProps) {
+export function ExerciseCard({ title = "Exercise", problem, formalSolution, aiExplanation, diagramImageSrc, solutionImageSrc, solution, source }: ExerciseCardProps) {
   // Determine available modes
   const hasAI = !!aiExplanation;
   const hasFormal = !!formalSolution || !!solution;
   const hasDiagram = !!diagramImageSrc;
+  const hasSolutionDiagram = !!solutionImageSrc;
 
-  // Default mode: prefer AI if available, otherwise formal, otherwise diagram
-  const [mode, setMode] = useState<'ai' | 'formal' | 'diagram'>(
-    hasAI ? 'ai' : hasFormal ? 'formal' : 'diagram'
+  // Default mode: prefer AI if available, otherwise formal, otherwise diagram, then solution diagram
+  const [mode, setMode] = useState<'ai' | 'formal' | 'diagram' | 'solution-diagram'>(
+    hasAI ? 'ai' : hasFormal ? 'formal' : hasDiagram ? 'diagram' : 'solution-diagram'
   );
 
   // Fallbacks if only 'solution' is passed
@@ -92,6 +92,19 @@ export function ExerciseCard({ title = "Exercise", problem, formalSolution, aiEx
             Reference Diagram
           </button>
         )}
+        {hasSolutionDiagram && (
+          <button
+            onClick={() => setMode('solution-diagram')}
+            className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-all ${
+              mode === 'solution-diagram'
+                ? 'bg-pink-500/20 text-pink-400 border border-pink-500/50 shadow-lg shadow-pink-500/10'
+                : 'bg-slate-900 text-slate-500 border border-slate-800 hover:bg-slate-800 hover:text-slate-300'
+            }`}
+          >
+            <FileCheck2 className="w-4 h-4" />
+            Solution Diagram
+          </button>
+        )}
       </div>
 
       {/* Mode Content */}
@@ -110,22 +123,14 @@ export function ExerciseCard({ title = "Exercise", problem, formalSolution, aiEx
       )}
 
       {mode === 'diagram' && hasDiagram && (
-        <div className="animate-in fade-in slide-in-from-bottom-2 duration-500 bg-slate-950/50 p-6 rounded-xl border border-purple-500/20">
-          <div className="flex flex-col lg:flex-row gap-8 p-6">
-            <div className="lg:w-1/2 flex items-center justify-center bg-slate-900 rounded-xl overflow-hidden p-4 border border-slate-800">
-              {/* Fallback to simple img tag for broader compatibility */}
-              <img src={diagramImageSrc} alt="Reference diagram" className="w-full h-auto object-contain rounded" />
-            </div>
-            <div className="lg:w-1/2 flex flex-col justify-center prose prose-invert">
-              <div className="bg-slate-800/50 p-6 rounded-xl border border-slate-700/50 h-full">
-                {displayFormal || (
-                  <p className="text-slate-400 text-center py-8">
-                    No formal solution available for this exercise.
-                  </p>
-                )}
-              </div>
-            </div>
-          </div>
+        <div className="animate-in fade-in slide-in-from-bottom-2 duration-500 bg-slate-950/50 p-6 rounded-xl border border-purple-500/20 flex justify-center">
+          <img src={diagramImageSrc} alt="Reference diagram" className="max-w-full h-auto object-contain rounded" />
+        </div>
+      )}
+
+      {mode === 'solution-diagram' && hasSolutionDiagram && (
+        <div className="animate-in fade-in slide-in-from-bottom-2 duration-500 bg-slate-950/50 p-6 rounded-xl border border-pink-500/20 flex justify-center">
+          <img src={solutionImageSrc} alt="Solution diagram" className="max-w-full h-auto object-contain rounded" />
         </div>
       )}
     </div>

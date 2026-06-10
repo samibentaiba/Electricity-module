@@ -155,6 +155,7 @@ export default function Exam2025Page() {
                   aiExplanation={exercise.aiExplanation}
                   solution={exercise.solution}
                   diagramImageSrc={exercise.diagramImageSrc}
+                  solutionImageSrc={exercise.solutionImageSrc}
                   source={exercise.source}
                 />
               ))}
