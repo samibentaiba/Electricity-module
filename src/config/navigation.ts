@@ -33,8 +33,6 @@ export const navigationConfig = [
     icon: Library,
     items: [
       { href: "/course/exercises", label: "Worksheets & Practice" },
-      { href: "/course/exam2025", label: "Exam 2024-2025" },
-      { href: "/resources", label: "Extra Practice Library" },
     ]
   },
   
