@@ -42,15 +42,15 @@ export function DiodeCurveVisualizer() {
 
         <div>
           <div className="flex justify-between text-sm mb-2 font-mono">
-            <span className="text-slate-400">-8V</span>
+            <span className="text-slate-400">-6V</span>
             <span className="text-amber-400 font-bold">V = {voltage.toFixed(2)}V</span>
-            <span className="text-slate-400">+3V</span>
+            <span className="text-slate-400">+2V</span>
           </div>
           <input
             type="range"
-            min="-8"
-            max="3"
-            step="0.1"
+            min="-6"
+            max="2"
+            step="0.05"
             value={voltage}
             onChange={(e) => setVoltage(parseFloat(e.target.value))}
             className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-amber-500"
@@ -75,10 +75,10 @@ export function DiodeCurveVisualizer() {
 
       {/* Visualization */}
       <div className="p-8 md:w-2/3 flex items-center justify-center min-h-[400px] bg-slate-950 relative overflow-hidden">
-        <Mafs zoom={false} pan={false} viewBox={{ x: [-8, 4], y: [-50, 50] }}>
+        <Mafs zoom={false} pan={false} viewBox={{ x: [-6, 2], y: [-50, 50] }} preserveAspectRatio={false}>
           <Coordinates.Cartesian 
-            xAxis={{ labels: (x) => `${x}V`, axis: true, lines: 1 }}
-            yAxis={{ labels: (y) => y % 25 === 0 && y !== 0 ? `${y}mA` : "", axis: true, lines: 25 }}
+            xAxis={{ lines: 1, labels: (x) => x !== 0 ? `${x}V` : "" }}
+            yAxis={{ lines: 25, labels: (y) => y !== 0 ? `${y}mA` : "" }}
           />
 
           {/* Forward Bias Curve */}
@@ -92,10 +92,10 @@ export function DiodeCurveVisualizer() {
 
           {/* Annotations */}
           <Line.Segment point1={[V_f, -5]} point2={[V_f, 5]} color="#10b981" style="dashed" />
-          <Text x={V_f + 1} y={-10} color="#10b981" size={14}>V_f (0.7V)</Text>
+          <Text x={V_f + 0.5} y={-10} color="#10b981" size={14}>V_f (0.7V)</Text>
 
           <Line.Segment point1={[V_z, -5]} point2={[V_z, 5]} color="#f43f5e" style="dashed" />
-          <Text x={V_z - 1} y={10} color="#f43f5e" size={14}>V_z (-5V)</Text>
+          <Text x={V_z - 0.5} y={10} color="#f43f5e" size={14}>V_z (-5V)</Text>
 
           {/* Interactive Operating Point */}
           <Point x={voltage} y={current} color="#fbbf24" />
