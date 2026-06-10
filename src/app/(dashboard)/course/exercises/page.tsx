@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { ExerciseCard } from "@/components/ui/ExerciseCard";
 import { physicsExercises } from "@/data/course-exercises";
-import { FileDown, BookOpen } from "lucide-react";
+import { FileDown, BookOpen, FileCheck } from "lucide-react";
 
 export default function ExercisesPage() {
   const [isMounted, setIsMounted] = useState(false);
@@ -50,6 +50,36 @@ export default function ExercisesPage() {
         description="Interactive exercises, formal solutions, and reference diagrams for DC and AC Circuits."
         color="default"
       />
+
+      {/* DOWNLOADABLE WORKSHEETS SECTION */}
+      <div className="mb-12 space-y-4">
+        <h2 className="text-2xl font-bold tracking-tight">Worksheets & Solutions</h2>
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+          {[1, 2, 3].map((num) => (
+            <div key={num} className="border rounded-lg p-5 flex flex-col gap-4 bg-card shadow-sm hover:shadow-md transition-shadow">
+              <h3 className="font-semibold text-lg border-b pb-2">Worksheet {num}</h3>
+              <div className="flex flex-col gap-2 mt-auto">
+                <a
+                  href={`/worksheet${num}.pdf`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-sm text-blue-600 hover:underline dark:text-blue-400"
+                >
+                  <FileDown className="w-4 h-4" /> View Worksheet
+                </a>
+                <a
+                  href={`/Worksheet ${num} Solution.pdf`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-sm text-green-600 hover:underline dark:text-green-400"
+                >
+                  <FileCheck className="w-4 h-4" /> View Solution
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
 
       <div className="space-y-16 mt-12">
         {/* Delay rendering complex lists until client-side mount to prevent hydration mismatch */}
