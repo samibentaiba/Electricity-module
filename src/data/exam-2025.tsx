@@ -73,7 +73,7 @@ export const exam2025Exercises: ExerciseSection[] = [
                 Explore the circuit for Exercise 1! You can simulate the full circuit, or remove the load <Latex>{`$R_4$`}</Latex> (by replacing it with a wire to find <Latex>{`$I_N$`}</Latex>) to verify the Norton equivalent values.
               </p>
             </div>
-            <div className="h-[600px] w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0">
+            <div className="w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0">
               <FreeformCircuitStudio initialPreset="Exam 2025: Exercise 1" />
             </div>
           </div>
@@ -171,7 +171,7 @@ export const exam2025Exercises: ExerciseSection[] = [
                 This circuit functions as a half-wave rectifier with a protective clamping diode. When the AC source is positive, current flows through <Latex>{`$D_1$`}</Latex> and the resistor. When negative, <Latex>{`$D_1$`}</Latex> blocks and <Latex>{`$D_2$`}</Latex> shorts the reverse voltage to ground.
               </p>
             </div>
-            <div className="h-[600px] w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0 bg-slate-950">
+            <div className="w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0 bg-slate-950">
               <FreeformCircuitStudio initialPreset="Exam 2025: Exercise 2" />
             </div>
           </div>
@@ -219,7 +219,7 @@ export const exam2025Exercises: ExerciseSection[] = [
                 This simulation explores the stability of Collector Feedback Bias! Adjust Beta and notice how the collector voltage feeds back to the base, resisting drastic changes in the operating point.
               </p>
             </div>
-            <div className="h-[600px] w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0 bg-slate-950 p-4">
+            <div className="w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0 bg-slate-950 p-4">
               <BiasingCircuitSandbox />
             </div>
           </div>

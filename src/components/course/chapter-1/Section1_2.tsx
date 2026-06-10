@@ -10,7 +10,7 @@ const KirchhoffVisualizer = dynamic(
     ),
   {
     ssr: false,
-    loading: () => <Skeleton className="h-[600px] w-full rounded-2xl" />,
+    loading: () => <Skeleton className="w-full rounded-2xl" />,
   },
 );
 

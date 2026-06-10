@@ -167,7 +167,7 @@ export const physicsExercises: ExerciseSection[] = [
                 flowing through each branch.
               </p>
             </div>
-            <div className="h-[600px] w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0">
+            <div className="w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0">
               <FreeformCircuitStudio initialPreset="Serie 1: Exercise 1" />
             </div>
           </div>
@@ -237,7 +237,7 @@ export const physicsExercises: ExerciseSection[] = [
                 Interactive Bridge Simulator
               </h4>
             </div>
-            <div className="h-[600px] w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0">
+            <div className="w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0">
               <FreeformCircuitStudio initialPreset="Serie 1: Exercise 2" />
             </div>
           </div>
@@ -350,7 +350,7 @@ export const physicsExercises: ExerciseSection[] = [
                 Use the <span className="font-bold text-indigo-400">Superposition Analysis</span> button in the simulation below to automatically calculate the partial currents from each source independently!
               </p>
             </div>
-            <div className="h-[600px] w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0">
+            <div className="w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0">
               <FreeformCircuitStudio initialPreset="Serie 1: Exercise 4" />
             </div>
           </div>
@@ -452,7 +452,7 @@ export const physicsExercises: ExerciseSection[] = [
         ),
         aiExplanation: (
           <div className="space-y-6">
-            <div className="h-[600px] w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0">
+            <div className="w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0">
               <TheveninStepVisualizer />
             </div>
           </div>
@@ -523,7 +523,7 @@ export const physicsExercises: ExerciseSection[] = [
         ),
         aiExplanation: (
           <div className="space-y-6">
-            <div className="h-[600px] w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0">
+            <div className="w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0">
               <NortonStepVisualizer />
             </div>
           </div>
@@ -592,7 +592,7 @@ export const physicsExercises: ExerciseSection[] = [
                 <em> Note: The interactive simulator uses an ideal 0V threshold diode model for simplicity, while the formal solution accounts for the 0.7V Silicon threshold.</em>
               </p>
             </div>
-            <div className="h-[600px] w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0 bg-slate-950">
+            <div className="w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0 bg-slate-950">
               <FreeformCircuitStudio initialPreset="Serie 2: Exercise 1a" />
             </div>
           </div>
@@ -628,7 +628,7 @@ export const physicsExercises: ExerciseSection[] = [
             <div className="mb-4">
               <h4 className="font-bold text-emerald-400 mb-2">Interactive Circuit Simulation</h4>
             </div>
-            <div className="h-[600px] w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0 bg-slate-950">
+            <div className="w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0 bg-slate-950">
               <FreeformCircuitStudio initialPreset="Serie 2: Exercise 1b" />
             </div>
           </div>
@@ -662,7 +662,7 @@ export const physicsExercises: ExerciseSection[] = [
             <div className="mb-4">
               <h4 className="font-bold text-emerald-400 mb-2">Interactive Circuit Simulation</h4>
             </div>
-            <div className="h-[600px] w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0 bg-slate-950">
+            <div className="w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0 bg-slate-950">
               <FreeformCircuitStudio initialPreset="Serie 2: Exercise 2" />
             </div>
           </div>
@@ -698,7 +698,7 @@ export const physicsExercises: ExerciseSection[] = [
               <h4 className="font-bold text-emerald-400 mb-2">Rectifier Simulation</h4>
               <p className="text-slate-300">Interact with the simulation to see how a diode behaves under an AC source, clipping portions of the sinusoidal wave.</p>
             </div>
-            <div className="h-[600px] w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0 bg-slate-950 p-4">
+            <div className="w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0 bg-slate-950 p-4">
               <RectifierVisualizer />
             </div>
           </div>
@@ -804,7 +804,7 @@ export const physicsExercises: ExerciseSection[] = [
               <h4 className="font-bold text-amber-400 mb-2">Biasing Circuit Sandbox</h4>
               <p className="text-slate-300">Interact with the simulation below to explore different biasing configurations and see how they dynamically respond to changes in Beta (<Latex>{`$\\beta$`}</Latex>).</p>
             </div>
-            <div className="h-[600px] w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0 bg-slate-950 p-4">
+            <div className="w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0 bg-slate-950 p-4">
               <BiasingCircuitSandbox />
             </div>
           </div>
@@ -869,7 +869,7 @@ export const physicsExercises: ExerciseSection[] = [
               <h4 className="font-bold text-amber-400 mb-2">Transistor Explorer</h4>
               <p className="text-slate-300">Interact with the core parameters of a transistor to see how base current controls the larger collector current.</p>
             </div>
-            <div className="h-[600px] w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0 bg-slate-950 p-4">
+            <div className="w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0 bg-slate-950 p-4">
               <TransistorExplorer />
             </div>
           </div>
@@ -937,7 +937,7 @@ export const physicsExercises: ExerciseSection[] = [
               <h4 className="font-bold text-amber-400 mb-2">Transistor Load Line Visualizer</h4>
               <p className="text-slate-300">See how the Operating Point (Q Point) is established at the intersection of the DC Load Line and the transistor&apos;s output characteristic curve.</p>
             </div>
-            <div className="h-[600px] w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0 bg-slate-950 p-4">
+            <div className="w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0 bg-slate-950 p-4">
               <TransistorLoadLineVisualizer />
             </div>
           </div>

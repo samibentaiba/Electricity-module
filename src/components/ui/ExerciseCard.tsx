@@ -33,7 +33,7 @@ export function ExerciseCard({ title = "Exercise", problem, formalSolution, aiEx
   const displayAI = aiExplanation;
 
   return (
-    <div className="rounded-2xl border border-slate-800 bg-slate-900/50 p-6 shadow-xl mb-8 overflow-hidden">
+    <div className="rounded-2xl border border-slate-800 bg-slate-900/50 p-6 shadow-xl mb-8">
       {title && (
         <div className="flex items-center justify-between mb-4">
           <div className="flex flex-1 items-center space-x-2">

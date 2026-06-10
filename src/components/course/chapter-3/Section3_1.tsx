@@ -9,15 +9,15 @@ const TransistorValveVisualizer = dynamic(() => import("@/components/simulations
 });
 
 const TransistorExplorer = dynamic(() => import("@/components/simulations/course/TransistorExplorer").then(m => m.TransistorExplorer), { 
-  ssr: false, loading: () => <Skeleton className="h-[600px] w-full rounded-2xl" /> 
+  ssr: false, loading: () => <Skeleton className="w-full rounded-2xl" /> 
 });
 
 const TransistorLoadLineVisualizer = dynamic(() => import("@/components/simulations/course/TransistorLoadLineVisualizer").then(m => m.TransistorLoadLineVisualizer), { 
-  ssr: false, loading: () => <Skeleton className="h-[600px] w-full rounded-2xl" /> 
+  ssr: false, loading: () => <Skeleton className="w-full rounded-2xl" /> 
 });
 
 const BiasingCircuitSandbox = dynamic(() => import("@/components/simulations/course/BiasingCircuitSandbox").then(m => m.BiasingCircuitSandbox), { 
-  ssr: false, loading: () => <Skeleton className="h-[600px] w-full rounded-2xl" /> 
+  ssr: false, loading: () => <Skeleton className="w-full rounded-2xl" /> 
 });
 
 export function Section3_1() {
