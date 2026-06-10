@@ -244,26 +244,30 @@ export const physicsExercises: ExerciseSection[] = [
               <strong>2. After BD removed:</strong>
             </p>
             <p>
-              The bridge becomes two parallel branches: (R1 + R2) and (R3 + R4).
+              The bridge becomes two parallel branches: (<Latex>{`$R_1$`}</Latex> and <Latex>{`$R_2$`}</Latex>) and (<Latex>{`$R_3$`}</Latex> and <Latex>{`$R_4$`}</Latex>).
             </p>
             <p>
-              <Latex>{`$R_{top} = 1 + 1 = 2\\Omega$`}</Latex>
+              <Latex>{`$R_{left} = 1 + 1 = 2\\Omega$`}</Latex>
             </p>
             <p>
-              <Latex>{`$R_{bot} = 1 + 1 = 2\\Omega$`}</Latex>
+              <Latex>{`$R_{right} = 1 + 1 = 2\\Omega$`}</Latex>
             </p>
             <p>
-              The total resistance{" "}
-              <Latex>{`$R_{eq} = 2 || 2 = 1\\Omega$`}</Latex>.
+              The equivalent resistance of the parallel branches is:{" "}
+              <Latex>{`$R_{p} = \\frac{2 \\times 2}{2 + 2} = 1\\Omega$`}</Latex>.
+            </p>
+            <p>
+              The total resistance of the circuit including <Latex>{`$R_i$`}</Latex> is:{" "}
+              <Latex>{`$R_{eq} = R_i + R_p = 4 + 1 = 5\\Omega$`}</Latex>.
             </p>
             <p>
               Total current from source:{" "}
-              <Latex>{`$I = \\frac{E}{R_{eq}} = \\frac{10}{1} = 10\\text{A}$`}</Latex>
+              <Latex>{`$I = \\frac{E}{R_{eq}} = \\frac{10}{5} = 2\\text{A}$`}</Latex>
               .
             </p>
             <p>
-              Current splits equally:{" "}
-              <Latex>{`$I_{top} = 5\\text{A}, I_{bot} = 5\\text{A}$`}</Latex>.
+              Current splits equally because the branches are identical (2Ω each):{" "}
+              <Latex>{`$I_{R1} = I_{R2} = 1\\text{A}$`}</Latex> and <Latex>{`$I_{R3} = I_{R4} = 1\\text{A}$`}</Latex>.
             </p>
           </div>
         ),
@@ -326,17 +330,50 @@ export const physicsExercises: ExerciseSection[] = [
             </ul>
           </div>
         ),
+        aiExplanation: (
+          <div className="space-y-6">
+            <div className="mb-4">
+              <h4 className="font-bold text-indigo-400 mb-2">
+                Interactive Superposition Simulator
+              </h4>
+              <p className="text-slate-300">
+                Use the <span className="font-bold text-indigo-400">Superposition Analysis</span> button in the simulation below to automatically calculate the partial currents from each source independently!
+              </p>
+            </div>
+            <div className="h-[600px] w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0">
+              <FreeformCircuitStudio initialPreset="Serie 1: Exercise 4" />
+            </div>
+          </div>
+        ),
         formalSolution: (
           <div className="space-y-4">
             <p>
-              Using Kirchhoff&apos;s Laws, you establish the Node and Mesh equations
-              to solve the system matrix.
+              <strong>1. Superposition Theorem:</strong>
             </p>
             <p>
-              Using Superposition, you turn off all independent sources except
-              one, compute the partial current in AB, and sum the partial
-              currents.
+              <strong>Subcircuit 1 (<Latex>{`$E_1$`}</Latex> active, <Latex>{`$E_2$`}</Latex> shorted):</strong>{" "}
+              <Latex>{`$R_2$`}</Latex> and <Latex>{`$R_3$`}</Latex> are in parallel: <Latex>{`$R_{23} = \\frac{4 \\times 6}{4 + 6} = 2.4\\text{k}\\Omega$`}</Latex>.
+              Total current <Latex>{`$I_1' = \\frac{E_1}{R_1 + R_{23}} = \\frac{4}{16 + 2.4} = 0.2174\\text{mA}$`}</Latex>.
+              Current divider gives <Latex>{`$I_3' = I_1' \\times \\frac{R_2}{R_2 + R_3} = 0.087\\text{mA}$`}</Latex> (downwards).
             </p>
+            <p>
+              <strong>Subcircuit 2 (<Latex>{`$E_2$`}</Latex> active, <Latex>{`$E_1$`}</Latex> shorted):</strong>{" "}
+              <Latex>{`$R_1$`}</Latex> and <Latex>{`$R_3$`}</Latex> are in parallel: <Latex>{`$R_{13} = \\frac{16 \\times 6}{16 + 6} = 4.364\\text{k}\\Omega$`}</Latex>.
+              Total current <Latex>{`$I_2'' = \\frac{E_2}{R_2 + R_{13}} = \\frac{24}{4 + 4.364} = 2.87\\text{mA}$`}</Latex>.
+              Current divider gives <Latex>{`$I_3'' = I_2'' \\times \\frac{R_1}{R_1 + R_3} = 2.087\\text{mA}$`}</Latex> (downwards).
+            </p>
+            <p>
+              <strong>Total Current:</strong> <Latex>{`$I_3 = I_3' + I_3'' = 2.174\\text{mA}$`}</Latex>.
+            </p>
+            <p>
+              <strong>2. Kirchhoff&apos;s Laws:</strong>
+            </p>
+            <p>
+              Mesh 1: <Latex>{`$16 I_1 + 6 I_3 = 4$`}</Latex><br/>
+              Mesh 2: <Latex>{`$4 I_2 + 6 I_3 = 24$`}</Latex><br/>
+              Node: <Latex>{`$I_1 + I_2 = I_3$`}</Latex>
+            </p>
+            <p>Solving the system yields <Latex>{`$I_3 = \\frac{100}{46} = 2.174\\text{mA}$`}</Latex>.</p>
           </div>
         ),
       },
@@ -410,22 +447,36 @@ export const physicsExercises: ExerciseSection[] = [
         formalSolution: (
           <div className="space-y-4">
             <p>
-              Remove the load resistor to find <Latex>{`$E_{th}$`}</Latex> and{" "}
-              <Latex>{`$R_{th}$`}</Latex> between the terminals.
+              <strong>1. Calculate Thévenin Voltage (<Latex>{`$V_{th}$`}</Latex>):</strong>
             </p>
             <p>
-              <Latex>{`$R_{th}$`}</Latex> is found by short-circuiting{" "}
-              <Latex>{`$E_1$`}</Latex> and <Latex>{`$E_2$`}</Latex>, then
-              calculating the equivalent resistance.
+              Remove the load <Latex>{`$R_c$`}</Latex>. The voltage <Latex>{`$V_{th}$`}</Latex> is the open-circuit voltage at node A (<Latex>{`$V_A$`}</Latex>).
+              Using Nodal Analysis at node C (junction of <Latex>{`$R_1, R_2, R_3$`}</Latex>):
             </p>
             <p>
-              <Latex>{`$E_{th}$`}</Latex> is the open-circuit voltage across the
-              terminals, typically found using Millman&apos;s theorem or
-              Superposition on the remaining circuit.
+              <Latex>{`$\\frac{V_C - 10}{100} + \\frac{V_C - 5}{50} + \\frac{V_C - V_{th}}{100} = 0$`}</Latex>
             </p>
             <p>
-              Finally, reconnect the load to calculate{" "}
-              <Latex>{`$I = \\frac{E_{th}}{R_{th} + R_{load}}$`}</Latex>.
+              Nodal Analysis at node A: <Latex>{`$\\frac{V_A - V_C}{100} + \\frac{V_A}{100} = 0 \\implies V_C = 2V_{th}$`}</Latex>.
+            </p>
+            <p>
+              Substituting <Latex>{`$V_C$`}</Latex> yields: <Latex>{`$7V_{th} - 20 = 0 \\implies V_{th} = \\frac{20}{7} \\approx 2.857\\text{V}$`}</Latex>.
+            </p>
+            <p>
+              <strong>2. Calculate Thévenin Resistance (<Latex>{`$R_{th}$`}</Latex>):</strong>
+            </p>
+            <p>
+              Short-circuit the voltage sources.
+              <Latex>{`$R_1$`}</Latex> and <Latex>{`$R_2$`}</Latex> are in parallel: <Latex>{`$R_{12} = 33.33\\Omega$`}</Latex>.
+              This is in series with <Latex>{`$R_3$`}</Latex>: <Latex>{`$133.33\\Omega$`}</Latex>.
+              This combination is in parallel with <Latex>{`$R_4$`}</Latex>:
+              <Latex>{`$R_{th} = \\frac{100 \\times 133.33}{100 + 133.33} = \\frac{400}{7} \\approx 57.14\\Omega$`}</Latex>.
+            </p>
+            <p>
+              <strong>3. Calculate Current:</strong>
+            </p>
+            <p>
+              <Latex>{`$I = \\frac{V_{th}}{R_{th} + R_c} = \\frac{20/7}{400/7 + R_c} = \\frac{20}{400 + 7R_c}$`}</Latex>.
             </p>
           </div>
         ),
@@ -466,21 +517,31 @@ export const physicsExercises: ExerciseSection[] = [
         formalSolution: (
           <div className="space-y-4">
             <p>
-              <strong>1. Norton:</strong> Short-circuit the load to find{" "}
-              <Latex>{`$I_N$`}</Latex>. Turn off sources to find{" "}
-              <Latex>{`$R_N$`}</Latex>. Then{" "}
-              <Latex>{`$I_{load} = I_N \\frac{R_N}{R_N + R}$`}</Latex> and{" "}
-              <Latex>{`$U_{AB} = I_{load} \\times R$`}</Latex>.
+              <strong>1. Norton&apos;s Theorem:</strong>
             </p>
             <p>
-              <strong>2. Thévenin:</strong> Open-circuit the load to find{" "}
-              <Latex>{`$E_{th}$`}</Latex>. <Latex>{`$R_{th} = R_N$`}</Latex>.
-              Then <Latex>{`$U_{AB} = E_{th} \\frac{R}{R_{th} + R}$`}</Latex>{" "}
-              and <Latex>{`$I = \\frac{U_{AB}}{R}$`}</Latex>.
+              Short terminals A and B to find Norton current <Latex>{`$I_N$`}</Latex>.
+              <Latex>{`$I_1 = \\frac{10}{200} = 0.05\\text{A}$`}</Latex> and <Latex>{`$I_2 = \\frac{8}{200} = 0.04\\text{A}$`}</Latex>.
+              <Latex>{`$I_N = 0.05 + 0.04 = 0.09\\text{A}$`}</Latex>.
             </p>
             <p>
-              Both methods will mathematically yield the exact same voltage and
-              current for the load!
+              Turn off sources to find Norton resistance. <Latex>{`$R_1, R_2, R_3$`}</Latex> are in parallel:
+              <Latex>{`$R_N = \\frac{200}{3} = 66.67\\Omega$`}</Latex>.
+            </p>
+            <p>
+              Using current divider for the load <Latex>{`$R$`}</Latex>:
+              <Latex>{`$I = 0.09 \\times \\frac{66.67}{66.67 + 100} = 0.036\\text{A}$`}</Latex>.
+              <Latex>{`$U_{AB} = 100 \\times 0.036 = 3.6\\text{V}$`}</Latex>.
+            </p>
+            <p>
+              <strong>2. Thévenin&apos;s Theorem:</strong>
+            </p>
+            <p>
+              <Latex>{`$R_{th} = R_N = 66.67\\Omega$`}</Latex>.
+              By source transformation: <Latex>{`$V_{th} = I_N \\times R_N = 0.09 \\times 66.67 = 6\\text{V}$`}</Latex>.
+            </p>
+            <p>
+              Current through load: <Latex>{`$I = \\frac{6}{66.67 + 100} = 0.036\\text{A}$`}</Latex>. Both methods yield identical results!
             </p>
           </div>
         ),

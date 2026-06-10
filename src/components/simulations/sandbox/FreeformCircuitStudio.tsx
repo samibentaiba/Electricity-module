@@ -153,7 +153,7 @@ const CIRCUIT_PRESETS: { name: string; nodes: Node[]; elements: CircuitElement[]
     ]
   },
   {
-    name: "Exam 2025: Q1",
+    name: "Serie 1: Exercise 4",
     nodes: [
       { id: "n0", x: 400, y: 400 },
       { id: "n1", x: 200, y: 400 },
@@ -168,7 +168,7 @@ const CIRCUIT_PRESETS: { name: string; nodes: Node[]; elements: CircuitElement[]
       { id: "e3", type: "Resistor", value: 16, n1: "n2", n2: "n3" },
       { id: "e4", type: "Resistor", value: 6, n1: "n3", n2: "n0" },
       { id: "e5", type: "Resistor", value: 4, n1: "n3", n2: "n4" },
-      { id: "e6", type: "Resistor", value: 24, n1: "n4", n2: "n5" },
+      { id: "e6", type: "V_DC", value: 24, n1: "n4", n2: "n5" },
       { id: "e7", type: "Wire", value: 0, n1: "n5", n2: "n0" }
     ]
   },
@@ -183,10 +183,10 @@ const CIRCUIT_PRESETS: { name: string; nodes: Node[]; elements: CircuitElement[]
       { id: "n5", x: 600, y: 200 }
     ],
     elements: [
-      { id: "e1", type: "V_DC", value: 20, n1: "n1", n2: "n4" },
+      { id: "e1", type: "V_DC", value: 20, n1: "n4", n2: "n1" },
       { id: "e2", type: "Resistor", value: 2, n1: "n4", n2: "n3" },
       { id: "e3", type: "Resistor", value: 10, n1: "n3", n2: "n0" },
-      { id: "e4", type: "V_DC", value: 70, n1: "n2", n2: "n5" },
+      { id: "e4", type: "V_DC", value: 70, n1: "n5", n2: "n2" },
       { id: "e5", type: "Resistor", value: 5, n1: "n5", n2: "n3" },
       { id: "e6", type: "Wire", value: 0, n1: "n1", n2: "n0" },
       { id: "e7", type: "Wire", value: 0, n1: "n2", n2: "n0" }
@@ -195,43 +195,45 @@ const CIRCUIT_PRESETS: { name: string; nodes: Node[]; elements: CircuitElement[]
   {
     name: "Serie 1: Exercise 2",
     nodes: [
-      { id: "n0", x: 400, y: 400 },
-      { id: "n1", x: 200, y: 300 },
-      { id: "n2", x: 400, y: 200 },
-      { id: "n3", x: 600, y: 300 },
-      { id: "n4", x: 400, y: 500 },
-      { id: "n5", x: 200, y: 500 }
+      { id: "n0", x: 400, y: 450 },
+      { id: "n1", x: 250, y: 300 },
+      { id: "n2", x: 400, y: 150 },
+      { id: "n3", x: 550, y: 300 },
+      { id: "n4", x: 200, y: 450 },
+      { id: "n5", x: 200, y: 150 },
+      { id: "n6", x: 200, y: 250 }
     ],
     elements: [
-      { id: "e1", type: "V_DC", value: 10, n1: "n5", n2: "n1" },
-      { id: "e2", type: "Wire", value: 0, n1: "n5", n2: "n4" },
-      { id: "e3", type: "Wire", value: 0, n1: "n3", n2: "n4" },
-      { id: "e4", type: "Resistor", value: 1, n1: "n1", n2: "n2" },
-      { id: "e5", type: "Resistor", value: 1, n1: "n2", n2: "n3" },
-      { id: "e6", type: "Resistor", value: 1, n1: "n1", n2: "n0" },
-      { id: "e7", type: "Resistor", value: 1, n1: "n0", n2: "n3" },
-      { id: "e8", type: "Resistor", value: 4, n1: "n2", n2: "n0" },
-      { id: "e9", type: "Wire", value: 0, n1: "n0", n2: "n4" }
+      { id: "e1", type: "Resistor", value: 1, n1: "n2", n2: "n1" },
+      { id: "e2", type: "Resistor", value: 1, n1: "n2", n2: "n3" },
+      { id: "e3", type: "Resistor", value: 1, n1: "n1", n2: "n0" },
+      { id: "e4", type: "Resistor", value: 1, n1: "n3", n2: "n0" },
+      { id: "e5", type: "V_DC", value: 10, n1: "n6", n2: "n4" },
+      { id: "e6", type: "Resistor", value: 4, n1: "n6", n2: "n5" },
+      { id: "e7", type: "Wire", value: 0, n1: "n5", n2: "n2" },
+      { id: "e8", type: "Wire", value: 0, n1: "n4", n2: "n0" }
     ]
   },
   {
     name: "Serie 1: Exercise 6",
     nodes: [
-      { id: "n0", x: 400, y: 400 },
-      { id: "n1", x: 200, y: 400 },
-      { id: "n2", x: 600, y: 400 },
-      { id: "n3", x: 400, y: 200 },
-      { id: "n4", x: 200, y: 200 },
-      { id: "n5", x: 600, y: 200 }
+      { id: "n0", x: 400, y: 450 },
+      { id: "n1", x: 200, y: 450 },
+      { id: "n2", x: 600, y: 450 },
+      { id: "n3", x: 400, y: 150 },
+      { id: "n4", x: 200, y: 150 },
+      { id: "n5", x: 600, y: 150 },
+      { id: "n6", x: 400, y: 300 }
     ],
     elements: [
-      { id: "e1", type: "V_DC", value: 10, n1: "n1", n2: "n4" },
+      { id: "e1", type: "V_DC", value: 10, n1: "n4", n2: "n1" },
       { id: "e2", type: "Resistor", value: 100, n1: "n4", n2: "n3" },
-      { id: "e3", type: "Resistor", value: 50, n1: "n3", n2: "n0" },
-      { id: "e4", type: "V_DC", value: 5, n1: "n2", n2: "n5" },
-      { id: "e5", type: "Resistor", value: 100, n1: "n5", n2: "n3" },
-      { id: "e6", type: "Resistor", value: 100, n1: "n1", n2: "n0" },
-      { id: "e7", type: "Wire", value: 0, n1: "n2", n2: "n0" }
+      { id: "e3", type: "V_DC", value: 5, n1: "n5", n2: "n2" },
+      { id: "e4", type: "Resistor", value: 50, n1: "n5", n2: "n3" },
+      { id: "e5", type: "Resistor", value: 100, n1: "n3", n2: "n6" },
+      { id: "e6", type: "Resistor", value: 100, n1: "n6", n2: "n0" },
+      { id: "e7", type: "Wire", value: 0, n1: "n1", n2: "n0" },
+      { id: "e8", type: "Wire", value: 0, n1: "n2", n2: "n0" }
     ]
   },
   {
@@ -242,16 +244,21 @@ const CIRCUIT_PRESETS: { name: string; nodes: Node[]; elements: CircuitElement[]
       { id: "n2", x: 600, y: 400 },
       { id: "n3", x: 400, y: 200 },
       { id: "n4", x: 200, y: 200 },
-      { id: "n5", x: 600, y: 200 }
+      { id: "n5", x: 600, y: 200 },
+      { id: "n6", x: 300, y: 400 },
+      { id: "n7", x: 300, y: 200 }
     ],
     elements: [
-      { id: "e1", type: "V_DC", value: 10, n1: "n1", n2: "n4" },
+      { id: "e1", type: "V_DC", value: 10, n1: "n4", n2: "n1" },
       { id: "e2", type: "Resistor", value: 200, n1: "n4", n2: "n3" },
       { id: "e3", type: "Resistor", value: 100, n1: "n3", n2: "n0" },
-      { id: "e4", type: "V_DC", value: 8, n1: "n2", n2: "n5" },
+      { id: "e4", type: "V_DC", value: 8, n1: "n5", n2: "n2" },
       { id: "e5", type: "Resistor", value: 200, n1: "n5", n2: "n3" },
-      { id: "e6", type: "Wire", value: 0, n1: "n1", n2: "n0" },
-      { id: "e7", type: "Wire", value: 0, n1: "n2", n2: "n0" }
+      { id: "e6", type: "Resistor", value: 200, n1: "n7", n2: "n6" },
+      { id: "e7", type: "Wire", value: 0, n1: "n7", n2: "n3" },
+      { id: "e8", type: "Wire", value: 0, n1: "n6", n2: "n0" },
+      { id: "e9", type: "Wire", value: 0, n1: "n1", n2: "n0" },
+      { id: "e10", type: "Wire", value: 0, n1: "n2", n2: "n0" }
     ]
   }
 ];
