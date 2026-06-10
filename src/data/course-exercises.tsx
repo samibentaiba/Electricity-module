@@ -5,6 +5,9 @@ import { DiodeCurveVisualizer } from "@/components/simulations/course/DiodeCurve
 import { RectifierVisualizer } from "@/components/simulations/course/RectifierVisualizer";
 import { TheveninStepVisualizer } from "@/components/simulations/course/TheveninStepVisualizer";
 import { NortonStepVisualizer } from "@/components/simulations/course/NortonStepVisualizer";
+import { BiasingCircuitSandbox } from "@/components/simulations/course/BiasingCircuitSandbox";
+import { TransistorLoadLineVisualizer } from "@/components/simulations/course/TransistorLoadLineVisualizer";
+import { TransistorExplorer } from "@/components/simulations/course/TransistorExplorer";
 
 export interface Exercise {
   chapter?: string;
@@ -559,66 +562,376 @@ export const physicsExercises: ExerciseSection[] = [
     source: "Saad Dahlab University of Blida - Exercise Series 2",
     exercises: [
       {
-        id: "serie2-ex1",
-        title: "Exercise 1: Diode Polarization & State Analysis",
+        id: "serie2-ex1a",
+        title: "Exercise 1(a): Diode State Analysis",
         problem: (
           <div className="space-y-4">
-            <p>For the given circuit, determine the state of the diode (conducting or blocked), the current <Latex>{`$I$`}</Latex>, and the voltage <Latex>{`$V_D$`}</Latex> across the diode.</p>
-            <p>Given: <Latex>{`$E = 12\\text{V}$`}</Latex>, <Latex>{`$R = 1\\text{k}\\Omega$`}</Latex>. Assume a Silicon diode with a threshold voltage <Latex>{`$V_0 = 0.7\\text{V}$`}</Latex>.</p>
+            <p>Determine the conducting or cutoff state (ON or OFF) of the diode for Circuit 1(a).</p>
+            <p>If the diode is conducting, find the current <Latex>{`$I$`}</Latex> flowing through it.</p>
+            <p>Given: <Latex>{`$E = 10\\text{V}$`}</Latex>, <Latex>{`$R_1 = 200\\Omega, R_2 = 300\\Omega, R_3 = 300\\Omega$`}</Latex>. Assume the diode is ideal with a threshold voltage of <Latex>{`$0.7\\text{V}$`}</Latex>.</p>
           </div>
         ),
         aiExplanation: (
           <div className="space-y-6">
             <div className="mb-4">
-              <h4 className="font-bold text-emerald-400 mb-2">Interactive Diode Curve</h4>
-              <p className="text-slate-300">Observe how the diode only conducts when the forward voltage exceeds the 0.7V threshold characteristic of Silicon. Below this threshold, it acts as an open circuit.</p>
+              <h4 className="font-bold text-emerald-400 mb-2">Interactive Circuit Simulation</h4>
+              <p className="text-slate-300">
+                You can explore the circuit visually! 
+                <em> Note: The interactive simulator uses an ideal 0V threshold diode model for simplicity, while the formal solution accounts for the 0.7V Silicon threshold.</em>
+              </p>
             </div>
-            <div className="h-[500px] w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0 bg-slate-950 p-4">
-              {/* Utilizes your existing Diode visualizer */}
-              <DiodeCurveVisualizer />
+            <div className="h-[600px] w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0 bg-slate-950">
+              <FreeformCircuitStudio initialPreset="Serie 2: Exercise 1a" />
             </div>
           </div>
         ),
         formalSolution: (
           <div className="space-y-4">
-            <p><strong>1. Diode State:</strong> The anode is connected to the positive terminal of the voltage source. Since <Latex>{`$E = 12\\text{V} > 0.7\\text{V}$`}</Latex>, the diode is forward-biased and conducting.</p>
-            <p><strong>2. Voltage <Latex>{`$V_D$`}</Latex>:</strong> Because it is conducting, the voltage across it is locked to its threshold: <Latex>{`$V_D = V_0 = 0.7\\text{V}$`}</Latex>.</p>
-            <p><strong>3. Current <Latex>{`$I$`}</Latex>:</strong> Applying Kirchhoffs Voltage Law to the mesh: <Latex>{`$E - V_D - R \\cdot I = 0$`}</Latex>.</p>
-            <p><Latex>{`$$I = \\frac{E - V_D}{R} = \\frac{12 - 0.7}{1000} = 11.3\\text{mA}$$`}</Latex></p>
+            <p><strong>Step 1: Assume the diode is OFF.</strong></p>
+            <p>If the diode is open, no current flows through <Latex>{`$R_3$`}</Latex>. The voltage <Latex>{`$V_p$`}</Latex> across the parallel branch is a voltage divider between <Latex>{`$E$`}</Latex>, <Latex>{`$R_1$`}</Latex>, and <Latex>{`$R_2$`}</Latex>:</p>
+            <p><Latex>{`$$V_p = E \\frac{R_2}{R_1 + R_2} = 10 \\times \\frac{300}{500} = 6\\text{V}$$`}</Latex></p>
+            <p>Since <Latex>{`$6\\text{V} > 0.7\\text{V}$`}</Latex>, our assumption is false. The diode is <strong>ON</strong>.</p>
+            <p><strong>Step 2: Calculate current with diode ON.</strong></p>
+            <p>Replace the diode with a <Latex>{`$0.7\\text{V}$`}</Latex> voltage drop. Apply Nodal Analysis at <Latex>{`$V_p$`}</Latex>:</p>
+            <p><Latex>{`$$\\frac{10 - V_p}{200} = \\frac{V_p}{300} + \\frac{V_p - 0.7}{300}$$`}</Latex></p>
+            <p>Multiplying by 600 yields <Latex>{`$30 - 3V_p = 2V_p + 2V_p - 1.4 \\implies 7V_p = 31.4 \\implies V_p \\approx 4.486\\text{V}$`}</Latex>.</p>
+            <p>The current through the diode is: <Latex>{`$I_D = \\frac{V_p - 0.7}{R_3} = \\frac{3.786}{300} = 12.62\\text{mA}$`}</Latex>.</p>
+          </div>
+        )
+      },
+      {
+        id: "serie2-ex1b",
+        title: "Exercise 1(b): Opposing Sources",
+        problem: (
+          <div className="space-y-4">
+            <p>Determine the conducting or cutoff state (ON or OFF) of the diode for Circuit 1(b).</p>
+            <p>If the diode is conducting, find the current <Latex>{`$I$`}</Latex> flowing through it.</p>
+            <p>Given: <Latex>{`$E_1 = 10\\text{V}, E_2 = 5\\text{V}, R_4 = 60\\Omega, R = 400\\Omega$`}</Latex>. Assume a threshold voltage of <Latex>{`$0.7\\text{V}$`}</Latex>.</p>
+          </div>
+        ),
+        aiExplanation: (
+          <div className="space-y-6">
+            <div className="mb-4">
+              <h4 className="font-bold text-emerald-400 mb-2">Interactive Circuit Simulation</h4>
+            </div>
+            <div className="h-[600px] w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0 bg-slate-950">
+              <FreeformCircuitStudio initialPreset="Serie 2: Exercise 1b" />
+            </div>
+          </div>
+        ),
+        formalSolution: (
+          <div className="space-y-4">
+            <p><strong>Step 1: Check Diode State.</strong></p>
+            <p>The two voltage sources oppose each other. <Latex>{`$E_1$`}</Latex> (10V) pushes clockwise, while <Latex>{`$E_2$`}</Latex> (5V) pushes counter-clockwise. Since <Latex>{`$10\\text{V} > 5\\text{V}$`}</Latex>, the net voltage forces current clockwise, forward-biasing the diode. The diode is <strong>ON</strong>.</p>
+            <p><strong>Step 2: Calculate Current.</strong></p>
+            <p>Apply Kirchhoff&apos;s Voltage Law around the single loop:</p>
+            <p><Latex>{`$$E_1 - R_4 I - V_D - R I - E_2 = 0$$`}</Latex></p>
+            <p><Latex>{`$$10 - 60I - 0.7 - 400I - 5 = 0 \\implies 460I = 4.3$$`}</Latex></p>
+            <p><Latex>{`$$I = \\frac{4.3}{460} \\approx 9.35\\text{mA}$$`}</Latex></p>
           </div>
         )
       },
       {
         id: "serie2-ex2",
-        title: "Exercise 2: Half-Wave Rectification",
+        title: "Exercise 2: Parallel Diode Clamping",
         problem: (
           <div className="space-y-4">
-            <p>A sinusoidal voltage <Latex>{`$v_e(t) = 15 \\sin(\\omega t)$`}</Latex> is applied to a half-wave rectifier circuit comprising an ideal diode and a load resistance <Latex>{`$R_L = 100\\Omega$`}</Latex>.</p>
-            <ol className="list-decimal list-inside space-y-2">
-              <li>Plot the output voltage <Latex>{`$v_s(t)$`}</Latex>.</li>
-              <li>Calculate the average output voltage <Latex>{`$V_{moy}$`}</Latex>.</li>
-              <li>Calculate the maximum current <Latex>{`$I_{max}$`}</Latex> flowing through the load.</li>
-            </ol>
+            <p>1. Determine whether the diode is in the conducting (ON) or cutoff (OFF) state.</p>
+            <p>2. If the diode is conducting, determine the current <Latex>{`$I$`}</Latex> flowing through it. Assume <Latex>{`$V_D = 0.7\\text{V}$`}</Latex>.</p>
+            <p>Given: <Latex>{`$E = 10\\text{V}, R_1 = 150\\Omega, R_2 = 60\\Omega$`}</Latex>, with the diode in parallel with <Latex>{`$R_2$`}</Latex>.</p>
+          </div>
+        ),
+        aiExplanation: (
+          <div className="space-y-6">
+            <div className="mb-4">
+              <h4 className="font-bold text-emerald-400 mb-2">Interactive Circuit Simulation</h4>
+            </div>
+            <div className="h-[600px] w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0 bg-slate-950">
+              <FreeformCircuitStudio initialPreset="Serie 2: Exercise 2" />
+            </div>
+          </div>
+        ),
+        formalSolution: (
+          <div className="space-y-4">
+            <p><strong>1. Determine Diode State:</strong></p>
+            <p>Assume the diode is OFF. The voltage across its terminals would be: <Latex>{`$V_{open} = 10 \\times \\frac{60}{150 + 60} = 2.85\\text{V}$`}</Latex>.</p>
+            <p>Since <Latex>{`$2.85\\text{V} > 0.7\\text{V}$`}</Latex>, the diode must be <strong>ON</strong>.</p>
+            <p><strong>2. Calculate Currents:</strong></p>
+            <p>The diode clamps the voltage across <Latex>{`$R_2$`}</Latex> to <Latex>{`$0.7\\text{V}$`}</Latex>. The total current from the source is:</p>
+            <p><Latex>{`$$I_{total} = \\frac{E - V_D}{R_1} = \\frac{10 - 0.7}{150} = 62\\text{mA}$$`}</Latex></p>
+            <p>The current flowing through <Latex>{`$R_2$`}</Latex> is: <Latex>{`$I_{R2} = \\frac{V_D}{R_2} = \\frac{0.7}{60} = 11.67\\text{mA}$`}</Latex>.</p>
+            <p>By KCL, the current through the diode is: <Latex>{`$I_D = I_{total} - I_{R2} = 62 - 11.67 = 50.33\\text{mA}$`}</Latex>.</p>
+          </div>
+        )
+      },
+      {
+        id: "serie2-ex6",
+        title: "Exercise 6: AC Source with Diode",
+        problem: (
+          <div className="space-y-4">
+            <p>Consider an AC source <Latex>{`$e(t) = 5 \\sin(\\frac{2\\pi}{T} t)$`}</Latex> with <Latex>{`$T=20\\text{ms}$`}</Latex>. A diode is placed in parallel with <Latex>{`$R_2$`}</Latex>, pointing upwards (anode to ground).</p>
+            <p>Determine the voltage across <Latex>{`$R_2$`}</Latex> (<Latex>{`$U_{R2}$`}</Latex>).</p>
+            <p>Given: <Latex>{`$V_D = 0.6\\text{V}$`}</Latex> and <Latex>{`$R_1 = R_2 = 1\\text{k}\\Omega$`}</Latex>.</p>
           </div>
         ),
         aiExplanation: (
           <div className="space-y-6">
             <div className="mb-4">
               <h4 className="font-bold text-emerald-400 mb-2">Rectifier Simulation</h4>
-              <p className="text-slate-300">Interact with the simulation to see how the diode clips the negative half-cycle of the AC waveform, converting alternating current into pulsating direct current.</p>
+              <p className="text-slate-300">Interact with the simulation to see how a diode behaves under an AC source, clipping portions of the sinusoidal wave.</p>
             </div>
-            <div className="h-[600px] w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0">
-              {/* Utilizes your existing Rectifier visualizer */}
+            <div className="h-[600px] w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0 bg-slate-950 p-4">
               <RectifierVisualizer />
             </div>
           </div>
         ),
         formalSolution: (
           <div className="space-y-4">
-            <p><strong>1. Average Voltage:</strong> For a half-wave rectifier, the average (DC) voltage is given by the formula <Latex>{`$V_{moy} = \\frac{V_{max}}{\\pi}$`}</Latex>.</p>
-            <p><Latex>{`$$V_{moy} = \\frac{15}{\\pi} \\approx 4.77\\text{V}$$`}</Latex></p>
-            <p><strong>2. Maximum Current:</strong> Apply Ohms law using the peak voltage and load resistance: <Latex>{`$I_{max} = \\frac{V_{max}}{R_L}$`}</Latex>.</p>
-            <p><Latex>{`$$I_{max} = \\frac{15}{100} = 0.15\\text{A} = 150\\text{mA}$$`}</Latex></p>
+            <p><strong>Analysis over one period T:</strong></p>
+            <p><strong>Positive Half-Cycle (t ∈ [0, 10 ms]):</strong> <Latex>{`$e(t) > 0$`}</Latex>. The potential at the top node is positive. The diode is reverse-biased (Blocked). The circuit acts as a simple voltage divider.</p>
+            <p><Latex>{`$$U_{R2}(t) = \\frac{1}{2} e(t) = 2.5 \\sin(\\omega t)$$`}</Latex></p>
+            <p><strong>Negative Half-Cycle (t ∈ [10 ms, 20 ms]):</strong> <Latex>{`$e(t) < 0$`}</Latex>. The potential at the top node is negative, making the anode (ground) more positive than the cathode. The diode is forward-biased (ON). It clamps the voltage across <Latex>{`$R_2$`}</Latex> to its negative threshold.</p>
+            <p><Latex>{`$$U_{R2}(t) = -V_D = -0.6\\text{V}$$`}</Latex></p>
+            <p>This creates a clipped half-wave sinusoidal output.</p>
+          </div>
+        )
+      },
+      {
+        id: "serie2-ex7",
+        title: "Exercise 7: Zener Diode Datasheet",
+        problem: (
+          <div className="space-y-4">
+            <p>The datasheet of a Zener diode provides the following: <Latex>{`$V_z = 12\\text{V}, I_z = 50\\text{mA}, I_{zmin} = 0.5\\text{mA}, I_{zmax} = 100\\text{mA}$`}</Latex> and <Latex>{`$R_z = 20\\Omega$`}</Latex>.</p>
+            <ol className="list-decimal list-inside space-y-2">
+              <li>Calculate the voltages <Latex>{`$V_{zmin}$`}</Latex> and <Latex>{`$V_{zmax}$`}</Latex>.</li>
+              <li>Determine the equation for the characteristic (the straight line) of the Zener diode.</li>
+              <li>Calculate the voltages <Latex>{`$V_{z1}$`}</Latex> and <Latex>{`$V_{z2}$`}</Latex> for the respective currents: <Latex>{`$I_{z1} = 20\\text{mA}$`}</Latex> and <Latex>{`$I_{z2} = 80\\text{mA}$`}</Latex>.</li>
+            </ol>
+          </div>
+        ),
+        formalSolution: (
+          <div className="space-y-4">
+            <p><strong>1. Calculate the voltages <Latex>{`$V_{zmin}$`}</Latex> and <Latex>{`$V_{zmax}$`}</Latex>:</strong></p>
+            <p>The real Zener diode is modeled by a threshold voltage <Latex>{`$V_{Z0}$`}</Latex> in series with its dynamic resistance <Latex>{`$R_Z$`}</Latex>. First, find <Latex>{`$V_{Z0}$`}</Latex> using the nominal values:</p>
+            <p><Latex>{`$$V_Z = V_{Z0} + R_Z I_Z \\implies 12 = V_{Z0} + (20 \\times 0.050) \\implies V_{Z0} = 11\\text{V}$$`}</Latex></p>
+            <p><Latex>{`$$V_{zmin} = 11 + (20 \\times 0.0005) = 11.01\\text{V}$$`}</Latex></p>
+            <p><Latex>{`$$V_{zmax} = 11 + (20 \\times 0.100) = 13.00\\text{V}$$`}</Latex></p>
+            <p><strong>2. Equation for the characteristic line:</strong></p>
+            <p>In the avalanche/breakdown region, the equation is: <Latex>{`$V_Z = 11 + 20 I_Z$`}</Latex>.</p>
+            <p><strong>3. Calculate <Latex>{`$V_{z1}$`}</Latex> and <Latex>{`$V_{z2}$`}</Latex>:</strong></p>
+            <p>For <Latex>{`$20\\text{mA}$`}</Latex>: <Latex>{`$V_{z1} = 11 + (20 \\times 0.020) = 11.4\\text{V}$`}</Latex>.</p>
+            <p>For <Latex>{`$80\\text{mA}$`}</Latex>: <Latex>{`$V_{z2} = 11 + (20 \\times 0.080) = 12.6\\text{V}$`}</Latex>.</p>
+          </div>
+        )
+      },
+      {
+        id: "serie2-ex8",
+        title: "Exercise 8: Zener Applications",
+        problem: (
+          <div className="space-y-4">
+            <p>Given: <Latex>{`$R = 1\\text{k}\\Omega, V_z = 6.2\\text{V}, V_D = 0.6\\text{V}$`}</Latex>.</p>
+            <p>1. Determine the voltage (<Latex>{`$U_{AB}$`}</Latex>) for (a) <Latex>{`$E = 12\\text{V}$`}</Latex> and (b) <Latex>{`$E = 5\\text{V}$`}</Latex>.</p>
+            <p>2. Determine the voltage (<Latex>{`$U_{AB}$`}</Latex>) for (a) <Latex>{`$E = 5\\text{V}$`}</Latex> and (b) <Latex>{`$E = -12\\text{V}$`}</Latex>.</p>
+          </div>
+        ),
+        aiExplanation: (
+          <div className="space-y-6">
+            <div className="mb-4">
+              <h4 className="font-bold text-emerald-400 mb-2">Interactive Zener Characteristic</h4>
+              <p className="text-slate-300">A Zener diode is designed to safely operate in reverse breakdown. Notice how once the reverse voltage hits -6.2V, it clamps the voltage!</p>
+            </div>
+            <div className="h-[500px] w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0 bg-slate-950 p-4">
+              <DiodeCurveVisualizer />
+            </div>
+          </div>
+        ),
+        formalSolution: (
+          <div className="space-y-4">
+            <p><strong>1. Zener Regulator mode (Positive E):</strong></p>
+            <p>The Zener is placed in reverse bias (cathode facing the positive potential).</p>
+            <p><strong>(a) <Latex>{`$E = 12\\text{V}$`}</Latex>:</strong> Since <Latex>{`$12\\text{V} > 6.2\\text{V}$`}</Latex>, the Zener diode undergoes breakdown. It regulates the voltage. Result: <Latex>{`$U_{AB} = V_Z = 6.2\\text{V}$`}</Latex>.</p>
+            <p><strong>(b) <Latex>{`$E = 5\\text{V}$`}</Latex>:</strong> Since <Latex>{`$5\\text{V} < 6.2\\text{V}$`}</Latex>, the Zener does not reach breakdown and acts as an open circuit (OFF). No current flows. Result: <Latex>{`$U_{AB} = E = 5.0\\text{V}$`}</Latex>.</p>
+            <p><strong>2. Varying polarities of E:</strong></p>
+            <p><strong>(a) <Latex>{`$E = 5\\text{V}$`}</Latex>:</strong> Same as above, blocked. Result: <Latex>{`$U_{AB} = 5.0\\text{V}$`}</Latex>.</p>
+            <p><strong>(b) <Latex>{`$E = -12\\text{V}$`}</Latex>:</strong> The voltage source polarity is reversed. This forward-biases the Zener diode (current pushes from anode to cathode). In forward bias, a Zener behaves exactly like a standard silicon diode. Result: <Latex>{`$U_{AB} = -V_D = -0.6\\text{V}$`}</Latex>.</p>
+          </div>
+        )
+      }
+    ]
+  },
+  {
+    id: "serie3",
+    title: "Serie 3: Bipolar Transistor",
+    originalPdf: "/worksheet3.pdf",
+    description: "Saad Dahlab University of Blida - Exercise Series 3",
+    color: "amber",
+    type: "worksheet",
+    source: "Saad Dahlab University of Blida - Exercise Series 3",
+    exercises: [
+      {
+        id: "serie3-ex1",
+        title: "Exercise 1: Biasing Configurations Comparison",
+        problem: (
+          <div className="space-y-4">
+            <p>Consider three transistor biasing circuits: (a) Fixed Bias, (b) Collector Feedback, and (c) Emitter-Stabilized Bias.</p>
+            <p>1. For each configuration, calculate the current <Latex>{`$I_C$`}</Latex> for <Latex>{`$\\beta = 100$`}</Latex> and then for <Latex>{`$\\beta = 300$`}</Latex>.</p>
+            <p>2. Which configuration is the least sensitive to variations in <Latex>{`$\\beta$`}</Latex>?</p>
+            <p>Given data: <Latex>{`$V_{CC} = 15\\text{V}, V_{BE} = 0.7\\text{V}, R_C = 1\\text{k}\\Omega, R_B = 220\\text{k}\\Omega, R_E = 110\\Omega$`}</Latex>.</p>
+          </div>
+        ),
+        aiExplanation: (
+          <div className="space-y-6">
+            <div className="mb-4">
+              <h4 className="font-bold text-amber-400 mb-2">Biasing Circuit Sandbox</h4>
+              <p className="text-slate-300">Interact with the simulation below to explore different biasing configurations and see how they dynamically respond to changes in Beta (<Latex>{`$\\beta$`}</Latex>).</p>
+            </div>
+            <div className="h-[600px] w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0 bg-slate-950 p-4">
+              <BiasingCircuitSandbox />
+            </div>
+          </div>
+        ),
+        formalSolution: (
+          <div className="space-y-4">
+            <p><strong>Configuration (a) - Fixed Bias:</strong></p>
+            <p>The base current is imposed by <Latex>{`$V_{CC}$`}</Latex> and <Latex>{`$R_B$`}</Latex>: <Latex>{`$V_{CC} = I_B \\cdot R_B + V_{BE}$`}</Latex>.</p>
+            <p><Latex>{`$$I_B = \\frac{15 - 0.7}{220\\text{k}\\Omega} = 65.0\\mu\\text{A}$$`}</Latex></p>
+            <p>For <Latex>{`$\\beta = 100$`}</Latex>: <Latex>{`$I_C = 6.50\\text{mA}$`}</Latex>. For <Latex>{`$\\beta = 300$`}</Latex>: <Latex>{`$I_C = 19.50\\text{mA}$`}</Latex>.</p>
+            <p><em>Conclusion:</em> <Latex>{`$I_C$`}</Latex> triples when <Latex>{`$\\beta$`}</Latex> triples. Very unstable.</p>
+            <p><strong>Configuration (b) - Collector Feedback:</strong></p>
+            <p><Latex>{`$I_B = \\frac{V_{CC} - V_{BE}}{\\beta \\cdot R_C + R_B}$`}</Latex>.</p>
+            <p>For <Latex>{`$\\beta = 100$`}</Latex>: <Latex>{`$I_C = 4.47\\text{mA}$`}</Latex>. For <Latex>{`$\\beta = 300$`}</Latex>: <Latex>{`$I_C = 8.25\\text{mA}$`}</Latex>. Ratio: 1.84.</p>
+            <p><strong>Configuration (c) - Emitter-Stabilized:</strong></p>
+            <p><Latex>{`$I_B = \\frac{V_{CC} - V_{BE}}{R_B + (1+\\beta)R_E}$`}</Latex>.</p>
+            <p>For <Latex>{`$\\beta = 100$`}</Latex>: <Latex>{`$I_C = 6.19\\text{mA}$`}</Latex>. For <Latex>{`$\\beta = 300$`}</Latex>: <Latex>{`$I_C = 16.95\\text{mA}$`}</Latex>. Ratio: 2.74.</p>
+            <p><em>Overall Conclusion:</em> The Collector Feedback configuration (b) is the least sensitive among these three.</p>
+          </div>
+        )
+      },
+      {
+        id: "serie3-ex2",
+        title: "Exercise 2: Voltage-Divider Bias",
+        problem: (
+          <div className="space-y-4">
+            <p>A biasing circuit of an NPN transistor uses two base resistors.</p>
+            <p>1. Transform the biasing circuit seen from the base into its Thevenin equivalent, and calculate <Latex>{`$V_{TH}$`}</Latex> and <Latex>{`$R_{TH}$`}</Latex>.</p>
+            <p>2. Calculate the collector current <Latex>{`$I_C$`}</Latex> for <Latex>{`$\\beta = 100$`}</Latex> and <Latex>{`$\\beta = 300$`}</Latex>. Draw a conclusion.</p>
+            <p>Given: <Latex>{`$V_{CC} = 15\\text{V}, V_{BE} = 0.7\\text{V}, R_1 = 6.8\\text{k}\\Omega, R_2 = 2.2\\text{k}\\Omega, R_C = 3\\text{k}\\Omega$`}</Latex>, and <Latex>{`$R_E = 2\\text{k}\\Omega$`}</Latex>.</p>
+          </div>
+        ),
+        formalSolution: (
+          <div className="space-y-4">
+            <p><strong>1. Transformation into Thevenin Equivalent:</strong></p>
+            <p><Latex>{`$$V_{TH} = V_{CC} \\frac{R_2}{R_1 + R_2} = 15 \\times \\frac{2.2}{6.8 + 2.2} = 3.67\\text{V}$$`}</Latex></p>
+            <p><Latex>{`$$R_{TH} = R_1 || R_2 = \\frac{6.8 \\times 2.2}{6.8 + 2.2} = 1.66\\text{k}\\Omega$$`}</Latex></p>
+            <p><strong>2. Calculate Collector Current <Latex>{`$I_C$`}</Latex>:</strong></p>
+            <p><Latex>{`$I_B = \\frac{V_{TH} - V_{BE}}{R_{TH} + (1 + \\beta) R_E}$`}</Latex></p>
+            <p>For <Latex>{`$\\beta = 100$`}</Latex>: <Latex>{`$I_B = 14.58\\mu\\text{A} \\implies I_C = 1.458\\text{mA}$`}</Latex>.</p>
+            <p>For <Latex>{`$\\beta = 300$`}</Latex>: <Latex>{`$I_B = 4.92\\mu\\text{A} \\implies I_C = 1.476\\text{mA}$`}</Latex>.</p>
+            <p><em>Conclusion:</em> The collector current remains almost constant (variation of only 1.2%) despite a 300% increase in <Latex>{`$\\beta$`}</Latex>. This demonstrates the high stability of voltage-divider biasing!</p>
+          </div>
+        )
+      },
+      {
+        id: "serie3-ex3",
+        title: "Exercise 3: KCL and Thevenin on Base",
+        problem: (
+          <div className="space-y-4">
+            <p>1. Using Kirchhoff&apos;s node law, find the expression relating: <Latex>{`$V_{BE}, I_B, U_0, R_a$`}</Latex>, and <Latex>{`$R_b$`}</Latex>.</p>
+            <p>2. Find the same expression using Thevenin&apos;s theorem applied to the base.</p>
+            <p>3. Determine the operating point (Q point) at the middle of the DC load line.</p>
+            <p>Given: <Latex>{`$U_0 = 10\\text{V}, V_{BE} = 0.6\\text{V}, I_B = 35\\mu\\text{A}, R_C = 1\\text{k}\\Omega, R_a = 200\\text{k}\\Omega, R_b = 50\\text{k}\\Omega$`}</Latex>.</p>
+          </div>
+        ),
+        aiExplanation: (
+          <div className="space-y-6">
+            <div className="mb-4">
+              <h4 className="font-bold text-amber-400 mb-2">Transistor Explorer</h4>
+              <p className="text-slate-300">Interact with the core parameters of a transistor to see how base current controls the larger collector current.</p>
+            </div>
+            <div className="h-[600px] w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0 bg-slate-950 p-4">
+              <TransistorExplorer />
+            </div>
+          </div>
+        ),
+        formalSolution: (
+          <div className="space-y-4">
+            <p><strong>1. KCL at Node B:</strong></p>
+            <p>Currents entering = Currents leaving: <Latex>{`$\\frac{U_0 - V_{BE}}{R_a} = \\frac{V_{BE}}{R_b} + I_B$`}</Latex></p>
+            <p>Isolating <Latex>{`$V_{BE}$`}</Latex>: <Latex>{`$V_{BE} = U_0 \\frac{R_b}{R_a + R_b} - I_B (R_a || R_b)$`}</Latex>.</p>
+            <p><strong>2. Thevenin&apos;s Theorem:</strong></p>
+            <p><Latex>{`$V_{TH} = U_0 \\frac{R_b}{R_a + R_b} = 2.0\\text{V}$`}</Latex>. <Latex>{`$R_{TH} = R_a || R_b = 40\\text{k}\\Omega$`}</Latex>.</p>
+            <p>Input line equation: <Latex>{`$V_{TH} = I_B R_{TH} + V_{BE} \\implies V_{BE} = V_{TH} - I_B R_{TH}$`}</Latex>. This is identical to the KCL expression!</p>
+            <p><strong>3. Operating Point Q (Middle of Load Line):</strong></p>
+            <p>Load line equation: <Latex>{`$V_{CE} = U_0 - I_C R_C$`}</Latex>.</p>
+            <p>Middle of load line: <Latex>{`$V_{CE0} = \\frac{U_0}{2} = 5\\text{V}$`}</Latex>, and <Latex>{`$I_{C0} = \\frac{U_0}{2 R_C} = 5\\text{mA}$`}</Latex>.</p>
+            <p>Checking <Latex>{`$\\beta$`}</Latex>: <Latex>{`$\\beta = \\frac{I_{C0}}{I_B} = \\frac{5\\text{mA}}{35\\mu\\text{A}} \\approx 143$`}</Latex>.</p>
+          </div>
+        )
+      },
+      {
+        id: "serie3-ex4",
+        title: "Exercise 4: Bias Circuit Design",
+        problem: (
+          <div className="space-y-4">
+            <p>A silicon NPN transistor is biased using a voltage-divider circuit. The desired Q point is: <Latex>{`$V_{CE0} = 5\\text{V}, I_{C0} = 1\\text{mA}, V_{BE0} = 0.7\\text{V}$`}</Latex>.</p>
+            <p>1. Determine the Thevenin equivalent circuit between the base and ground.</p>
+            <p>2. Deduce the equation of the static input line.</p>
+            <p>3. If <Latex>{`$R_{B1}$`}</Latex> must be 10 times greater than <Latex>{`$R_{B2}$`}</Latex>, calculate their values.</p>
+            <p>4. Derive the equation of the static load line and calculate <Latex>{`$R_C$`}</Latex>.</p>
+            <p>Given: <Latex>{`$\\beta = 100$`}</Latex> and <Latex>{`$V_{CC} = 10\\text{V}$`}</Latex>.</p>
+          </div>
+        ),
+        formalSolution: (
+          <div className="space-y-4">
+            <p><strong>1. Thevenin Equivalent:</strong></p>
+            <p><Latex>{`$V_{TH} = V_{CC} \\frac{R_{B2}}{R_{B1} + R_{B2}} = \\frac{10}{11} = 0.909\\text{V}$`}</Latex></p>
+            <p><Latex>{`$R_{TH} = R_{B1} || R_{B2} = \\frac{10}{11} R_{B2}$`}</Latex></p>
+            <p><strong>2. Static Input Line:</strong> <Latex>{`$V_{TH} = I_B R_{TH} + V_{BE}$`}</Latex>.</p>
+            <p><strong>3. Calculate <Latex>{`$R_{B1}$`}</Latex> and <Latex>{`$R_{B2}$`}</Latex>:</strong></p>
+            <p>Base current: <Latex>{`$I_{B0} = \\frac{I_{C0}}{\\beta} = 10\\mu\\text{A}$`}</Latex>.</p>
+            <p>Substitute into input line: <Latex>{`$0.909 = 10\\mu\\text{A} \\times \\left(\\frac{10}{11} R_{B2}\\right) + 0.7$`}</Latex></p>
+            <p><Latex>{`$0.2091 = 9.09\\times10^{-6} R_{B2} \\implies R_{B2} = 23\\text{k}\\Omega$`}</Latex></p>
+            <p><Latex>{`$R_{B1} = 10 \\times R_{B2} = 230\\text{k}\\Omega$`}</Latex></p>
+            <p><strong>4. Calculate <Latex>{`$R_C$`}</Latex>:</strong></p>
+            <p>Load line: <Latex>{`$V_{CC} = I_C R_C + V_{CE}$`}</Latex>.</p>
+            <p><Latex>{`$R_C = \\frac{V_{CC} - V_{CE0}}{I_{C0}} = \\frac{10 - 5}{1\\text{mA}} = 5\\text{k}\\Omega$`}</Latex>.</p>
+          </div>
+        )
+      },
+      {
+        id: "serie3-ex5",
+        title: "Exercise 5: Point Q and Load Lines",
+        problem: (
+          <div className="space-y-4">
+            <p>Consider a circuit with two power supplies: <Latex>{`$V_{BB}$`}</Latex> for the base and <Latex>{`$V_{CC}$`}</Latex> for the collector.</p>
+            <p>1. Calculate the operating point values (<Latex>{`$I_B, I_C, V_{CE}$`}</Latex>).</p>
+            <p>2. Derive the equations of the load lines: <Latex>{`$I_C = f(V_{CE})$`}</Latex> and <Latex>{`$I_B = f(V_{BE})$`}</Latex>.</p>
+            <p>Given: <Latex>{`$\\beta = 180, V_{BB} = 5\\text{V}, V_{CC} = 10\\text{V}, V_{BE} = 0.6\\text{V}, R_B = 10\\text{k}\\Omega, R_C = R_E = 100\\Omega$`}</Latex>.</p>
+          </div>
+        ),
+        aiExplanation: (
+          <div className="space-y-6">
+            <div className="mb-4">
+              <h4 className="font-bold text-amber-400 mb-2">Transistor Load Line Visualizer</h4>
+              <p className="text-slate-300">See how the Operating Point (Q Point) is established at the intersection of the DC Load Line and the transistor&apos;s output characteristic curve.</p>
+            </div>
+            <div className="h-[600px] w-full rounded-2xl overflow-hidden border border-slate-800 relative z-0 bg-slate-950 p-4">
+              <TransistorLoadLineVisualizer />
+            </div>
+          </div>
+        ),
+        formalSolution: (
+          <div className="space-y-4">
+            <p><strong>1. Operating Point Q:</strong></p>
+            <p>Input loop (KVL): <Latex>{`$V_{BB} = I_B R_B + V_{BE} + I_E R_E$`}</Latex>. Since <Latex>{`$I_E = (1 + \\beta)I_B$`}</Latex>:</p>
+            <p><Latex>{`$V_{BB} - V_{BE} = I_B [R_B + (1+\\beta)R_E]$`}</Latex></p>
+            <p><Latex>{`$5 - 0.6 = I_B [10000 + 181 \\times 100] \\implies I_B = \\frac{4.4}{28100} = 156.6\\mu\\text{A}$`}</Latex></p>
+            <p><Latex>{`$I_C = \\beta I_B = 180 \\times 156.6\\mu\\text{A} = 28.19\\text{mA}$`}</Latex></p>
+            <p>Output loop (KVL): <Latex>{`$V_{CC} = I_C R_C + V_{CE} + I_E R_E$`}</Latex>.</p>
+            <p><Latex>{`$V_{CE} = 10 - (28.19\\text{mA} \\times 100) - (28.35\\text{mA} \\times 100) = 4.35\\text{V}$`}</Latex></p>
+            <p><strong>2. Load Lines:</strong></p>
+            <p>Output load line: <Latex>{`$I_C = \\frac{V_{CC} - V_{CE}}{R_C + R_E} = \\frac{10 - V_{CE}}{200}$`}</Latex>. From (0V, 50mA) to (10V, 0mA).</p>
+            <p>Input load line: <Latex>{`$I_B = \\frac{V_{BB} - V_{BE}}{R_B + (1+\\beta)R_E} = \\frac{5 - V_{BE}}{28100}$`}</Latex>. From (0V, 177.9µA) to (5V, 0µA).</p>
           </div>
         )
       }

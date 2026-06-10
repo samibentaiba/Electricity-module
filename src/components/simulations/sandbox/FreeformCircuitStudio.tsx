@@ -260,6 +260,63 @@ const CIRCUIT_PRESETS: { name: string; nodes: Node[]; elements: CircuitElement[]
       { id: "e9", type: "Wire", value: 0, n1: "n1", n2: "n0" },
       { id: "e10", type: "Wire", value: 0, n1: "n2", n2: "n0" }
     ]
+  },
+  {
+    name: "Serie 2: Exercise 1a",
+    nodes: [
+      { id: "n0", x: 400, y: 400 },
+      { id: "n1", x: 200, y: 400 },
+      { id: "n2", x: 200, y: 200 },
+      { id: "n3", x: 400, y: 200 },
+      { id: "n4", x: 600, y: 200 },
+      { id: "n5", x: 600, y: 400 }
+    ],
+    elements: [
+      { id: "e1", type: "V_DC", value: 10, n1: "n2", n2: "n1" },
+      { id: "e2", type: "Resistor", value: 200, n1: "n2", n2: "n3" },
+      { id: "e3", type: "Resistor", value: 300, n1: "n3", n2: "n0" },
+      { id: "e4", type: "Diode", value: 0, n1: "n3", n2: "n4" },
+      { id: "e5", type: "Resistor", value: 300, n1: "n4", n2: "n5" },
+      { id: "e6", type: "Wire", value: 0, n1: "n1", n2: "n0" },
+      { id: "e7", type: "Wire", value: 0, n1: "n5", n2: "n0" }
+    ]
+  },
+  {
+    name: "Serie 2: Exercise 1b",
+    nodes: [
+      { id: "n0", x: 300, y: 400 },
+      { id: "n1", x: 300, y: 200 },
+      { id: "n2", x: 500, y: 200 },
+      { id: "n3", x: 500, y: 300 },
+      { id: "n4", x: 500, y: 400 }
+    ],
+    elements: [
+      { id: "e1", type: "V_DC", value: 10, n1: "n1", n2: "n0" },
+      { id: "e2", type: "Resistor", value: 60, n1: "n1", n2: "n2" },
+      { id: "e3", type: "Diode", value: 0, n1: "n2", n2: "n3" },
+      { id: "e4", type: "Resistor", value: 400, n1: "n3", n2: "n4" },
+      { id: "e5", type: "V_DC", value: 5, n1: "n4", n2: "n0" }
+    ]
+  },
+  {
+    name: "Serie 2: Exercise 2",
+    nodes: [
+      { id: "n0", x: 400, y: 400 },
+      { id: "n1", x: 200, y: 400 },
+      { id: "n2", x: 200, y: 200 },
+      { id: "n3", x: 400, y: 200 },
+      { id: "n4", x: 600, y: 200 },
+      { id: "n5", x: 600, y: 400 }
+    ],
+    elements: [
+      { id: "e1", type: "V_DC", value: 10, n1: "n2", n2: "n1" },
+      { id: "e2", type: "Resistor", value: 150, n1: "n2", n2: "n3" },
+      { id: "e3", type: "Diode", value: 0, n1: "n3", n2: "n0" },
+      { id: "e4", type: "Wire", value: 0, n1: "n3", n2: "n4" },
+      { id: "e5", type: "Resistor", value: 60, n1: "n4", n2: "n5" },
+      { id: "e6", type: "Wire", value: 0, n1: "n1", n2: "n0" },
+      { id: "e7", type: "Wire", value: 0, n1: "n5", n2: "n0" }
+    ]
   }
 ];
 

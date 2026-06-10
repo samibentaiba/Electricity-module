@@ -164,49 +164,6 @@ export default function ExercisesPage() {
                 )}
               </div>
             )}
-
-            {/* PRACTICE EXERCISES SECTION */}
-            {practiceSections.length > 0 && (
-              <div className="space-y-8 pt-12">
-                <div className="flex items-center gap-4 border-b border-slate-800 pb-4">
-                  <div className="h-8 w-2 rounded-full bg-amber-500"></div>
-                  <h2 className="text-3xl font-bold text-slate-100">Practice Exercises</h2>
-                </div>
-
-                {practiceSections.map((section) => (
-                  <section key={section.id} className="space-y-6">
-                    <div className="bg-slate-900/50 p-6 rounded-2xl border border-amber-500/20">
-                      <h3 className="text-2xl font-bold text-amber-400 mb-2">
-                        {section.title}
-                      </h3>
-                      {section.description && (
-                        <p className="text-slate-400 mb-2">{section.description}</p>
-                      )}
-                      {section.source && (
-                        <p className="text-sm text-slate-500 italic">
-                          Source: {section.source}
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="space-y-8">
-                      {section.exercises.map((exercise) => (
-                        <ExerciseCard
-                          key={exercise.id}
-                          title={exercise.title}
-                          problem={exercise.problem}
-                          formalSolution={exercise.formalSolution}
-                          aiExplanation={exercise.aiExplanation}
-                          solution={exercise.solution}
-                          diagramImageSrc={exercise.diagramImageSrc}
-                          source={exercise.source}
-                        />
-                      ))}
-                    </div>
-                  </section>
-                ))}
-              </div>
-            )}
           </>
         )}
       </div>
