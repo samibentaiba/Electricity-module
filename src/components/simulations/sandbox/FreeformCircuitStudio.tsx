@@ -317,6 +317,45 @@ const CIRCUIT_PRESETS: { name: string; nodes: Node[]; elements: CircuitElement[]
       { id: "e6", type: "Wire", value: 0, n1: "n1", n2: "n0" },
       { id: "e7", type: "Wire", value: 0, n1: "n5", n2: "n0" }
     ]
+  },
+  {
+    name: "Exam 2025: Exercise 1",
+    nodes: [
+      { id: "n0", x: 400, y: 450 },
+      { id: "n1", x: 200, y: 450 },
+      { id: "n2", x: 600, y: 450 },
+      { id: "n3", x: 200, y: 250 },
+      { id: "n4", x: 400, y: 250 },
+      { id: "n5", x: 600, y: 250 }
+    ],
+    elements: [
+      { id: "e1", type: "V_DC", value: 4, n1: "n1", n2: "n3" },
+      { id: "e2", type: "Resistor", value: 16, n1: "n3", n2: "n4" },
+      { id: "e3", type: "Resistor", value: 6, n1: "n4", n2: "n0" },
+      { id: "e4", type: "Resistor", value: 4, n1: "n4", n2: "n5" },
+      { id: "e5", type: "Resistor", value: 24, n1: "n5", n2: "n2" },
+      { id: "e6", type: "Wire", value: 0, n1: "n1", n2: "n0" },
+      { id: "e7", type: "Wire", value: 0, n1: "n2", n2: "n0" }
+    ]
+  },
+  {
+    name: "Exam 2025: Exercise 2",
+    nodes: [
+      { id: "n0", x: 400, y: 400 },
+      { id: "n1", x: 200, y: 400 },
+      { id: "n2", x: 600, y: 400 },
+      { id: "n3", x: 200, y: 200 },
+      { id: "n4", x: 400, y: 200 },
+      { id: "n5", x: 600, y: 200 }
+    ],
+    elements: [
+      { id: "e1", type: "V_AC", value: 141.4, frequency: 50, phase: 0, n1: "n1", n2: "n3" },
+      { id: "e2", type: "Diode", value: 0, n1: "n3", n2: "n5" },
+      { id: "e3", type: "Diode", value: 0, n1: "n0", n2: "n3" },
+      { id: "e4", type: "Resistor", value: 10000, n1: "n5", n2: "n2" },
+      { id: "e5", type: "Wire", value: 0, n1: "n1", n2: "n0" },
+      { id: "e6", type: "Wire", value: 0, n1: "n2", n2: "n0" }
+    ]
   }
 ];
 

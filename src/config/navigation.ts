@@ -1,4 +1,4 @@
-import { BookOpen, Calculator, Shapes, Library, GraduationCap } from "lucide-react";
+import { BookOpen, Calculator, Shapes, Library } from "lucide-react";
 
 export const navigationConfig = [
   {
@@ -8,7 +8,6 @@ export const navigationConfig = [
       { href: "/course/chapter-1", label: "Chapter 1: DC Circuits" },
       { href: "/course/chapter-2", label: "Chapter 2: AC Circuits" },
       { href: "/course/chapter-3", label: "Chapter 3: Electromagnetism" },
-      { href: "/course/exam2025", label: "Final Exam 2025" },
     ]
   },
   {
@@ -34,6 +33,7 @@ export const navigationConfig = [
     icon: Library,
     items: [
       { href: "/course/exercises", label: "Worksheets & Practice" },
+      { href: "/course/exam2025", label: "🎓 Final Exam 2025" },
     ]
   },
   
